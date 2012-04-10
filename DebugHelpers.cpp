@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #pragma warn -8123
-#include "Helpers.h"
+#include "DebugHelpers.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 

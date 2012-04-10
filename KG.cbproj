@@ -3,7 +3,7 @@
 			<ProjectGuid>{9CFB62D1-7A5A-41B8-B214-AE0DF254F5CD}</ProjectGuid>
 			<ProjectVersion>13.4</ProjectVersion>
 			<FrameworkType>VCL</FrameworkType>
-			<MainSource>lab2.cpp</MainSource>
+			<MainSource>KG.cpp</MainSource>
 			<Base>True</Base>
 			<Config Condition="'$(Config)'==''">Debug</Config>
 			<Platform Condition="'$(Platform)'==''">Win32</Platform>
@@ -121,9 +121,9 @@
 			<None Include="Constants.h">
 				<BuildOrder>6</BuildOrder>
 			</None>
-			<CppCompile Include="CustomPoint.cpp">
-				<DependentOn>CustomPoint.h</DependentOn>
-				<BuildOrder>2</BuildOrder>
+			<CppCompile Include="DebugHelpers.cpp">
+				<DependentOn>DebugHelpers.h</DependentOn>
+				<BuildOrder>8</BuildOrder>
 			</CppCompile>
 			<CppCompile Include="Edge.cpp">
 				<DependentOn>Edge.h</DependentOn>
@@ -137,24 +137,24 @@
 				<DependentOn>GraphicObject.h</DependentOn>
 				<BuildOrder>9</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="Helpers.cpp">
-				<DependentOn>Helpers.h</DependentOn>
-				<BuildOrder>8</BuildOrder>
-			</CppCompile>
-			<CppCompile Include="lab2.cpp">
+			<CppCompile Include="KG.cpp">
 				<BuildOrder>0</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Main.cpp">
+				<Form>MainForm</Form>
+				<FormType>dfm</FormType>
+				<DependentOn>Main.h</DependentOn>
+				<BuildOrder>1</BuildOrder>
 			</CppCompile>
 			<CppCompile Include="Matrix.cpp">
 				<DependentOn>Matrix.h</DependentOn>
 				<BuildOrder>3</BuildOrder>
 			</CppCompile>
-			<CppCompile Include="Unit1.cpp">
-				<Form>MainForm</Form>
-				<FormType>dfm</FormType>
-				<DependentOn>Unit1.h</DependentOn>
-				<BuildOrder>1</BuildOrder>
+			<CppCompile Include="Vertice.cpp">
+				<DependentOn>Vertice.h</DependentOn>
+				<BuildOrder>2</BuildOrder>
 			</CppCompile>
-			<FormResources Include="Unit1.dfm"/>
+			<FormResources Include="Main.dfm"/>
 			<BuildConfiguration Include="Release">
 				<Key>Cfg_2</Key>
 				<CfgParent>Base</CfgParent>
@@ -205,7 +205,7 @@
 						<ProjectProperties Name="VerifyPackages">True</ProjectProperties>
 					</ProjectProperties>
 					<Source>
-						<Source Name="MainSource">lab2.cpp</Source>
+						<Source Name="MainSource">KG.cpp</Source>
 					</Source>
 					<Excluded_Packages>
 						<Excluded_Packages Name="$(BDSBIN)\bcboffice2k160.bpl">Embarcadero C++Builder Office 2000 Servers Package</Excluded_Packages>

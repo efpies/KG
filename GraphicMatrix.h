@@ -5,7 +5,7 @@
 #include "Matrix.h"
 #include "Constants.h"
 #include <cmath>
-#include "Helpers.h"
+#include "DebugHelpers.h"
 
 using namespace std;
 

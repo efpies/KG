@@ -3,7 +3,7 @@
 #define EdgeH
 
 #include <vcl.h>
-#include "CustomPoint.h"
+#include "Vertice.h"
 #include "Constants.h"
 #include "GraphicMatrix.h"
 //---------------------------------------------------------------------------
@@ -11,13 +11,13 @@
 class Edge
 {
 	private :
-		CustomPoint *a;
-		CustomPoint *b;
+		Vertice *a;
+		Vertice *b;
 
 		TPen *pen;
 
 	public :
-		Edge (CustomPoint*, CustomPoint*);
+		Edge (Vertice*, Vertice*);
 		Edge (const int, const int);
 		Edge (const Edge&);
 		~Edge();
@@ -30,8 +30,8 @@ class Edge
 //---------------------------------------------------------------------------
 Edge::Edge (const Edge& src)
 {
-	a = new CustomPoint(*src.a);
-	b = new CustomPoint(*src.b);
+	a = new Vertice(*src.a);
+	b = new Vertice(*src.b);
 
 	pen = new TPen;
 	pen->Color = src.pen->Color;
@@ -39,7 +39,7 @@ Edge::Edge (const Edge& src)
 	pen->Style = src.pen->Style;
 }
 
-Edge::Edge (CustomPoint *pointA, CustomPoint *pointB)
+Edge::Edge (Vertice *pointA, Vertice *pointB)
 {
 //	a = new CustomPoint (*pointA);
 //	b = new CustomPoint (*pointB);

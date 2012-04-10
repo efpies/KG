@@ -2,7 +2,7 @@
 #pragma hdrstop
 
 #pragma warn -8123
-#include "CustomPoint.h"
+#include "Vertice.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 

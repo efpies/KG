@@ -4,8 +4,8 @@
 
 #pragma warning(disable : 8123)
 
-#include "Unit1.h"
-#include "CustomPoint.h"
+#include "Main.h"
+#include "Vertice.h"
 #include "Edge.h"
 #include "GraphicMatrix.h"
 #include "GraphicObject.h"
@@ -68,7 +68,7 @@ void __fastcall TMainForm::ParseJSON (const UnicodeString& fileName)
 	for (int i = 0; i < topObjectValueObj->Size(); ++i) {
 		TJSONPair *pair = topObjectValueObj->Get(i);
 		TJSONArray *array = jsonArrayFromPair(pair);
-		CustomPoint *point = new CustomPoint(INTVALARR(array, 0),
+		Vertice *point = new Vertice(INTVALARR(array, 0),
 											 INTVALARR(array, 1),
 											 INTVALARR(array, 2));
 

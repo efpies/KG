@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef Unit1H
-#define Unit1H
+#ifndef MainH
+#define MainH
 #pragma warning(disable : 8123)
 //---------------------------------------------------------------------------
 #include <System.Classes.hpp>
@@ -20,7 +20,7 @@
 #include "Constants.h"
 //---------------------------------------------------------------------------
 class GraphicObject;
-class CustomPoint;
+class Vertice;
 class Edge;
 
 using namespace std;
@@ -68,7 +68,7 @@ private:	// User declarations
 
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
-	map<UnicodeString, CustomPoint *> points;
+	map<UnicodeString, Vertice *> points;
 	map<UnicodeString, Edge *> edges;
 	map<UnicodeString, GraphicObject *> objects;
 };

@@ -5,7 +5,7 @@
 #include <fstream>
 
 #include <vcl.h>
-#include "Helpers.h"
+#include "DebugHelpers.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
@@ -55,8 +55,8 @@ Matrix *BezierSurface::getW (double w, int n)
 }
 
 BezierSurface::BezierSurface(unsigned rows, unsigned cols) :
-	knots(points_container(rows, vector<CustomPoint *>(cols, 0))),
-	points(points_container(ptsPerUnit+1, vector<CustomPoint *>(ptsPerUnit+1, 0)))
+	knots(points_container(rows, vector<Vertice *>(cols, 0))),
+	points(points_container(ptsPerUnit+1, vector<Vertice *>(ptsPerUnit+1, 0)))
 {
 
 	int x0 = irand(30);
@@ -78,7 +78,7 @@ BezierSurface::BezierSurface(unsigned rows, unsigned cols) :
 			int y = lasty + irand(15) + 1;
 			int z = lastz + irand(30);
 
-			CustomPoint *point = new CustomPoint (x, y, z);
+			Vertice *point = new Vertice (x, y, z);
 			knots[i][j] = point;
 		}
 
@@ -167,7 +167,7 @@ BezierSurface::BezierSurface(unsigned rows, unsigned cols) :
 			Matrix Q3 = *U * *N * *B * *M * *W;
 			z = Q3.values[0][0];
 
-			CustomPoint *pt = new CustomPoint(x, y, z);
+			Vertice *pt = new Vertice(x, y, z);
 
 			delete W;
 			delete B;

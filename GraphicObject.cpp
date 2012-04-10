@@ -20,7 +20,7 @@ GraphicObject::GraphicObject(const GraphicObject& src)
 	}
 
 	for(pcIt i = src.points.begin(); i != src.points.end(); ++i) {
-		CustomPoint *newPoint = new CustomPoint(**i);
+		Vertice *newPoint = new Vertice(**i);
 		points.push_back(newPoint);
     }
 }
@@ -31,7 +31,7 @@ void GraphicObject::addEdge (const Edge* srcEdge)
 	edges.push_back(edge);
 }
 
-void GraphicObject::addPoint (CustomPoint* srcPoint)
+void GraphicObject::addPoint (Vertice* srcPoint)
 {
 	points.push_back(srcPoint);
 }

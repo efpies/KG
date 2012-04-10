@@ -8,19 +8,19 @@
 using namespace std;
 //---------------------------------------------------------------------------
 class Edge;
-class CustomPoint;
+class Vertice;
 class Matrix;
 
 typedef vector<Edge *>::iterator EdgeIt;
 typedef vector<Edge *>::const_iterator cEdgeIt;
-typedef vector<CustomPoint *>::iterator pIt;
-typedef vector<CustomPoint *>::const_iterator pcIt;
+typedef vector<Vertice *>::iterator pIt;
+typedef vector<Vertice *>::const_iterator pcIt;
 
 class GraphicObject
 {
 	private :
 		vector<Edge *> edges;
-		vector<CustomPoint *> points;
+		vector<Vertice *> points;
 
 	public :
 		GraphicObject ();
@@ -28,7 +28,7 @@ class GraphicObject
 		~GraphicObject();
 
 		void addEdge (const Edge *);
-		void addPoint (CustomPoint *);
+		void addPoint (Vertice *);
 		void applyTransform (Matrix *);
 		void applyRotation (const double, const double);
 		void draw (TCanvas*);

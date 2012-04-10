@@ -4,7 +4,7 @@
 //---------------------------------------------------------------------------
 #include "GraphicObject.h"
 #include "Edge.h"
-#include "CustomPoint.h"
+#include "Vertice.h"
 #include "Matrix.h"
 #include <cstdlib>
 
@@ -15,9 +15,9 @@ typedef vector< vector<double> > matrix_values;
 typedef vector< vector<double> >::iterator mvIt;
 typedef vector<double>::iterator dIt;
 
-typedef vector< vector<CustomPoint *> > points_container;
-typedef vector< vector<CustomPoint *> >::iterator poIt;
-typedef vector<CustomPoint *>::iterator pIt;
+typedef vector< vector<Vertice *> > points_container;
+typedef vector< vector<Vertice *> >::iterator poIt;
+typedef vector<Vertice *>::iterator pIt;
 
 class BezierSurface {
 	private :

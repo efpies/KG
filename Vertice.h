@@ -1,19 +1,19 @@
 //---------------------------------------------------------------------------
-#ifndef CustomPointH
-#define CustomPointH
+#ifndef VerticeH
+#define VerticeH
 
 #include "Matrix.h"
-#include "Helpers.h"
+#include "DebugHelpers.h"
 #include <vcl.h>
 
-class CustomPoint {
+class Vertice {
 	private :
 
 	public :
 		Matrix *coords;
-		CustomPoint (const double, const double, const double);
-		CustomPoint (const CustomPoint&);
-		~CustomPoint();
+		Vertice (const double, const double, const double);
+		Vertice (const Vertice&);
+		~Vertice();
 
 		inline double getX ();
 		inline double getY ();
@@ -23,7 +23,7 @@ class CustomPoint {
 		inline void applyRotation (const double, const double);
 };
 //---------------------------------------------------------------------------
-CustomPoint::CustomPoint (const double x, const double y, const double z)
+Vertice::Vertice (const double x, const double y, const double z)
 {
 	coords = new Matrix(1, 4);
 	coords->values[0][0] = x;
@@ -32,26 +32,26 @@ CustomPoint::CustomPoint (const double x, const double y, const double z)
 	coords->values[0][3] = 1;
 }
 
-CustomPoint::CustomPoint (const CustomPoint& src)
+Vertice::Vertice (const Vertice& src)
 {
 	coords = new Matrix(*src.coords);
 }
 
-CustomPoint::~CustomPoint()
+Vertice::~Vertice()
 {
 	delete coords;
 }
 
-inline double CustomPoint::getX () { return coords->values[0][0]; }
-inline double CustomPoint::getY () { return coords->values[0][1]; }
-inline double CustomPoint::getZ () { return coords->values[0][2]; }
+inline double Vertice::getX () { return coords->values[0][0]; }
+inline double Vertice::getY () { return coords->values[0][1]; }
+inline double Vertice::getZ () { return coords->values[0][2]; }
 
-inline void CustomPoint::applyTransform (Matrix* transform)
+inline void Vertice::applyTransform (Matrix* transform)
 {
 	*coords *= *transform;
 }
 
-inline void CustomPoint::applyRotation (const double phi, const double theta)
+inline void Vertice::applyRotation (const double phi, const double theta)
 {
 	double cx = coords->values[0][0];
 	double cy = coords->values[0][1];

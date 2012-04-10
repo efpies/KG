@@ -93,7 +93,11 @@
 
 
 
-USEFORM("Unit1.cpp", MainForm);
+
+
+
+
+USEFORM("Main.cpp", MainForm);
 //---------------------------------------------------------------------------
 WINAPI _tWinMain(HINSTANCE, HINSTANCE, LPTSTR, int)
 {

@@ -1,6 +1,6 @@
 //---------------------------------------------------------------------------
-#ifndef HelpersH
-#define HelpersH
+#ifndef DebugHelpersH
+#define DebugHelpersH
 
 #include <vcl.h>
 #include <windows.h>
