@@ -85,8 +85,6 @@ BezierSurface::BezierSurface(unsigned rows, unsigned cols)
 	{
 		lastx = x0;
 
-		int maxy = 0;
-
 		for (unsigned j = 0; j < cols; ++j)
 		{
 			lastx += (j) ? irand(15) + 10 : irand(50);
@@ -159,8 +157,8 @@ BezierSurface::BezierSurface(unsigned rows, unsigned cols)
 			double y;
 			double z;
 
-			for(int i = 0; i < rows; ++i) {
-				for(int j = 0; j < cols; ++j) {
+			for(unsigned i = 0; i < rows; ++i) {
+				for(unsigned j = 0; j < cols; ++j) {
                     B->values[i][j] = knots[i][j]->getX();
                 }
 			}
@@ -168,16 +166,16 @@ BezierSurface::BezierSurface(unsigned rows, unsigned cols)
 			Matrix Q1 = *UN * *B * *MW;
 			x = Q1.values[0][0];
 
-			for(int i = 0; i < rows; ++i) {
-				for(int j = 0; j < cols; ++j) {
+			for(unsigned i = 0; i < rows; ++i) {
+				for(unsigned j = 0; j < cols; ++j) {
 					B->values[i][j] = knots[i][j]->getY();
                 }
 			}
 
 			Matrix Q2 = *UN * *B * *MW;
 			y = Q2.values[0][0];
-			for(int i = 0; i < rows; ++i) {
-				for(int j = 0; j < cols; ++j) {
+			for(unsigned i = 0; i < rows; ++i) {
+				for(unsigned j = 0; j < cols; ++j) {
 					B->values[i][j] = knots[i][j]->getZ();
                 }
 			}
