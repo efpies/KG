@@ -11,42 +11,34 @@
 class Edge
 {
 	private :
-		Vertice *a;
-		Vertice *b;
-
 		TPen *pen;
 
 	public :
-		Edge (Vertice*, Vertice*);
-		Edge (const int, const int);
+		UnicodeString tagA;
+		UnicodeString tagB;
+
+		Edge (const UnicodeString&, const UnicodeString&);
 		Edge (const Edge&);
 		~Edge();
 
 		void setPen(TColor, int, TPenStyle);
-		inline void draw  (TCanvas *);
+		inline void draw  (TCanvas *, const Vertice *, const Vertice *);
 		inline void applyTransform (Matrix*);
 		inline void applyRotation (const double, const double);
 };
 //---------------------------------------------------------------------------
 Edge::Edge (const Edge& src)
+	: tagA(src.tagA), tagB(src.tagB)
 {
-	a = new Vertice(*src.a);
-	b = new Vertice(*src.b);
-
 	pen = new TPen;
 	pen->Color = src.pen->Color;
 	pen->Width = src.pen->Width;
 	pen->Style = src.pen->Style;
 }
 
-Edge::Edge (Vertice *pointA, Vertice *pointB)
+Edge::Edge (const UnicodeString& _tagA, const UnicodeString& _tagB)
+	: tagA(_tagA), tagB(_tagB)
 {
-//	a = new CustomPoint (*pointA);
-//	b = new CustomPoint (*pointB);
-
-	a = pointA;
-	b = pointB;
-
 	pen = new TPen;
 	pen->Color = clBlack;
 	pen->Width = 1;
@@ -67,7 +59,7 @@ void Edge::setPen (TColor penColor, int penWidth, TPenStyle penStyle)
 	pen->Style = penStyle;
 }
 
-inline void Edge::draw (TCanvas *canvas)
+inline void Edge::draw (TCanvas *canvas, const Vertice *a, const Vertice *b)
 {
 	canvas->Pen = pen;
 	TPoint canvasCenter = TPoint (canvas->ClipRect.Width() / 2.0, canvas->ClipRect.Height() / 2.0);
@@ -77,14 +69,14 @@ inline void Edge::draw (TCanvas *canvas)
 
 inline void Edge::applyTransform (Matrix* transform)
 {
-	a->applyTransform(transform);
-	b->applyTransform(transform);
+//	a->applyTransform(transform);
+//	b->applyTransform(transform);
 }
 
 inline void Edge::applyRotation (const double ax, const double ay)
 {
-	a->applyRotation(ax, ay);
-	b->applyRotation(ax, ay);
+//	a->applyRotation(ax, ay);
+//	b->applyRotation(ax, ay);
 }
 //---------------------------------------------------------------------------
 #endif

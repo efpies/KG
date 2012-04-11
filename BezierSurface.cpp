@@ -3,15 +3,26 @@
 
 #include "BezierSurface.h"
 #include <fstream>
+#include <iostream>
 
 #include <vcl.h>
 #include "DebugHelpers.h"
+#include <algorithm>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
 #define irand(n) random(n/2.0)-random(n/2.0)
+#define knotTag(i, j) tagWithName(L"knot", i, j)
+#define pointTag(i, j) tagWithName(L"point", i, j)
 
-const ptsPerUnit = 15;
+UnicodeString tagWithName(const wchar_t *name, int i, int j)
+{
+	UnicodeString tag = L"";
+	tag.printf(L"%s{%d;%d}", name, i, j);
+	return tag;
+}
+
+const unsigned ptsPerUnit = 15;
 
 long fact(int n)
 {
@@ -54,11 +65,17 @@ Matrix *BezierSurface::getW (double w, int n)
 	return T;
 }
 
-BezierSurface::BezierSurface(unsigned rows, unsigned cols) :
-	knots(points_container(rows, vector<Vertice *>(cols, 0))),
-	points(points_container(ptsPerUnit+1, vector<Vertice *>(ptsPerUnit+1, 0)))
+void makeNull(Vertice *v)
 {
+	v = NULL;
+}
 
+BezierSurface::BezierSurface(unsigned rows, unsigned cols)
+{
+	points_container knots = points_container(rows, vector<Vertice *>(cols, 0));
+	points_container points = points_container(ptsPerUnit + 1, vector<Vertice *>(ptsPerUnit + 1, 0));
+
+	randomize();
 	int x0 = irand(30);
 	int y0 = irand(30);
 	int z0 = irand(30);
@@ -78,8 +95,11 @@ BezierSurface::BezierSurface(unsigned rows, unsigned cols) :
 			int y = lasty + irand(15) + 1;
 			int z = lastz + irand(30);
 
-			Vertice *point = new Vertice (x, y, z);
+			UnicodeString tag = knotTag(i, j);
+			Vertice *point = new Vertice (x, y, z, tag);
+
 			knots[i][j] = point;
+			allVertices[tag] = point;
 		}
 
 		lasty += 10 + random(20);
@@ -89,16 +109,16 @@ BezierSurface::BezierSurface(unsigned rows, unsigned cols) :
 
 	for(poIt i = knots.begin(); i != knots.end(); ++i) {
 		for(pIt j = (*i).begin(); j != (*i).end(); ++j) {
-			grid->addPoint(*j);
-        }
+			grid->addVertice(*j);
+		}
 	}
 
 	for (unsigned i = 0; i < rows; ++i)
 	{
 		for (unsigned j = 0; j < cols - 1; ++j)
 		{
-			Edge *edge = new Edge(knots[i][j], knots[i][j+1]);
-			edge->setPen(clBlue, 3, psSolid);
+			Edge *edge = new Edge(knotTag(i, j), knotTag(i, j + 1));
+			edge->setPen(clBlue, 2, psSolid);
 			grid->addEdge(edge);
 		}
 	}
@@ -107,29 +127,27 @@ BezierSurface::BezierSurface(unsigned rows, unsigned cols) :
 	{
 		for (unsigned i = 0; i < rows - 1; ++i)
 		{
-			Edge *edge = new Edge(knots[i][j], knots[i+1][j]);
-			edge->setPen(clBlue, 3, psSolid);
+			Edge *edge = new Edge(knotTag(i, j), knotTag(i + 1, j));
+			edge->setPen(clBlue, 2, psSolid);
 			grid->addEdge(edge);
 		}
 	}
 
 	// Surfacing
 
+	surface = new GraphicObject();
+
 	Matrix *U, *W, *N, *M, *B, *UN, *MW;
 	N = BezierSurface::getN(rows-1);
 	M = BezierSurface::getN(cols-1);
 
-    int row, col = 0;
+	int row, col = 0;
 
-
-	ofstream dbg(L"D:\\debug.txt", ios::out);
 	for(float u = 0; u <= 1; u += 1.0/(float)ptsPerUnit, ++col) {
 		U = getU(u, rows-1);
 		UN = new Matrix(*U * *N);
 
 		row = 0;
-
-//		dbg<< points.size() << " " << points[0].size() << endl;
 
 		for(float w = 0; w <= 1; w += 1.0/(float)ptsPerUnit, ++row) {
 			W = getW(w, cols-1);
@@ -167,51 +185,57 @@ BezierSurface::BezierSurface(unsigned rows, unsigned cols) :
 			Matrix Q3 = *U * *N * *B * *M * *W;
 			z = Q3.values[0][0];
 
-			Vertice *pt = new Vertice(x, y, z);
+			UnicodeString tag = pointTag(row, col);
+			Vertice *pt = new Vertice(x, y, z, tag);
+
+			points[row][col] = pt;
+			allVertices[tag] = pt;
+			surface->addVertice(pt);
 
 			delete W;
 			delete B;
-
-//		dbg << endl << "{ " << row << " ; " << col << " }";
-//if(row<ptsPerUnit)
-			points[row][col] = pt;
 		}
 
 		delete U;
 		delete UN;
-//		dbg<< u << endl;
 	}
 
 	delete N;
 	delete M;
 
-	surface = new GraphicObject();
-
-	for (unsigned i = 0; i < ptsPerUnit; ++i)
+	for (unsigned i = 0; i < ptsPerUnit + 1; ++i)
 	{
-		for (unsigned j = 0; j < ptsPerUnit - 1; ++j)
+		for (unsigned j = 0; j < ptsPerUnit; ++j)
 		{
-			Edge *edge = new Edge(points[i][j], points[i][j+1]);
+			Edge *edge = new Edge(pointTag(i, j), pointTag(i, j + 1));
 			edge->setPen(clRed, 1, psSolid);
 			surface->addEdge(edge);
 		}
 	}
 
-	for (unsigned j = 0; j < ptsPerUnit; ++j)
+	for (unsigned j = 0; j < ptsPerUnit + 1; ++j)
 	{
-		for (unsigned i = 0; i < ptsPerUnit - 1; ++i)
+		for (unsigned i = 0; i < ptsPerUnit; ++i)
 		{
-			Edge *edge = new Edge(points[i][j], points[i+1][j]);
+			Edge *edge = new Edge(pointTag(i, j), pointTag(i + 1, j));
 			edge->setPen(clRed, 1, psSolid);
 			surface->addEdge(edge);
 		}
+	}
+
+	for(poIt i = knots.begin(); i != knots.end(); ++i) {
+		for_each((*i).begin(), (*i).end(), makeNull);
+	}
+
+	for(poIt i = points.begin(); i != points.end(); ++i) {
+		for_each((*i).begin(), (*i).end(), makeNull);
 	}
 }
 
 void BezierSurface::draw (TCanvas *canvas)
 {
 	grid->draw(canvas);
-//	surface->draw(canvas);
+	surface->draw(canvas);
 }
 
 void BezierSurface::applyTransform(Matrix *transform)
@@ -223,5 +247,5 @@ void BezierSurface::applyTransform(Matrix *transform)
 void BezierSurface::applyRotation(const double ax, const double ay)
 {
 	grid->applyRotation(ax, ay);
-//	surface->applyRotation(ax, ay);
+	surface->applyRotation(ax, ay);
 }

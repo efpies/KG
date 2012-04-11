@@ -9,23 +9,18 @@
 #include <cstdlib>
 
 #include <vector>
+#include <map>
+
+#include "Constants.h"
+
 using namespace std;
-
-typedef vector< vector<double> > matrix_values;
-typedef vector< vector<double> >::iterator mvIt;
-typedef vector<double>::iterator dIt;
-
-typedef vector< vector<Vertice *> > points_container;
-typedef vector< vector<Vertice *> >::iterator poIt;
-typedef vector<Vertice *>::iterator pIt;
 
 class BezierSurface {
 	private :
 		GraphicObject *grid;
 		GraphicObject *surface;
 
-		points_container knots;
-		points_container points;
+		map<UnicodeString, Vertice *> allVertices;
 
 	public :
 		BezierSurface(unsigned, unsigned);
@@ -45,7 +40,6 @@ BezierSurface::BezierSurface(const BezierSurface& src)
 {
 	grid = new GraphicObject(*src.grid);
 	surface = new GraphicObject(*src.surface);
-//	knots = src.knots;
 }
 
 BezierSurface::~BezierSurface()

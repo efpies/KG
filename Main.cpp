@@ -68,11 +68,11 @@ void __fastcall TMainForm::ParseJSON (const UnicodeString& fileName)
 	for (int i = 0; i < topObjectValueObj->Size(); ++i) {
 		TJSONPair *pair = topObjectValueObj->Get(i);
 		TJSONArray *array = jsonArrayFromPair(pair);
-		Vertice *point = new Vertice(INTVALARR(array, 0),
-											 INTVALARR(array, 1),
-											 INTVALARR(array, 2));
-
-		points[pair->JsonString->Value()] = point;
+//		Vertice *point = new Vertice(INTVALARR(array, 0),
+//											 INTVALARR(array, 1),
+//											 INTVALARR(array, 2));
+//
+//		points[pair->JsonString->Value()] = point;
 	}
 
 	delete topObjectValueObj;
@@ -92,13 +92,13 @@ void __fastcall TMainForm::ParseJSON (const UnicodeString& fileName)
 		TJSONPair *pair = topObjectValueObj->Get(i);
 		TJSONObject *object = parseJsonValue(pair->JsonValue);
 		TJSONArray *array = jsonArrayFromPair(object->Get("vertices"));
-		Edge *edge = new Edge (points[STRVALARR(array, 0)], points[STRVALARR(array, 1)]);
-
-		if (object->Get("color")) {
-			edge->setPen((*colors)[STRVALOBJ(object, "color")], 1, psSolid);
-		}
-
-		edges[pair->JsonString->Value()] = edge;
+//		Edge *edge = new Edge (points[STRVALARR(array, 0)], points[STRVALARR(array, 1)]);
+//
+//		if (object->Get("color")) {
+//			edge->setPen((*colors)[STRVALOBJ(object, "color")], 1, psSolid);
+//		}
+//
+//		edges[pair->JsonString->Value()] = edge;
 	}
 
 	delete colors;
@@ -207,7 +207,7 @@ void __fastcall TMainForm::drawObjects(TCanvas *destCanvas, bool erase)
 				toDraw->applyRotation(angleY, angleX);
 				toDraw->draw(pic->Canvas);
 				delete toDraw;
-
+//                                        surf->draw(pic->Canvas);
 		destCanvas->Draw(0, 0, pic);
 //		BitBlt(destCanvas->Handle,0,0,pic->Width,pic->Height,
 //			pic->Canvas->Handle,0,0,SRCCOPY);

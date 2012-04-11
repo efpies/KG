@@ -4,23 +4,24 @@
 
 #include <vector>
 #include <vcl.h>
+#include <map>
+#include "Vertice.h"
+#include "Constants.h"
 
 using namespace std;
 //---------------------------------------------------------------------------
 class Edge;
-class Vertice;
 class Matrix;
 
 typedef vector<Edge *>::iterator EdgeIt;
 typedef vector<Edge *>::const_iterator cEdgeIt;
-typedef vector<Vertice *>::iterator pIt;
-typedef vector<Vertice *>::const_iterator pcIt;
 
 class GraphicObject
 {
 	private :
 		vector<Edge *> edges;
 		vector<Vertice *> points;
+		map<UnicodeString, Vertice *> allVertices;
 
 	public :
 		GraphicObject ();
@@ -28,7 +29,7 @@ class GraphicObject
 		~GraphicObject();
 
 		void addEdge (const Edge *);
-		void addPoint (Vertice *);
+		void addVertice (Vertice *);
 		void applyTransform (Matrix *);
 		void applyRotation (const double, const double);
 		void draw (TCanvas*);
@@ -38,5 +39,10 @@ class GraphicObject
 //---------------------------------------------------------------------------
 GraphicObject::GraphicObject() { hidden = false; }
 GraphicObject::~GraphicObject(){}
+
+void GraphicObject::addVertice(Vertice *src)
+{
+    allVertices[src->tag] = new Vertice(*src);
+}
 
 #endif

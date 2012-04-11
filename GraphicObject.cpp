@@ -11,7 +11,6 @@
 GraphicObject::GraphicObject(const GraphicObject& src)
 {
 	edges.reserve(src.edges.size());
-	points.reserve(src.points.size());
 	hidden = false;
 
 	for (cEdgeIt i = src.edges.begin(); i != src.edges.end(); ++i) {
@@ -19,21 +18,16 @@ GraphicObject::GraphicObject(const GraphicObject& src)
 		edges.push_back (newEdge);
 	}
 
-	for(pcIt i = src.points.begin(); i != src.points.end(); ++i) {
-		Vertice *newPoint = new Vertice(**i);
-		points.push_back(newPoint);
-    }
+	for(vertIt_const i = src.allVertices.begin(); i != src.allVertices.end(); ++i) {
+		Vertice *newPoint = new Vertice(*(*i).second);
+		allVertices[newPoint->tag] = newPoint;
+	}
 }
 
 void GraphicObject::addEdge (const Edge* srcEdge)
 {
 	Edge *edge = new Edge(*srcEdge);
 	edges.push_back(edge);
-}
-
-void GraphicObject::addPoint (Vertice* srcPoint)
-{
-	points.push_back(srcPoint);
 }
 
 void GraphicObject::applyTransform (Matrix *transform)
@@ -45,17 +39,14 @@ void GraphicObject::applyTransform (Matrix *transform)
 
 void GraphicObject::applyRotation (const double ax, const double ay)
 {
-//	for (EdgeIt i = edges.begin(); i != edges.end(); ++i) {
-//		(*i)->applyRotation (ax,ay);
-//	}
-	for (pIt i = points.begin(); i != points.end(); ++i) {
-		(*i)->applyRotation (ax,ay);
+	for(vertIt i = allVertices.begin(); i != allVertices.end(); ++i) {
+		(*i).second->applyRotation (ax, ay);
 	}
 }
 
 void GraphicObject::draw (TCanvas* canvas)
 {
 	for (EdgeIt i = edges.begin(); i != edges.end(); ++i) {
-		(*i)->draw (canvas);
+		(*i)->draw (canvas, allVertices[(*i)->tagA], allVertices[(*i)->tagB]);
 	}
 }
