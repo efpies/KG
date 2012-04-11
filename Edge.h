@@ -23,8 +23,6 @@ class Edge
 
 		void setPen(TColor, int, TPenStyle);
 		inline void draw  (TCanvas *, const Vertice *, const Vertice *);
-		inline void applyTransform (Matrix*);
-		inline void applyRotation (const double, const double);
 };
 //---------------------------------------------------------------------------
 Edge::Edge (const Edge& src)
@@ -67,16 +65,5 @@ inline void Edge::draw (TCanvas *canvas, const Vertice *a, const Vertice *b)
 	canvas->LineTo(canvasCenter.x + b->getX()*scale, canvasCenter.y - b->getY()*scale);
 }
 
-inline void Edge::applyTransform (Matrix* transform)
-{
-//	a->applyTransform(transform);
-//	b->applyTransform(transform);
-}
-
-inline void Edge::applyRotation (const double ax, const double ay)
-{
-//	a->applyRotation(ax, ay);
-//	b->applyRotation(ax, ay);
-}
 //---------------------------------------------------------------------------
 #endif

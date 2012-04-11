@@ -11,63 +11,54 @@
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
-#define irand(n) random(n/2.0)-random(n/2.0)
+#define irand(n) random(n / 2.0) - random(n / 2.0)
 #define knotTag(i, j) tagWithName(L"knot", i, j)
 #define pointTag(i, j) tagWithName(L"point", i, j)
 
-UnicodeString tagWithName(const wchar_t *name, int i, int j)
-{
-	UnicodeString tag = L"";
-	tag.printf(L"%s{%d;%d}", name, i, j);
-	return tag;
-}
-
 const unsigned ptsPerUnit = 5;
 
-long fact(int n)
+long BezierSurface::fact(int n)
 {
-	return n == 0L ? 1 : n * fact (n-1);
-}
-
-unsigned Binom(int n, int i)
-{
-	return fact(n)/(fact(i)*fact(n-i));
+	return n == 0L ? 1 : n * fact (n - 1);
 }
 
 Matrix *BezierSurface::getN(int n)
 {
-	Matrix *N = new Matrix(n+1,n+1);
+	Matrix *N = new Matrix(n + 1, n + 1);
 
-	for(int i = 0; i <= n; ++i)
-		for(int j = 0; j <= n; ++j)
-			N->values[i][j] = (0 <= i + j && i + j <= n) ? Binom(n, j) * Binom(n-j, n-i-j) * pow(-1, n-i-j) : 0;
+	for(int i = 0; i <= n; ++i) {
+		for(int j = 0; j <= n; ++j) {
+			N->values[i][j] = (0 <= i + j && i + j <= n) ? Binom(n, j) * Binom(n - j, n - i - j) * pow(-1, n - i - j) : 0;
+        }
+	}
 
 	return N;
 }
 
 Matrix *BezierSurface::getU (double u, int n)
 {
-	Matrix *T = new Matrix(1,n+1);
+	Matrix *T = new Matrix(1, n + 1);
 
-	for(int i = n; i > 0; --i)
+	for(int i = n; i > 0; --i) {
 		T->values[0][n-i] =  pow(u, i);
+	}
+
 	T->values[0][n] = 1;
+
 	return T;
 }
 
 Matrix *BezierSurface::getW (double w, int n)
 {
-	Matrix *T = new Matrix(n+1,1);
+	Matrix *T = new Matrix(n + 1, 1);
 
-	for(int i = n; i > 0; --i)
+	for(int i = n; i > 0; --i) {
 		T->values[n-i][0] =  pow(w, i);
-	T->values[n][0] = 1;
-	return T;
-}
+	}
 
-void makeNull(Vertice *v)
-{
-	v = NULL;
+	T->values[n][0] = 1;
+
+	return T;
 }
 
 BezierSurface::BezierSurface(unsigned rows, unsigned cols)
@@ -97,7 +88,6 @@ BezierSurface::BezierSurface(unsigned rows, unsigned cols)
 			Vertice *point = new Vertice (x, y, z, tag);
 
 			knots[i][j] = point;
-			allVertices[tag] = point;
 		}
 
 		lasty += 10 + random(20);
@@ -136,19 +126,19 @@ BezierSurface::BezierSurface(unsigned rows, unsigned cols)
 	surface = new GraphicObject();
 
 	Matrix *U, *W, *N, *M, *B, *UN, *MW;
-	N = BezierSurface::getN(rows-1);
-	M = BezierSurface::getN(cols-1);
+	N = BezierSurface::getN(rows - 1);
+	M = BezierSurface::getN(cols - 1);
 
 	int row, col = 0;
 
 	for(float u = 0; u <= 1; u += 1.0/(float)ptsPerUnit, ++col) {
-		U = getU(u, rows-1);
+		U = getU(u, rows - 1);
 		UN = new Matrix(*U * *N);
 
 		row = 0;
 
 		for(float w = 0; w <= 1; w += 1.0/(float)ptsPerUnit, ++row) {
-			W = getW(w, cols-1);
+			W = getW(w, cols - 1);
 			MW = new Matrix(*M * *W);
 
 			B = new Matrix(rows, cols);
@@ -187,7 +177,6 @@ BezierSurface::BezierSurface(unsigned rows, unsigned cols)
 			Vertice *pt = new Vertice(x, y, z, tag);
 
 			points[row][col] = pt;
-			allVertices[tag] = pt;
 			surface->addVertice(pt);
 
 			delete W;
@@ -219,14 +208,6 @@ BezierSurface::BezierSurface(unsigned rows, unsigned cols)
 			edge->setPen(clRed, 1, psSolid);
 			surface->addEdge(edge);
 		}
-	}
-
-	for(poIt i = knots.begin(); i != knots.end(); ++i) {
-		for_each((*i).begin(), (*i).end(), makeNull);
-	}
-
-	for(poIt i = points.begin(); i != points.end(); ++i) {
-		for_each((*i).begin(), (*i).end(), makeNull);
 	}
 }
 

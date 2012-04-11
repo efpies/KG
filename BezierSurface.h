@@ -20,7 +20,14 @@ class BezierSurface {
 		GraphicObject *grid;
 		GraphicObject *surface;
 
-		map<UnicodeString, Vertice *> allVertices;
+		static Matrix *getU(double, int);
+		static Matrix *getN(int);
+		static Matrix *getW(double, int);
+
+		static long fact(int);
+		static inline unsigned Binom(int, int);
+
+		static inline UnicodeString tagWithName(const wchar_t *, int, int);
 
 	public :
 		BezierSurface(unsigned, unsigned);
@@ -28,12 +35,8 @@ class BezierSurface {
 		~BezierSurface();
 
 		void applyTransform(Matrix*);
-		void applyRotation (const double, const double);
-		void draw (TCanvas*);
-
-		static Matrix *getU (double, int);
-		static Matrix *getN (int);
-		static Matrix *getW (double, int);
+		void applyRotation(const double, const double);
+		void draw(TCanvas*);
 };
 
 BezierSurface::BezierSurface(const BezierSurface& src)
@@ -46,6 +49,18 @@ BezierSurface::~BezierSurface()
 {
 	delete grid;
 	delete surface;
+}
+
+inline UnicodeString BezierSurface::tagWithName(const wchar_t *name, int i, int j)
+{
+	UnicodeString tag = L"";
+	tag.printf(L"%s{%d;%d}", name, i, j);
+	return tag;
+}
+
+inline unsigned BezierSurface::Binom(int n, int i)
+{
+	return fact(n)/(fact(i) * fact(n - i));
 }
 //---------------------------------------------------------------------------
 #endif
