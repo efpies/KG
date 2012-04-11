@@ -22,7 +22,7 @@ UnicodeString tagWithName(const wchar_t *name, int i, int j)
 	return tag;
 }
 
-const unsigned ptsPerUnit = 15;
+const unsigned ptsPerUnit = 5;
 
 long fact(int n)
 {
@@ -77,7 +77,7 @@ BezierSurface::BezierSurface(unsigned rows, unsigned cols)
 
 	randomize();
 	int x0 = irand(30);
-	int y0 = irand(30);
+	int y0 = -random(50);
 	int z0 = irand(30);
 	int lastx, lasty = y0, lastz = z0;
 
