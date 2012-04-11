@@ -29,17 +29,22 @@ class BezierSurface {
 
 		static inline UnicodeString tagWithName(const wchar_t *, int, int);
 
+		const unsigned ptsPerUnit;
+
 	public :
-		BezierSurface(unsigned, unsigned);
+		BezierSurface(const unsigned, const unsigned, const unsigned);
 		BezierSurface(const BezierSurface&);
 		~BezierSurface();
 
 		void applyTransform(Matrix*);
 		void applyRotation(const double, const double);
 		void draw(TCanvas*);
+
+		bool gridHidden;
 };
 
 BezierSurface::BezierSurface(const BezierSurface& src)
+	: gridHidden(src.gridHidden)
 {
 	grid = new GraphicObject(*src.grid);
 	surface = new GraphicObject(*src.surface);

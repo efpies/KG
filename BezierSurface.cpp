@@ -15,8 +15,6 @@
 #define knotTag(i, j) tagWithName(L"knot", i, j)
 #define pointTag(i, j) tagWithName(L"point", i, j)
 
-const unsigned ptsPerUnit = 5;
-
 long BezierSurface::fact(int n)
 {
 	return n == 0L ? 1 : n * fact (n - 1);
@@ -61,7 +59,10 @@ Matrix *BezierSurface::getW (double w, int n)
 	return T;
 }
 
-BezierSurface::BezierSurface(unsigned rows, unsigned cols)
+BezierSurface::BezierSurface(const unsigned rows,
+							 const unsigned cols,
+							 const unsigned detalization)
+	: gridHidden(false), ptsPerUnit(detalization)
 {
 	points_container knots = points_container(rows, vector<Vertice *>(cols, 0));
 	points_container points = points_container(ptsPerUnit + 1, vector<Vertice *>(ptsPerUnit + 1, 0));
@@ -213,18 +214,27 @@ BezierSurface::BezierSurface(unsigned rows, unsigned cols)
 
 void BezierSurface::draw (TCanvas *canvas)
 {
-	grid->draw(canvas);
+	if(!gridHidden) {
+		grid->draw(canvas);
+	}
+
 	surface->draw(canvas);
 }
 
 void BezierSurface::applyTransform(Matrix *transform)
 {
-	grid->applyTransform(transform);
+	if(!gridHidden) {
+		grid->applyTransform(transform);
+	}
+
 	surface->applyTransform(transform);
 }
 
 void BezierSurface::applyRotation(const double ax, const double ay)
 {
-	grid->applyRotation(ax, ay);
+	if(!gridHidden) {
+		grid->applyRotation(ax, ay);
+	}
+
 	surface->applyRotation(ax, ay);
 }

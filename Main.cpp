@@ -26,7 +26,6 @@
 TMainForm *MainForm;
 
 double scale;
-BezierSurface *surf;
 
 typedef enum {
 	JSONObjectUndefined,
@@ -131,7 +130,7 @@ void FillCanvasWithColor (TCanvas *canvas, TColor color)
 }
 
 __fastcall TMainForm::TMainForm(TComponent* Owner)
-	: TForm(Owner), isRotating(false)
+	: TForm(Owner), isRotating(false), surface(NULL)
 {
 	FillCanvasWithColor(ColorX->Canvas, clRed);
 	FillCanvasWithColor(ColorY->Canvas, clGreen);
@@ -178,54 +177,20 @@ void __fastcall TMainForm::DrawBtnClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::drawObjects(TCanvas *destCanvas, bool erase)
 {
-//	if (objects.size())
-	{
-//		if (erase) {
-//			destCanvas->Brush->Color = clWhite;
-//			destCanvas->FillRect(destCanvas->ClipRect);
-//		}
-
-//		Matrix *rotate = GetStandardRotationMatrix(angleX, angleY);
-
+	if(surface) {
 		scale = ScaleEdit->Value;
 
 		Graphics::TBitmap *pic = new Graphics::TBitmap;
 		pic->Height = destCanvas->ClipRect.Height();
 		pic->Width = destCanvas->ClipRect.Width();
 
-//		for (objectsIt i = objects.begin(); i != objects.end(); ++i) {
-//			if (!i->second->hidden) {
-//				GraphicObject *toDraw = new GraphicObject(*(i->second));
-//				toDraw->applyRotation(angleY, angleX);
-//				toDraw->draw(pic->Canvas);
-//				delete toDraw;
-//			}
-//		}
+		BezierSurface *toDraw = new BezierSurface(*surface);
+		toDraw->applyRotation(angleY, angleX);
+		toDraw->draw(pic->Canvas);
+		delete toDraw;
 
-
-				BezierSurface *toDraw = new BezierSurface(*surf);
-				toDraw->applyRotation(angleY, angleX);
-				toDraw->draw(pic->Canvas);
-				delete toDraw;
-//                                        surf->draw(pic->Canvas);
 		destCanvas->Draw(0, 0, pic);
-//		BitBlt(destCanvas->Handle,0,0,pic->Width,pic->Height,
-//			pic->Canvas->Handle,0,0,SRCCOPY);
 		delete pic;
-	}
-}
-//---------------------------------------------------------------------------
-void __fastcall TMainForm::OpenExecute(TObject *Sender)
-{
-	if (OpenJSON->Execute()) {
-		if (FileExists(OpenJSON->FileName, true)) {
-			points.clear();
-			edges.clear();
-			objects.clear();
-			angleX = 0.6154797142073631;
-			angleY = -M_PI/4.0;
-			ParseJSON(OpenJSON->FileName);
-		}
 	}
 }
 //---------------------------------------------------------------------------
@@ -259,7 +224,6 @@ void __fastcall TMainForm::GraphMouseUp(TObject *Sender, TMouseButton Button, TS
           int X, int Y)
 {
 	isRotating = false;
-
 }
 //---------------------------------------------------------------------------
 
@@ -274,44 +238,40 @@ void __fastcall TMainForm::GraphMouseMove(TObject *Sender, TShiftState Shift, in
 	}
 }
 //---------------------------------------------------------------------------
-
-
-Matrix *getT(double t, int n)
+void __fastcall TMainForm::GenerateBezierClick(TObject *Sender)
 {
-	Matrix *T = new Matrix(1,n+1);
+	delete surface;
+	surface = new BezierSurface(BezierRowsField->Text.ToInt(),
+								BezierColsField->Text.ToInt(),
+								BezierDetalizationField->Text.ToInt());
 
-	for(int i = n; i > 0; --i)
-		T->values[0][n-i] =  pow(t, i);
-	T->values[0][n] = 1;
-	return T;
+	drawObjects (Graph->Canvas, true);
 }
-
-void __fastcall TMainForm::Button1Click(TObject *Sender)
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::OpenClick(TObject *Sender)
 {
-//	unsigned pts = 3;
-//	Matrix *T, *N, *B;
-//
-//	N = getN(pts);
-//
-//	B = new Matrix(4,2);
-//	B->values[0][0] = 1;//00/2;
-//	B->values[0][1] = 1;//00/2;
-//	B->values[1][0] = 2;//00/2;
-//	B->values[1][1] = 3;//00/2;
-//	B->values[2][0] = 4;//00/2;
-//	B->values[2][1] = 3;//00/2;
-//	B->values[3][0] = 3;//00/2;
-//	B->values[3][1] = 1;//00;
-//
-//	for(float i = 0; i <= 1; i += 0.0) {
-//		T = getT(i, pts);
-//
-//		Matrix P = *T * *N * *B;
-//
-//		Graph->Canvas->Pixels[P.values[0][0]*50][350-P.values[0][1]*50]= clBlack;
-//
-//		delete T;
-//	}
-	surf = new BezierSurface(4,4);
+	if (OpenJSON->Execute()) {
+		if (FileExists(OpenJSON->FileName, true)) {
+			points.clear();
+			edges.clear();
+			objects.clear();
+			angleX = 0.6154797142073631;
+			angleY = -M_PI/4.0;
+			ParseJSON(OpenJSON->FileName);
+		}
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::CloseProgramExecute(TObject *Sender)
+{
+	MainForm->Close();
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::BezierHidePolysClick(TObject *Sender)
+{
+	if(surface) {
+		surface->gridHidden = BezierHidePolys->Checked;
+		drawObjects (Graph->Canvas, true);
+	}
 }
 //---------------------------------------------------------------------------

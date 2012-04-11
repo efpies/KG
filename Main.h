@@ -16,12 +16,14 @@
 #include <Vcl.ExtCtrls.hpp>
 #include <Vcl.Dialogs.hpp>
 #include "cspin.h"
+#include <Vcl.ComCtrls.hpp>
 #include <map>
 #include "Constants.h"
 //---------------------------------------------------------------------------
 class GraphicObject;
 class Vertice;
 class Edge;
+class BezierSurface;
 
 using namespace std;
 
@@ -32,7 +34,6 @@ class TMainForm : public TForm
 __published:	// IDE-managed Components
 	TActionManager *ActionManager1;
 	TActionMainMenuBar *ActionMainMenuBar1;
-	TAction *Open;
 	TButton *DrawBtn;
 	TImage *Graph;
 	TOpenDialog *OpenJSON;
@@ -46,15 +47,28 @@ __published:	// IDE-managed Components
 	TLabel *Label10;
 	TCSpinEdit *ScaleEdit;
 	TLabel *Label1;
-	TButton *Button1;
+	TButton *GenerateBezier;
+	TButton *Open;
+	TAction *CloseProgram;
+	TPageControl *PageControl1;
+	TTabSheet *Lab1;
+	TTabSheet *Lab2;
+	TEdit *BezierRowsField;
+	TLabel *Label2;
+	TEdit *BezierColsField;
+	TLabel *Label3;
+	TLabeledEdit *BezierDetalizationField;
+	TCheckBox *BezierHidePolys;
 	void __fastcall DrawBtnClick(TObject *Sender);
-	void __fastcall OpenExecute(TObject *Sender);
 	void __fastcall GraphMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
           int X, int Y);
 	void __fastcall GraphMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
           int X, int Y);
 	void __fastcall GraphMouseMove(TObject *Sender, TShiftState Shift, int X, int Y);
-	void __fastcall Button1Click(TObject *Sender);
+	void __fastcall GenerateBezierClick(TObject *Sender);
+	void __fastcall OpenClick(TObject *Sender);
+	void __fastcall CloseProgramExecute(TObject *Sender);
+	void __fastcall BezierHidePolysClick(TObject *Sender);
 
 private:	// User declarations
 	void __fastcall drawObjects(TCanvas *, bool);
@@ -63,6 +77,7 @@ private:	// User declarations
 	bool isRotating;
 	double angleX;
 	double angleY;
+	BezierSurface *surface;
 
 	void __fastcall rotateByAngle(const Axis, const double);
 
