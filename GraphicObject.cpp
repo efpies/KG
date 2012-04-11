@@ -32,8 +32,8 @@ void GraphicObject::addEdge (const Edge* srcEdge)
 
 void GraphicObject::applyTransform (Matrix *transform)
 {
-	for (EdgeIt i = edges.begin(); i != edges.end(); ++i) {
-		(*i)->applyTransform (transform);
+	for(vertIt i = allVertices.begin(); i != allVertices.end(); ++i) {
+		(*i).second->applyTransform (transform);
 	}
 }
 
