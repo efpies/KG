@@ -18,6 +18,12 @@ class Vertice {
 		inline double getX() const;
 		inline double getY() const;
 		inline double getZ() const;
+		inline double getAug() const;
+
+		inline void setX(const double);
+		inline void setY(const double);
+		inline void setZ(const double);
+		inline void setAug(const double);
 
 		inline void applyTransform (Matrix*);
 		inline void applyRotation (const double, const double);
@@ -29,10 +35,10 @@ Vertice::Vertice (const double x, const double y, const double z, const UnicodeS
 	: tag(_tag)
 {
 	coords = new Matrix(1, 4);
-	coords->values[0][0] = x;
-	coords->values[0][1] = y;
-	coords->values[0][2] = z;
-	coords->values[0][3] = 1;
+	setX(x);
+	setY(y);
+	setZ(z);
+	setAug(1);
 }
 
 Vertice::Vertice (const Vertice& src)
@@ -49,6 +55,12 @@ Vertice::~Vertice()
 inline double Vertice::getX() const { return coords->values[0][0]; }
 inline double Vertice::getY() const { return coords->values[0][1]; }
 inline double Vertice::getZ() const { return coords->values[0][2]; }
+inline double Vertice::getAug() const { return coords->values[0][3]; }
+
+inline void Vertice::setX(const double value) { coords->values[0][0] = value; }
+inline void Vertice::setY(const double value) { coords->values[0][1] = value; }
+inline void Vertice::setZ(const double value) { coords->values[0][2] = value; }
+inline void Vertice::setAug(const double value) { coords->values[0][3] = value; }
 
 inline void Vertice::applyTransform (Matrix* transform)
 {
@@ -57,12 +69,12 @@ inline void Vertice::applyTransform (Matrix* transform)
 
 inline void Vertice::applyRotation (const double phi, const double theta)
 {
-	double cx = coords->values[0][0];
-	double cy = coords->values[0][1];
-	double cz = coords->values[0][2];
+	const double cx = getX();
+	const double cy = getY();
+	const double cz = getZ();
 
-	coords->values[0][0] = cx*cos(phi)+cz*sin(phi);
-	coords->values[0][1] = cx*sin(phi)*sin(theta)+cy*cos(theta)-cz*cos(phi)*sin(theta);
-	coords->values[0][2] = 0;
+	setX(cx * cos(theta) - (cz * cos(phi) - cy * sin(phi)) * sin(theta));
+	setY(cy * cos(phi) + cz * sin(phi));
+	setZ(cos(theta) * (cz * cos(phi) - cy * sin(phi)) + cx * sin(theta));
 }
 #endif

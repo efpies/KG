@@ -82,7 +82,6 @@ private:	// User declarations
 	BezierSurface *surface;
 
 	// Custom methods
-	void __fastcall rotateByAngle(const Axis, const double);
 	void __fastcall refreshCaption();
 	void __fastcall FillCanvasWithColor(TCanvas *, TColor);
 

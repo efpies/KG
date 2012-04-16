@@ -232,9 +232,6 @@ void BezierSurface::applyTransform(Matrix *transform)
 
 void BezierSurface::applyRotation(const double ax, const double ay)
 {
-	if(!gridHidden) {
-		grid->applyRotation(ax, ay);
-	}
-
+	grid->applyRotation(ax, ay);
 	surface->applyRotation(ax, ay);
 }

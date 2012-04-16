@@ -149,8 +149,11 @@ void __fastcall TMainForm::GraphMouseMove(TObject *Sender, TShiftState Shift, in
           int Y)
 {
 	if (isRotating) {
-		angleX = baseanglex+(double)(Y-yc)/180.0/10.0*M_PI;
-		angleY = baseangley+(double)(X-xc)/180.0/10.0*M_PI;
+		angleX = (double)(Y-yc)/180.0*M_PI;
+		angleY = (double)(X-xc)/180.0*M_PI;
+
+		xc = X;
+		yc = Y;
 
 		drawObjects (Graph->Canvas, true);
 	}
@@ -242,29 +245,10 @@ void __fastcall TMainForm::drawObjects(TCanvas *destCanvas, bool erase)
 	if(surface) {
 		scale = ScaleEdit->Value;
 
-		Graphics::TBitmap *pic = new Graphics::TBitmap;
-		pic->Height = destCanvas->ClipRect.Height();
-		pic->Width = destCanvas->ClipRect.Width();
-
-		BezierSurface *toDraw = new BezierSurface(*surface);
-		toDraw->applyRotation(angleY, angleX);
-		toDraw->draw(pic->Canvas);
-		delete toDraw;
-
-		destCanvas->Draw(0, 0, pic);
-		delete pic;
+		destCanvas->FillRect(destCanvas->ClipRect);
+		surface->applyRotation(angleX, angleY);
+		surface->draw(destCanvas);
 	}
 }
 //---------------------------------------------------------------------------
-void __fastcall TMainForm::rotateByAngle(const Axis axis, const double angle)
-{
-	if (axis == AxisX) {
-		angleX = angle;
-	}
-	else if (axis == AxisY) {
-		angleY = angle;
-	}
 
-	drawObjects(Graph->Canvas, true);
-}
-//---------------------------------------------------------------------------
