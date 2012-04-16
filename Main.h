@@ -50,7 +50,7 @@ __published:	// IDE-managed Components
 	TButton *GenerateBezier;
 	TButton *Open;
 	TAction *CloseProgram;
-	TPageControl *PageControl1;
+	TPageControl *LabsTabs;
 	TTabSheet *Lab1;
 	TTabSheet *Lab2;
 	TEdit *BezierRowsField;
@@ -69,6 +69,8 @@ __published:	// IDE-managed Components
 	void __fastcall OpenClick(TObject *Sender);
 	void __fastcall CloseProgramExecute(TObject *Sender);
 	void __fastcall BezierHidePolysClick(TObject *Sender);
+	void __fastcall LabsTabsChange(TObject *Sender);
+	void __fastcall FormShow(TObject *Sender);
 
 private:	// User declarations
 	void __fastcall drawObjects(TCanvas *, bool);
@@ -80,6 +82,7 @@ private:	// User declarations
 	BezierSurface *surface;
 
 	void __fastcall rotateByAngle(const Axis, const double);
+	void __fastcall refreshCaption();
 
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
@@ -89,5 +92,12 @@ public:		// User declarations
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;
+
+void __fastcall TMainForm::refreshCaption()
+{
+	UnicodeString text;
+	text.printf(L"Лабораторная работа №%d | Яснов Николай гр. 8306", LabsTabs->TabIndex + 1);
+	Caption = text;
+}
 //---------------------------------------------------------------------------
 #endif

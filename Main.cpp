@@ -275,3 +275,13 @@ void __fastcall TMainForm::BezierHidePolysClick(TObject *Sender)
 	}
 }
 //---------------------------------------------------------------------------
+void __fastcall TMainForm::LabsTabsChange(TObject *Sender)
+{
+	refreshCaption();
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::FormShow(TObject *Sender)
+{
+	refreshCaption();
+}
+//---------------------------------------------------------------------------

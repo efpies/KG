@@ -14,6 +14,7 @@ object MainForm: TMainForm
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Graph: TImage
@@ -70,17 +71,16 @@ object MainForm: TMainForm
     MinValue = 1
     TabOrder = 2
   end
-  object PageControl1: TPageControl
+  object LabsTabs: TPageControl
     Left = 717
     Top = 31
     Width = 283
     Height = 162
-    ActivePage = Lab2
+    ActivePage = Lab1
     TabOrder = 3
+    OnChange = LabsTabsChange
     object Lab1: TTabSheet
       Caption = '#1'
-      ExplicitWidth = 293
-      ExplicitHeight = 165
       object GroupBox1: TGroupBox
         Left = 140
         Top = 3
@@ -157,6 +157,8 @@ object MainForm: TMainForm
       ImageIndex = 1
       ExplicitLeft = -12
       ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object Label2: TLabel
         Left = 11
         Top = 11
