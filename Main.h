@@ -74,15 +74,17 @@ __published:	// IDE-managed Components
 
 private:	// User declarations
 	void __fastcall drawObjects(TCanvas *, bool);
-	void __fastcall TMainForm::ParseJSON (const UnicodeString&);
+	void __fastcall ParseJSON (const UnicodeString&);
 
 	bool isRotating;
 	double angleX;
 	double angleY;
 	BezierSurface *surface;
 
+	// Custom methods
 	void __fastcall rotateByAngle(const Axis, const double);
 	void __fastcall refreshCaption();
+	void __fastcall FillCanvasWithColor(TCanvas *, TColor);
 
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
@@ -92,12 +94,36 @@ public:		// User declarations
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;
+//---------------------------------------------------------------------------
+// Form lifecycle
+//---------------------------------------------------------------------------
+__fastcall TMainForm::TMainForm(TComponent* Owner)
+	: TForm(Owner), isRotating(false), surface(NULL), angleX(0.0), angleY(0.0)
+{
+	FillCanvasWithColor(ColorX->Canvas, clRed);
+	FillCanvasWithColor(ColorY->Canvas, clGreen);
+	FillCanvasWithColor(ColorZ->Canvas, clBlue);
 
+	scale = 4;
+	ScaleEdit->Value = scale;
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::FormShow(TObject *Sender)
+{
+	refreshCaption();
+}
+//---------------------------------------------------------------------------
+// Custom
+//---------------------------------------------------------------------------
 void __fastcall TMainForm::refreshCaption()
 {
-	UnicodeString text;
-	text.printf(L"Лабораторная работа №%d | Яснов Николай гр. 8306", LabsTabs->TabIndex + 1);
-	Caption = text;
+	Caption = UnicodeString(L"") + L"Лабораторная работа №" + (LabsTabs->TabIndex + 1) + L" | Яснов Николай гр. 8306";
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::FillCanvasWithColor(TCanvas *destCanvas, TColor fillColor)
+{
+	destCanvas->Brush->Color = fillColor;
+	destCanvas->FillRect(destCanvas->ClipRect);
 }
 //---------------------------------------------------------------------------
 #endif

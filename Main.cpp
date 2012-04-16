@@ -26,14 +26,18 @@
 TMainForm *MainForm;
 
 double scale;
+int xc, yc;
+double baseanglex, baseangley;
 
+//---------------------------------------------------------------------------
+// JSON parsing
+//---------------------------------------------------------------------------
 typedef enum {
 	JSONObjectUndefined,
 	JSONObjectPoints,
 	JSONObjectAxis,
 	JSONObjectObject
 } JSONObjectType;
-
 //---------------------------------------------------------------------------
 TJSONObject *parseJsonValue (TJSONValue *value)
 {
@@ -42,12 +46,12 @@ TJSONObject *parseJsonValue (TJSONValue *value)
 	jsonObj->Parse(jsonBytes, 0);
 	return jsonObj;
 }
-
+//---------------------------------------------------------------------------
 TJSONArray *jsonArrayFromPair (TJSONPair *pair)
 {
 	return (TJSONArray *)pair->JsonValue;
 }
-
+//---------------------------------------------------------------------------
 void __fastcall TMainForm::ParseJSON (const UnicodeString& fileName)
 {
 	TStringList *jsonText = new TStringList;
@@ -122,22 +126,78 @@ void __fastcall TMainForm::ParseJSON (const UnicodeString& fileName)
 
 	delete topObjectValueObj;
 }
-
-void FillCanvasWithColor (TCanvas *canvas, TColor color)
+//---------------------------------------------------------------------------
+// Mouse handling
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::GraphMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
+          int X, int Y)
 {
-	canvas->Brush->Color = color;
-	canvas->FillRect(canvas->ClipRect);
+	isRotating = true;
+	baseanglex = angleX;
+	baseangley = angleY;
+	xc = X;
+	yc = Y;
 }
-
-__fastcall TMainForm::TMainForm(TComponent* Owner)
-	: TForm(Owner), isRotating(false), surface(NULL)
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::GraphMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
+          int X, int Y)
 {
-	FillCanvasWithColor(ColorX->Canvas, clRed);
-	FillCanvasWithColor(ColorY->Canvas, clGreen);
-	FillCanvasWithColor(ColorZ->Canvas, clBlue);
+	isRotating = false;
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::GraphMouseMove(TObject *Sender, TShiftState Shift, int X,
+          int Y)
+{
+	if (isRotating) {
+		angleX = baseanglex+(double)(Y-yc)/180.0/10.0*M_PI;
+		angleY = baseangley+(double)(X-xc)/180.0/10.0*M_PI;
 
-	scale = 4;
-	ScaleEdit->Value = scale;
+		drawObjects (Graph->Canvas, true);
+	}
+}
+//---------------------------------------------------------------------------
+// Buttons handling
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::LabsTabsChange(TObject *Sender)
+{
+	refreshCaption();
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::CloseProgramExecute(TObject *Sender)
+{
+	MainForm->Close();
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::BezierHidePolysClick(TObject *Sender)
+{
+	if(surface) {
+		surface->gridHidden = BezierHidePolys->Checked;
+		drawObjects (Graph->Canvas, true);
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::OpenClick(TObject *Sender)
+{
+	if (OpenJSON->Execute()) {
+		if (FileExists(OpenJSON->FileName, true)) {
+			points.clear();
+			edges.clear();
+			objects.clear();
+			angleX = 0.6154797142073631;
+			angleY = -M_PI/4.0;
+			ParseJSON(OpenJSON->FileName);
+		}
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::GenerateBezierClick(TObject *Sender)
+{
+	delete surface;
+	surface = new BezierSurface(BezierRowsField->Text.ToInt(),
+								BezierColsField->Text.ToInt(),
+								BezierDetalizationField->Text.ToInt());
+
+	drawObjects (Graph->Canvas, true);
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::DrawBtnClick(TObject *Sender)
@@ -175,6 +235,8 @@ void __fastcall TMainForm::DrawBtnClick(TObject *Sender)
 	drawObjects(Graph->Canvas, true);
 }
 //---------------------------------------------------------------------------
+// Custom methods
+//---------------------------------------------------------------------------
 void __fastcall TMainForm::drawObjects(TCanvas *destCanvas, bool erase)
 {
 	if(surface) {
@@ -204,84 +266,5 @@ void __fastcall TMainForm::rotateByAngle(const Axis axis, const double angle)
 	}
 
 	drawObjects(Graph->Canvas, true);
-}
-
-int xc, yc;
-double baseanglex, baseangley;
-
-void __fastcall TMainForm::GraphMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
-          int X, int Y)
-{
-	isRotating = true;
-	baseanglex = angleX;
-	baseangley = angleY;
-	xc = X;
-	yc = Y;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TMainForm::GraphMouseUp(TObject *Sender, TMouseButton Button, TShiftState Shift,
-          int X, int Y)
-{
-	isRotating = false;
-}
-//---------------------------------------------------------------------------
-
-void __fastcall TMainForm::GraphMouseMove(TObject *Sender, TShiftState Shift, int X,
-          int Y)
-{
-	if (isRotating) {
-		angleX = baseanglex+(double)(Y-yc)/180.0/10.0*M_PI;
-		angleY = baseangley+(double)(X-xc)/180.0/10.0*M_PI;
-
-		drawObjects (Graph->Canvas, true);
-	}
-}
-//---------------------------------------------------------------------------
-void __fastcall TMainForm::GenerateBezierClick(TObject *Sender)
-{
-	delete surface;
-	surface = new BezierSurface(BezierRowsField->Text.ToInt(),
-								BezierColsField->Text.ToInt(),
-								BezierDetalizationField->Text.ToInt());
-
-	drawObjects (Graph->Canvas, true);
-}
-//---------------------------------------------------------------------------
-void __fastcall TMainForm::OpenClick(TObject *Sender)
-{
-	if (OpenJSON->Execute()) {
-		if (FileExists(OpenJSON->FileName, true)) {
-			points.clear();
-			edges.clear();
-			objects.clear();
-			angleX = 0.6154797142073631;
-			angleY = -M_PI/4.0;
-			ParseJSON(OpenJSON->FileName);
-		}
-	}
-}
-//---------------------------------------------------------------------------
-void __fastcall TMainForm::CloseProgramExecute(TObject *Sender)
-{
-	MainForm->Close();
-}
-//---------------------------------------------------------------------------
-void __fastcall TMainForm::BezierHidePolysClick(TObject *Sender)
-{
-	if(surface) {
-		surface->gridHidden = BezierHidePolys->Checked;
-		drawObjects (Graph->Canvas, true);
-	}
-}
-//---------------------------------------------------------------------------
-void __fastcall TMainForm::LabsTabsChange(TObject *Sender)
-{
-	refreshCaption();
-}
-//---------------------------------------------------------------------------
-void __fastcall TMainForm::FormShow(TObject *Sender)
-{
-	refreshCaption();
 }
 //---------------------------------------------------------------------------
