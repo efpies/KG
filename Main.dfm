@@ -39,7 +39,7 @@ object MainForm: TMainForm
     Width = 1008
     Height = 25
     UseSystemFont = False
-    ActionManager = ActionManager1
+    ActionManager = ActionMgr
     Caption = 'ActionMainMenuBar1'
     Color = clMenuBar
     ColorMap.DisabledFontColor = 7171437
@@ -81,10 +81,6 @@ object MainForm: TMainForm
     OnChange = LabsTabsChange
     object Lab1: TTabSheet
       Caption = '#1'
-      ExplicitLeft = 0
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object GroupBox1: TGroupBox
         Left = 140
         Top = 3
@@ -159,10 +155,6 @@ object MainForm: TMainForm
     object Lab2: TTabSheet
       Caption = '#2'
       ImageIndex = 1
-      ExplicitLeft = -12
-      ExplicitTop = 0
-      ExplicitWidth = 0
-      ExplicitHeight = 0
       object Label2: TLabel
         Left = 11
         Top = 11
@@ -227,7 +219,7 @@ object MainForm: TMainForm
       end
     end
   end
-  object ActionManager1: TActionManager
+  object ActionMgr: TActionManager
     ActionBars = <
       item
         Items = <

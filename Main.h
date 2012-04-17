@@ -32,7 +32,7 @@ typedef map<UnicodeString, GraphicObject *>::iterator objectsIt;
 class TMainForm : public TForm
 {
 __published:	// IDE-managed Components
-	TActionManager *ActionManager1;
+	TActionManager *ActionMgr;
 	TActionMainMenuBar *ActionMainMenuBar1;
 	TButton *DrawBtn;
 	TImage *Graph;
