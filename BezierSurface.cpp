@@ -24,8 +24,9 @@ BezierSurface::BezierSurface(const BezierSurface& src)
 //---------------------------------------------------------------------------
 BezierSurface::BezierSurface(const unsigned rows,
 							 const unsigned cols,
-							 const unsigned detalization)
-	: gridHidden(false), ptsPerUnit(detalization)
+							 const unsigned detalization,
+							 const bool _gridHidden)
+	: gridHidden(_gridHidden), ptsPerUnit(detalization)
 {
 	points_container knots = points_container(rows, vector<Vertice *>(cols, 0));
 	points_container points = points_container(ptsPerUnit + 1, vector<Vertice *>(ptsPerUnit + 1, 0));
@@ -181,40 +182,7 @@ BezierSurface::~BezierSurface()
 	delete surface;
 }
 //---------------------------------------------------------------------------
-// Transformations
-//---------------------------------------------------------------------------
-void BezierSurface::applyTransform(Matrix *transform)
-{
-	if(!gridHidden) {
-		grid->applyTransform(transform);
-	}
-
-	surface->applyTransform(transform);
-}
-//---------------------------------------------------------------------------
-void BezierSurface::applyRotation(const double ax, const double ay)
-{
-	grid->applyRotation(ax, ay);
-	surface->applyRotation(ax, ay);
-}
-//---------------------------------------------------------------------------
-// Custom methods
-//---------------------------------------------------------------------------
-void BezierSurface::draw (TCanvas *canvas)
-{
-	if(!gridHidden) {
-		grid->draw(canvas);
-	}
-
-	surface->draw(canvas);
-}
-//---------------------------------------------------------------------------
 // Helpers
-//---------------------------------------------------------------------------
-long BezierSurface::fact(int n)
-{
-	return n == 0L ? 1 : n * fact (n - 1);
-}
 //---------------------------------------------------------------------------
 Matrix *BezierSurface::getN(int n)
 {

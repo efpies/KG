@@ -81,6 +81,10 @@ object MainForm: TMainForm
     OnChange = LabsTabsChange
     object Lab1: TTabSheet
       Caption = '#1'
+      ExplicitLeft = 0
+      ExplicitTop = 0
+      ExplicitWidth = 0
+      ExplicitHeight = 0
       object GroupBox1: TGroupBox
         Left = 140
         Top = 3

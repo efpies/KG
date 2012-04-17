@@ -51,12 +51,12 @@ inline void Vertice::setAug(const double value) { coords->values[0][3] = value; 
 //---------------------------------------------------------------------------
 // Transformations
 //---------------------------------------------------------------------------
-inline void Vertice::applyTransform (Matrix* transform)
+inline void Vertice::applyTransform(Matrix* transform)
 {
 	*coords *= *transform;
 }
 //---------------------------------------------------------------------------
-inline void Vertice::applyRotation (const double phi, const double theta)
+inline void Vertice::applyRotation(const double phi, const double theta)
 {
 	const double cx = getX();
 	const double cy = getY();

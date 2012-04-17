@@ -7,7 +7,7 @@
 //---------------------------------------------------------------------------
 // Lifecycle
 //---------------------------------------------------------------------------
-Vertice::Vertice (const double x, const double y, const double z, const UnicodeString& _tag)
+Vertice::Vertice(const double x, const double y, const double z, const UnicodeString& _tag)
 	: tag(_tag)
 {
 	coords = new Matrix(1, 4);
@@ -17,7 +17,7 @@ Vertice::Vertice (const double x, const double y, const double z, const UnicodeS
 	setAug(1);
 }
 //---------------------------------------------------------------------------
-Vertice::Vertice (const Vertice& src)
+Vertice::Vertice(const Vertice& src)
 	: tag(src.tag)
 {
 	coords = new Matrix(*src.coords);

@@ -196,9 +196,13 @@ void __fastcall TMainForm::OpenClick(TObject *Sender)
 void __fastcall TMainForm::GenerateBezierClick(TObject *Sender)
 {
 	delete surface;
+	angleX = 0;
+	angleY = 0;
+
 	surface = new BezierSurface(BezierRowsField->Text.ToInt(),
 								BezierColsField->Text.ToInt(),
-								BezierDetalizationField->Text.ToInt());
+								BezierDetalizationField->Text.ToInt(),
+								BezierHidePolys->Checked);
 
 	drawObjects (Graph->Canvas, true);
 }
