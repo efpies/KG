@@ -2,63 +2,26 @@
 #pragma hdrstop
 
 #include "BezierSurface.h"
-#include <fstream>
-#include <iostream>
 
 #include <vcl.h>
-#include "DebugHelpers.h"
 #include <algorithm>
+#include <vector>
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
 #define irand(n) random(n / 2.0) - random(n / 2.0)
 #define knotTag(i, j) tagWithName(L"knot", i, j)
 #define pointTag(i, j) tagWithName(L"point", i, j)
-
-long BezierSurface::fact(int n)
+//---------------------------------------------------------------------------
+// Lifecycle
+//---------------------------------------------------------------------------
+BezierSurface::BezierSurface(const BezierSurface& src)
+	: gridHidden(src.gridHidden), ptsPerUnit(src.ptsPerUnit)
 {
-	return n == 0L ? 1 : n * fact (n - 1);
+	grid = new GraphicObject(*src.grid);
+	surface = new GraphicObject(*src.surface);
 }
-
-Matrix *BezierSurface::getN(int n)
-{
-	Matrix *N = new Matrix(n + 1, n + 1);
-
-	for(int i = 0; i <= n; ++i) {
-		for(int j = 0; j <= n; ++j) {
-			N->values[i][j] = (0 <= i + j && i + j <= n) ? Binom(n, j) * Binom(n - j, n - i - j) * pow(-1, n - i - j) : 0;
-        }
-	}
-
-	return N;
-}
-
-Matrix *BezierSurface::getU (double u, int n)
-{
-	Matrix *T = new Matrix(1, n + 1);
-
-	for(int i = n; i > 0; --i) {
-		T->values[0][n-i] =  pow(u, i);
-	}
-
-	T->values[0][n] = 1;
-
-	return T;
-}
-
-Matrix *BezierSurface::getW (double w, int n)
-{
-	Matrix *T = new Matrix(n + 1, 1);
-
-	for(int i = n; i > 0; --i) {
-		T->values[n-i][0] =  pow(w, i);
-	}
-
-	T->values[n][0] = 1;
-
-	return T;
-}
-
+//---------------------------------------------------------------------------
 BezierSurface::BezierSurface(const unsigned rows,
 							 const unsigned cols,
 							 const unsigned detalization)
@@ -211,16 +174,15 @@ BezierSurface::BezierSurface(const unsigned rows,
 		}
 	}
 }
-
-void BezierSurface::draw (TCanvas *canvas)
+//---------------------------------------------------------------------------
+BezierSurface::~BezierSurface()
 {
-	if(!gridHidden) {
-		grid->draw(canvas);
-	}
-
-	surface->draw(canvas);
+	delete grid;
+	delete surface;
 }
-
+//---------------------------------------------------------------------------
+// Transformations
+//---------------------------------------------------------------------------
 void BezierSurface::applyTransform(Matrix *transform)
 {
 	if(!gridHidden) {
@@ -229,9 +191,69 @@ void BezierSurface::applyTransform(Matrix *transform)
 
 	surface->applyTransform(transform);
 }
-
+//---------------------------------------------------------------------------
 void BezierSurface::applyRotation(const double ax, const double ay)
 {
 	grid->applyRotation(ax, ay);
 	surface->applyRotation(ax, ay);
 }
+//---------------------------------------------------------------------------
+// Custom methods
+//---------------------------------------------------------------------------
+void BezierSurface::draw (TCanvas *canvas)
+{
+	if(!gridHidden) {
+		grid->draw(canvas);
+	}
+
+	surface->draw(canvas);
+}
+//---------------------------------------------------------------------------
+// Helpers
+//---------------------------------------------------------------------------
+long BezierSurface::fact(int n)
+{
+	return n == 0L ? 1 : n * fact (n - 1);
+}
+//---------------------------------------------------------------------------
+Matrix *BezierSurface::getN(int n)
+{
+	Matrix *N = new Matrix(n + 1, n + 1);
+
+	for(int i = 0; i <= n; ++i) {
+		for(int j = 0; j <= n; ++j) {
+			N->values[i][j] = (0 <= i + j && i + j <= n)
+								? Binom(n, j) * Binom(n - j, n - i - j) * pow(-1, n - i - j)
+								: 0;
+        }
+	}
+
+	return N;
+}
+//---------------------------------------------------------------------------
+Matrix *BezierSurface::getU (double u, int n)
+{
+	Matrix *T = new Matrix(1, n + 1);
+
+	for(int i = n; i > 0; --i) {
+		T->values[0][n-i] =  pow(u, i);
+	}
+
+	T->values[0][n] = 1;
+
+	return T;
+}
+//---------------------------------------------------------------------------
+Matrix *BezierSurface::getW (double w, int n)
+{
+	Matrix *T = new Matrix(n + 1, 1);
+
+	for(int i = n; i > 0; --i) {
+		T->values[n-i][0] =  pow(w, i);
+	}
+
+	T->values[n][0] = 1;
+
+	return T;
+}
+//---------------------------------------------------------------------------

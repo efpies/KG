@@ -1,13 +1,14 @@
 //---------------------------------------------------------------------------
 #pragma hdrstop
 
-#pragma warn -8123
-
 #include "GraphicObject.h"
-#include "Edge.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-
+//---------------------------------------------------------------------------
+// Lifecycle
+//---------------------------------------------------------------------------
+GraphicObject::GraphicObject() { hidden = false; }
+//---------------------------------------------------------------------------
 GraphicObject::GraphicObject(const GraphicObject& src)
 {
 	edges.reserve(src.edges.size());
@@ -23,30 +24,29 @@ GraphicObject::GraphicObject(const GraphicObject& src)
 		allVertices[newPoint->tag] = newPoint;
 	}
 }
-
-void GraphicObject::addEdge (const Edge* srcEdge)
-{
-	Edge *edge = new Edge(*srcEdge);
-	edges.push_back(edge);
-}
-
+//---------------------------------------------------------------------------
+// Transformations
+//---------------------------------------------------------------------------
 void GraphicObject::applyTransform (Matrix *transform)
 {
 	for(vertIt i = allVertices.begin(); i != allVertices.end(); ++i) {
 		(*i).second->applyTransform (transform);
 	}
 }
-
+//---------------------------------------------------------------------------
 void GraphicObject::applyRotation (const double ax, const double ay)
 {
 	for(vertIt i = allVertices.begin(); i != allVertices.end(); ++i) {
 		(*i).second->applyRotation (ax, ay);
 	}
 }
-
+//---------------------------------------------------------------------------
+// Custom methods
+//---------------------------------------------------------------------------
 void GraphicObject::draw (TCanvas* canvas)
 {
 	for (EdgeIt i = edges.begin(); i != edges.end(); ++i) {
 		(*i)->draw (canvas, allVertices[(*i)->tagA], allVertices[(*i)->tagB]);
 	}
 }
+//---------------------------------------------------------------------------

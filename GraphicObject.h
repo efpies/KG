@@ -6,15 +6,12 @@
 #include <vcl.h>
 #include <map>
 #include "Vertice.h"
+#include "Edge.h"
 #include "Constants.h"
-
-using namespace std;
 //---------------------------------------------------------------------------
-class Edge;
-class Matrix;
+using namespace std;
 
-typedef vector<Edge *>::iterator EdgeIt;
-typedef vector<Edge *>::const_iterator cEdgeIt;
+class Matrix;
 
 class GraphicObject
 {
@@ -26,10 +23,10 @@ class GraphicObject
 	public :
 		GraphicObject ();
 		GraphicObject (const GraphicObject&);
-		~GraphicObject();
 
-		void addEdge (const Edge *);
-		void addVertice (Vertice *);
+		inline void addVertice (Vertice *);
+		inline void addEdge (const Edge *);
+
 		void applyTransform (Matrix *);
 		void applyRotation (const double, const double);
 		void draw (TCanvas*);
@@ -37,12 +34,17 @@ class GraphicObject
 		bool hidden;
 };
 //---------------------------------------------------------------------------
-GraphicObject::GraphicObject() { hidden = false; }
-GraphicObject::~GraphicObject(){}
-
-void GraphicObject::addVertice(Vertice *src)
+// Custom methods
+//---------------------------------------------------------------------------
+inline void GraphicObject::addVertice(Vertice *src)
 {
     allVertices[src->tag] = new Vertice(*src);
 }
-
+//---------------------------------------------------------------------------
+inline void GraphicObject::addEdge (const Edge* srcEdge)
+{
+	Edge *edge = new Edge(*srcEdge);
+	edges.push_back(edge);
+}
+//---------------------------------------------------------------------------
 #endif

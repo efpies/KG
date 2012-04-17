@@ -5,14 +5,14 @@
 #include "DebugHelpers.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
-
+//---------------------------------------------------------------------------
 void debugOutWithStringAndDouble (const wchar_t *str, double number)
 {
 	UnicodeString ustr = "";
 	ustr.printf (L"[%s : %lf]", str, number);
 	OutputDebugString(ustr.c_str());
 }
-
+//---------------------------------------------------------------------------
 void debugOutArray (double **array, int rows, int cols)
 {
 	OutputDebugString (L"Array =====>");
@@ -26,9 +26,7 @@ void debugOutArray (double **array, int rows, int cols)
 	}
 	OutputDebugString (L"Array <=====");
 }
-
-
-
+//---------------------------------------------------------------------------
 void debugOutVector (vector< vector<double> > vect)
 {
 	OutputDebugString (L"Vector =====>");
@@ -46,7 +44,7 @@ void debugOutVector (vector< vector<double> > vect)
 	}
 	OutputDebugString (L"Vector <=====");
 }
-
+//---------------------------------------------------------------------------
 void debugOutTime (time_t time)
 {
 	OutputDebugString (L"Time =====>");
@@ -55,3 +53,4 @@ void debugOutTime (time_t time)
 	ustr.cat_printf(L"%lf", time);
 	OutputDebugString(ustr.c_str());
 }
+//---------------------------------------------------------------------------

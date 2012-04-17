@@ -6,31 +6,30 @@
 #include "Constants.h"
 #include <cmath>
 #include "DebugHelpers.h"
-
+//---------------------------------------------------------------------------
 using namespace std;
 
-//---------------------------------------------------------------------------
 inline Matrix *GetRotationMatrixForAxis (const Axis, const double);
 inline Matrix *GetMoveMatrix (const double, const double, const double);
 inline Matrix *GetProjectionMatrix ();
 inline Matrix *GetIsometryMatrix ();
 inline Matrix *GetReflectionMatrix (const Axis, const Axis);
-
+//---------------------------------------------------------------------------
 inline Matrix *GetStandardRotationMatrix(const double anglex, const double angley)
 {
 	Matrix *rotationMatrix = new Matrix (4, 4);
 
-			rotationMatrix->values[0][0] = cos(angley);
-			rotationMatrix->values[0][1] = sin(angley)*sin(anglex);
-			rotationMatrix->values[0][2] = 0;
+	rotationMatrix->values[0][0] = cos(angley);
+	rotationMatrix->values[0][1] = sin(angley)*sin(anglex);
+	rotationMatrix->values[0][2] = 0;
 
-			rotationMatrix->values[1][0] = 0;
-			rotationMatrix->values[1][1] = cos(anglex);
-			rotationMatrix->values[1][2] = 0;
+	rotationMatrix->values[1][0] = 0;
+	rotationMatrix->values[1][1] = cos(anglex);
+	rotationMatrix->values[1][2] = 0;
 
-			rotationMatrix->values[2][0] = sin(angley);
-			rotationMatrix->values[2][1] = -cos(angley)*sin(anglex);
-			rotationMatrix->values[2][2] = 0;
+	rotationMatrix->values[2][0] = sin(angley);
+	rotationMatrix->values[2][1] = -cos(angley)*sin(anglex);
+	rotationMatrix->values[2][2] = 0;
 
 	rotationMatrix->values[0][3] = 0;
 	rotationMatrix->values[1][3] = 0;
@@ -42,7 +41,7 @@ inline Matrix *GetStandardRotationMatrix(const double anglex, const double angle
 
 	return rotationMatrix;
 }
-
+//---------------------------------------------------------------------------
 inline Matrix *GetRotationMatrixForAxis (const Axis axis, const double angle)
 {
 	Matrix *rotationMatrix = new Matrix (4, 4);
@@ -107,7 +106,7 @@ inline Matrix *GetRotationMatrixForAxis (const Axis axis, const double angle)
 
 	return rotationMatrix;
 }
-
+//---------------------------------------------------------------------------
 inline Matrix *GetMoveMatrix (const double x, const double y, const double z)
 {
 	Matrix *moveMatrix = new Matrix (4, 4);
@@ -120,7 +119,7 @@ inline Matrix *GetMoveMatrix (const double x, const double y, const double z)
 
 	return moveMatrix;
 }
-
+//---------------------------------------------------------------------------
 inline Matrix *GetProjectionMatrix ()
 {
 	Matrix *projectionMatrix = new Matrix (4, 4);
@@ -130,7 +129,7 @@ inline Matrix *GetProjectionMatrix ()
 
 	return projectionMatrix;
 }
-
+//---------------------------------------------------------------------------
 inline Matrix *GetIsometryMatrix ()
 {
 	static Matrix *isometryMatrix = NULL;
@@ -142,7 +141,7 @@ inline Matrix *GetIsometryMatrix ()
 
 	return isometryMatrix;
 }
-
+//---------------------------------------------------------------------------
 inline Matrix *GetReflectionMatrix (const Axis first, const Axis second)
 {
 	Matrix *reflectionMatrix = new Matrix (4, 4);

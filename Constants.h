@@ -3,10 +3,12 @@
 
 #include <vector>
 #include <map>
+#include <vcl.h>
 
 extern double scale;
 
 class Vertice;
+class Edge;
 
 typedef enum {
 	AxisX,
@@ -24,5 +26,8 @@ typedef std::vector<Vertice *>::iterator pIt;
 
 typedef std::map<UnicodeString, Vertice *>::iterator vertIt;
 typedef std::map<UnicodeString, Vertice *>::const_iterator vertIt_const;
+
+typedef std::vector<Edge *>::iterator EdgeIt;
+typedef std::vector<Edge *>::const_iterator cEdgeIt;
 
 #endif

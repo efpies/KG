@@ -8,17 +8,19 @@
 #include "Matrix.h"
 #include <cstdlib>
 
-#include <vector>
 #include <map>
 
 #include "Constants.h"
-
+//---------------------------------------------------------------------------
 using namespace std;
 
-class BezierSurface {
+class BezierSurface
+{
 	private :
 		GraphicObject *grid;
 		GraphicObject *surface;
+
+		const unsigned ptsPerUnit;
 
 		static Matrix *getU(double, int);
 		static Matrix *getN(int);
@@ -28,8 +30,6 @@ class BezierSurface {
 		static inline unsigned Binom(int, int);
 
 		static inline UnicodeString tagWithName(const wchar_t *, int, int);
-
-		const unsigned ptsPerUnit;
 
 	public :
 		BezierSurface(const unsigned, const unsigned, const unsigned);
@@ -42,27 +42,16 @@ class BezierSurface {
 
 		bool gridHidden;
 };
-
-BezierSurface::BezierSurface(const BezierSurface& src)
-	: gridHidden(src.gridHidden)
-{
-	grid = new GraphicObject(*src.grid);
-	surface = new GraphicObject(*src.surface);
-}
-
-BezierSurface::~BezierSurface()
-{
-	delete grid;
-	delete surface;
-}
-
+//---------------------------------------------------------------------------
+// Helpers
+//---------------------------------------------------------------------------
 inline UnicodeString BezierSurface::tagWithName(const wchar_t *name, int i, int j)
 {
 	UnicodeString tag = L"";
 	tag.printf(L"%s{%d;%d}", name, i, j);
 	return tag;
 }
-
+//---------------------------------------------------------------------------
 inline unsigned BezierSurface::Binom(int n, int i)
 {
 	return fact(n)/(fact(i) * fact(n - i));

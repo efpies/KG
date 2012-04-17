@@ -5,9 +5,7 @@
 #include <vcl.h>
 #include "Vertice.h"
 #include "Constants.h"
-#include "GraphicMatrix.h"
 //---------------------------------------------------------------------------
-
 class Edge
 {
 	private :
@@ -21,34 +19,13 @@ class Edge
 		Edge (const Edge&);
 		~Edge();
 
-		void setPen(TColor, int, TPenStyle);
+		inline void setPen(TColor, int, TPenStyle);
 		inline void draw  (TCanvas *, const Vertice *, const Vertice *);
 };
 //---------------------------------------------------------------------------
-Edge::Edge (const Edge& src)
-	: tagA(src.tagA), tagB(src.tagB)
-{
-	pen = new TPen;
-	pen->Color = src.pen->Color;
-	pen->Width = src.pen->Width;
-	pen->Style = src.pen->Style;
-}
-
-Edge::Edge (const UnicodeString& _tagA, const UnicodeString& _tagB)
-	: tagA(_tagA), tagB(_tagB)
-{
-	pen = new TPen;
-	pen->Color = clBlack;
-	pen->Width = 1;
-	pen->Style = psSolid;
-}
-
-Edge::~Edge ()
-{
-	delete pen;
-}
-
-void Edge::setPen (TColor penColor, int penWidth, TPenStyle penStyle)
+// Custom methods
+//---------------------------------------------------------------------------
+inline void Edge::setPen (TColor penColor, int penWidth, TPenStyle penStyle)
 {
 	delete pen;
 	pen = new TPen;
@@ -56,7 +33,7 @@ void Edge::setPen (TColor penColor, int penWidth, TPenStyle penStyle)
 	pen->Width = penWidth;
 	pen->Style = penStyle;
 }
-
+//---------------------------------------------------------------------------
 inline void Edge::draw (TCanvas *canvas, const Vertice *a, const Vertice *b)
 {
 	canvas->Pen = pen;

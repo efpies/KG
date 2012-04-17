@@ -3,12 +3,10 @@
 #define MatrixH
 
 #include <vector>
+#include "Constants.h"
+//---------------------------------------------------------------------------
 using namespace std;
 
-typedef vector< vector<double> > matrix_values;
-typedef vector< vector<double> >::iterator mvIt;
-typedef vector<double>::iterator dIt;
-//---------------------------------------------------------------------------
 class Matrix {
 	protected :
 		void alloc();
@@ -18,13 +16,12 @@ class Matrix {
 		Matrix (unsigned, unsigned);
 		Matrix (const Matrix&);
 
-		void print();
 		void fillWithValue(const double);
  inline void fillWithZeros();
 		void fillDiagWithValue (const double);
 
 		void   Transpose    ();
-		Matrix getTransposed();
+ inline	Matrix getTransposed();
 
 		Matrix& operator=  (const Matrix&);
 		Matrix& operator+= (const Matrix&);
@@ -46,7 +43,21 @@ class Matrix {
 		inline unsigned cols() const;
 };
 //---------------------------------------------------------------------------
+// Custom methods
+//---------------------------------------------------------------------------
 inline unsigned Matrix::rows() const { return values.size(); }
+//---------------------------------------------------------------------------
 inline unsigned Matrix::cols() const { return values[0].size(); }
+//---------------------------------------------------------------------------
 inline void Matrix::fillWithZeros() { fillWithValue(0); }
+//---------------------------------------------------------------------------
+// Transformations
+//---------------------------------------------------------------------------
+inline Matrix Matrix::getTransposed ()
+{
+	Matrix result(*this);
+	result.Transpose();
+	return result;
+}
+//---------------------------------------------------------------------------
 #endif
