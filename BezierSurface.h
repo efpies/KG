@@ -18,7 +18,7 @@ class BezierSurface
 {
 	private :
 		GraphicObject *grid;
-		GraphicObject *surface;
+		vector<GraphicObject *> surface;
 
 		const unsigned ptsPerUnit;
 
@@ -36,37 +36,12 @@ class BezierSurface
 		BezierSurface(const BezierSurface&);
 		~BezierSurface();
 
-		inline void applyTransform(Matrix *);
-		inline void applyRotation(const double, const double);
-		inline void draw(TCanvas *);
+		void applyTransform(Matrix *);
+		void applyRotation(const double, const double);
+		void draw(TCanvas *);
 
 		bool gridHidden;
 };
-//---------------------------------------------------------------------------
-// Transformations
-//---------------------------------------------------------------------------
-inline void BezierSurface::applyTransform(Matrix *transform)
-{
-	grid->applyTransform(transform);
-	surface->applyTransform(transform);
-}
-//---------------------------------------------------------------------------
-inline void BezierSurface::applyRotation(const double ax, const double ay)
-{
-	grid->applyRotation(ax, ay);
-	surface->applyRotation(ax, ay);
-}
-//---------------------------------------------------------------------------
-// Custom methods
-//---------------------------------------------------------------------------
-inline void BezierSurface::draw (TCanvas *canvas)
-{
-	if(!gridHidden) {
-		grid->draw(canvas);
-	}
-
-	surface->draw(canvas);
-}
 //---------------------------------------------------------------------------
 // Helpers
 //---------------------------------------------------------------------------

@@ -9,6 +9,7 @@ extern double scale;
 
 class Vertice;
 class Edge;
+class GraphicObject;
 
 typedef enum {
 	AxisX,
@@ -29,5 +30,8 @@ typedef std::map<UnicodeString, Vertice *>::const_iterator vertIt_const;
 
 typedef std::vector<Edge *>::iterator EdgeIt;
 typedef std::vector<Edge *>::const_iterator cEdgeIt;
+
+typedef std::vector<GraphicObject *>::iterator objIt;
+typedef std::vector<GraphicObject *>::const_iterator cObjIt;
 
 #endif

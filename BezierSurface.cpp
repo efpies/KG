@@ -19,17 +19,23 @@ BezierSurface::BezierSurface(const BezierSurface& src)
 	: gridHidden(src.gridHidden), ptsPerUnit(src.ptsPerUnit)
 {
 	grid = new GraphicObject(*src.grid);
-	surface = new GraphicObject(*src.surface);
+	surface.reserve(src.surface.size());
+
+	for(cObjIt i = src.surface.begin(); i != src.surface.end(); ++i) {
+		surface.push_back(new GraphicObject(**i));
+    }
 }
 //---------------------------------------------------------------------------
 BezierSurface::BezierSurface(const unsigned rows,
 							 const unsigned cols,
 							 const unsigned detalization,
 							 const bool _gridHidden)
-	: gridHidden(_gridHidden), ptsPerUnit(detalization)
+	: gridHidden(_gridHidden),
+	  ptsPerUnit(detalization)
 {
 	points_container knots = points_container(rows, vector<Vertice *>(cols, 0));
 	points_container points = points_container(ptsPerUnit + 1, vector<Vertice *>(ptsPerUnit + 1, 0));
+	surface.reserve(2 * ptsPerUnit * ptsPerUnit);
 
 	randomize();
 	int x0 = irand(30);
@@ -88,8 +94,6 @@ BezierSurface::BezierSurface(const unsigned rows,
 
 	// Surfacing
 
-	surface = new GraphicObject();
-
 	Matrix *U, *W, *N, *M, *B, *UN, *MW;
 	N = BezierSurface::getN(rows - 1);
 	M = BezierSurface::getN(cols - 1);
@@ -142,7 +146,6 @@ BezierSurface::BezierSurface(const unsigned rows,
 			Vertice *pt = new Vertice(x, y, z, tag);
 
 			points[row][col] = pt;
-			surface->addVertice(pt);
 
 			delete W;
 			delete B;
@@ -155,31 +158,85 @@ BezierSurface::BezierSurface(const unsigned rows,
 	delete N;
 	delete M;
 
-	for (unsigned i = 0; i < ptsPerUnit + 1; ++i)
-	{
-		for (unsigned j = 0; j < ptsPerUnit; ++j)
-		{
-			Edge *edge = new Edge(pointTag(i, j), pointTag(i, j + 1));
-			edge->setPen(clRed, 1, psSolid);
-			surface->addEdge(edge);
-		}
-	}
+	for(unsigned i = 0; i < ptsPerUnit; ++i) {
+		for(unsigned j = 0; j < ptsPerUnit; ++j) {
+			GraphicObject *triangle1 = new GraphicObject;
 
-	for (unsigned j = 0; j < ptsPerUnit + 1; ++j)
-	{
-		for (unsigned i = 0; i < ptsPerUnit; ++i)
-		{
-			Edge *edge = new Edge(pointTag(i, j), pointTag(i + 1, j));
-			edge->setPen(clRed, 1, psSolid);
-			surface->addEdge(edge);
-		}
+			Vertice *vert1 = points[i][j];
+			Vertice *vert2 = points[i][j + 1];
+			Vertice *vert3 = points[i + 1][j];
+			Vertice *vert4 = points[i + 1][j + 1];
+
+			Edge *edge1 = new Edge(vert1->tag, vert2->tag);
+			Edge *edge2 = new Edge(vert1->tag, vert3->tag);
+			Edge *edge3 = new Edge(vert2->tag, vert3->tag);
+
+			triangle1->addVertice(vert1);
+			triangle1->addVertice(vert2);
+			triangle1->addVertice(vert3);
+
+			triangle1->addEdge(edge1);
+			triangle1->addEdge(edge2);
+			triangle1->addEdge(edge3);
+
+			surface.push_back(triangle1);
+
+			GraphicObject *triangle2 = new GraphicObject;
+
+			Edge *edge4 = new Edge(vert2->tag, vert4->tag);
+			Edge *edge5 = new Edge(vert3->tag, vert4->tag);
+			Edge *edge6 = new Edge(vert2->tag, vert3->tag);
+
+			triangle2->addVertice(vert2);
+			triangle2->addVertice(vert3);
+			triangle2->addVertice(vert4);
+
+			triangle2->addEdge(edge4);
+			triangle2->addEdge(edge5);
+			triangle2->addEdge(edge6);
+
+			surface.push_back(triangle2);
+        }
 	}
 }
 //---------------------------------------------------------------------------
 BezierSurface::~BezierSurface()
 {
 	delete grid;
-	delete surface;
+}
+//---------------------------------------------------------------------------
+// Custom methods
+//---------------------------------------------------------------------------
+void BezierSurface::draw (TCanvas *canvas)
+{
+	if(!gridHidden) {
+		grid->draw(canvas);
+	}
+
+	for(objIt i = surface.begin(); i != surface.end(); ++i) {
+		(*i)->draw(canvas);
+	}
+}
+
+//---------------------------------------------------------------------------
+// Transformations
+//---------------------------------------------------------------------------
+void BezierSurface::applyTransform(Matrix *transform)
+{
+	grid->applyTransform(transform);
+
+	for(objIt i = surface.begin(); i != surface.end(); ++i) {
+		(*i)->applyTransform(transform);
+	}
+}
+//---------------------------------------------------------------------------
+void BezierSurface::applyRotation(const double ax, const double ay)
+{
+	grid->applyRotation(ax, ay);
+
+	for(objIt i = surface.begin(); i != surface.end(); ++i) {
+		(*i)->applyRotation(ax, ay);
+	}
 }
 //---------------------------------------------------------------------------
 // Helpers
