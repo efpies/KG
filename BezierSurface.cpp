@@ -46,8 +46,8 @@ BezierSurface::BezierSurface(const unsigned rows,
 			lastx += (j) ? irand(15) + 10 : irand(50);
 
 			int x = lastx;
-			int y = lasty + irand(15) + 1;
-			int z = lastz + irand(30);
+			int y = lasty + irand(30) + 1;
+			int z = lastz + irand(60);
 
 			UnicodeString tag = knotTag(i, j);
 			Vertice *point = new Vertice (x, y, z, tag);
