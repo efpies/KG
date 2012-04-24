@@ -249,9 +249,16 @@ void __fastcall TMainForm::drawObjects(TCanvas *destCanvas, bool erase)
 	if(surface) {
 		scale = ScaleEdit->Value;
 
-		destCanvas->FillRect(destCanvas->ClipRect);
+		Graphics::TBitmap *buffer = new Graphics::TBitmap;
+		buffer->Width = destCanvas->ClipRect.Width();
+		buffer->Height = destCanvas->ClipRect.Height();
+
 		surface->applyRotation(angleX, angleY);
-		surface->draw(destCanvas);
+		surface->draw(buffer->Canvas);
+
+		destCanvas->Draw(0, 0, buffer);
+
+		delete buffer;
 	}
 }
 //---------------------------------------------------------------------------
