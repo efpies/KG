@@ -11,14 +11,17 @@
 #include <map>
 
 #include "Constants.h"
+#include "Object3D.h"
 //---------------------------------------------------------------------------
 using namespace std;
+class Triangle;
 
-class BezierSurface
+class BezierSurface : virtual public Object3D
 {
 	private :
 		GraphicObject *grid;
-		vector<GraphicObject *> surface;
+		vector<Triangle *> surfaceTriangles;
+		vector<GraphicObject *> surfaceWire;
 
 		const unsigned ptsPerUnit;
 
@@ -30,17 +33,24 @@ class BezierSurface
 		static inline unsigned Binom(int, int);
 
 		static inline UnicodeString tagWithName(const wchar_t *, int, int);
+		bool useFilling;
 
 	public :
-		BezierSurface(const unsigned, const unsigned, const unsigned, const bool);
+		BezierSurface(const unsigned, const unsigned, const unsigned, const bool, const bool);
 		BezierSurface(const BezierSurface&);
 		~BezierSurface();
 
 		void applyTransform(Matrix *);
 		void applyRotation(const double, const double);
 		void draw(TCanvas *);
+		void drawTriangle(const Triangle *, TCanvas *, TColor);
 
 		bool gridHidden;
+
+		TColor frontColor;
+		TColor backColor;
+
+		float **zbuf;
 };
 //---------------------------------------------------------------------------
 // Helpers

@@ -202,7 +202,8 @@ void __fastcall TMainForm::GenerateBezierClick(TObject *Sender)
 	surface = new BezierSurface(BezierRowsField->Text.ToInt(),
 								BezierColsField->Text.ToInt(),
 								BezierDetalizationField->Text.ToInt(),
-								BezierHidePolys->Checked);
+								BezierHidePolys->Checked,
+								LabsTabs->TabIndex == 1);
 
 	drawObjects (Graph->Canvas, true);
 }

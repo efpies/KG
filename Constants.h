@@ -10,6 +10,8 @@ extern double scale;
 class Vertice;
 class Edge;
 class GraphicObject;
+class Triangle;
+class Object3D;
 
 typedef enum {
 	AxisX,
@@ -33,5 +35,11 @@ typedef std::vector<Edge *>::const_iterator cEdgeIt;
 
 typedef std::vector<GraphicObject *>::iterator objIt;
 typedef std::vector<GraphicObject *>::const_iterator cObjIt;
+
+typedef std::vector<Triangle *>::iterator triIt;
+typedef std::vector<Triangle *>::const_iterator cTriIt;
+
+typedef std::vector<Object3D *>::iterator obj3dIt;
+typedef std::vector<Object3D *>::const_iterator cObj3dIt;
 
 #endif

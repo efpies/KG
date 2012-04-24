@@ -7,9 +7,10 @@
 //---------------------------------------------------------------------------
 // Lifecycle
 //---------------------------------------------------------------------------
-GraphicObject::GraphicObject() { hidden = false; }
+GraphicObject::GraphicObject() : Object3D() { hidden = false; }
 //---------------------------------------------------------------------------
 GraphicObject::GraphicObject(const GraphicObject& src)
+	 : Object3D(src)
 {
 	edges.reserve(src.edges.size());
 	hidden = false;
@@ -34,7 +35,7 @@ void GraphicObject::applyTransform (Matrix *transform)
 	}
 }
 //---------------------------------------------------------------------------
-void GraphicObject::applyRotation (const double ax, const double ay)
+void GraphicObject::applyRotation(const double ax, const double ay)
 {
 	for(vertIt i = allVertices.begin(); i != allVertices.end(); ++i) {
 		(*i).second->applyRotation (ax, ay);
@@ -43,7 +44,7 @@ void GraphicObject::applyRotation (const double ax, const double ay)
 //---------------------------------------------------------------------------
 // Custom methods
 //---------------------------------------------------------------------------
-void GraphicObject::draw (TCanvas* canvas)
+void GraphicObject::draw(TCanvas* canvas)
 {
 	for (EdgeIt i = edges.begin(); i != edges.end(); ++i) {
 		(*i)->draw (canvas, allVertices[(*i)->tagA], allVertices[(*i)->tagB]);

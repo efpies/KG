@@ -8,40 +8,42 @@
 #include "Vertice.h"
 #include "Edge.h"
 #include "Constants.h"
+#include "Object3D.h"
 //---------------------------------------------------------------------------
 using namespace std;
 
 class Matrix;
 
-class GraphicObject
+class GraphicObject : virtual public Object3D
 {
 	private :
 		vector<Edge *> edges;
-		vector<Vertice *> points;
-		map<UnicodeString, Vertice *> allVertices;
 
 	public :
-		GraphicObject ();
-		GraphicObject (const GraphicObject&);
+		map<UnicodeString, Vertice *> allVertices;
+		GraphicObject();
+		GraphicObject(const GraphicObject&);
 
-		inline void addVertice (Vertice *);
-		inline void addEdge (const Edge *);
+		inline void addVertice(const Vertice *);
+		inline void addEdge(const Edge *);
 
-		void applyTransform (Matrix *);
-		void applyRotation (const double, const double);
-		void draw (TCanvas*);
+		void applyTransform(Matrix *);
+		void applyRotation(const double, const double);
+		void draw(TCanvas *);
 
-		bool hidden;
+		Vertice *a;
+		Vertice *b;
+		Vertice *c;
 };
 //---------------------------------------------------------------------------
 // Custom methods
 //---------------------------------------------------------------------------
-inline void GraphicObject::addVertice(Vertice *src)
+inline void GraphicObject::addVertice(const Vertice *src)
 {
     allVertices[src->tag] = new Vertice(*src);
 }
 //---------------------------------------------------------------------------
-inline void GraphicObject::addEdge (const Edge* srcEdge)
+inline void GraphicObject::addEdge (const Edge *srcEdge)
 {
 	Edge *edge = new Edge(*srcEdge);
 	edges.push_back(edge);

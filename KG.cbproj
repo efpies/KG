@@ -89,6 +89,7 @@
 			<ILINK_TranslatedLibraryPath>$(BDSLIB)\$(PLATFORM)\debug\$(LANGDIR);$(ILINK_TranslatedLibraryPath)</ILINK_TranslatedLibraryPath>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_1_Win32)'!=''">
+			<LinkPackageStatics>rtl.lib;vcl.lib;vclactnband.lib;vclx.lib;DbxCommonDriver.lib;dsnap.lib;dbrtl.lib;bcbsmp.lib</LinkPackageStatics>
 			<DynamicRTL>false</DynamicRTL>
 			<UsingDelphiRTL>false</UsingDelphiRTL>
 			<UsePackages>false</UsePackages>
@@ -101,7 +102,6 @@
 			<VerInfo_IncludeVerInfo>true</VerInfo_IncludeVerInfo>
 			<BCC_wpnf>false</BCC_wpnf>
 			<VerInfo_Locale>1033</VerInfo_Locale>
-			<LinkPackageImports>rtl.bpi;vcl.bpi;vclactnband.bpi;vclx.bpi;DbxCommonDriver.bpi;dsnap.bpi;dbrtl.bpi;bcbsmp.bpi</LinkPackageImports>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Cfg_2)'!=''">
 			<Defines>NDEBUG;$(Defines)</Defines>
@@ -152,6 +152,14 @@
 			<CppCompile Include="Matrix.cpp">
 				<DependentOn>Matrix.h</DependentOn>
 				<BuildOrder>3</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Object3D.cpp">
+				<DependentOn>Object3D.h</DependentOn>
+				<BuildOrder>10</BuildOrder>
+			</CppCompile>
+			<CppCompile Include="Triangle.cpp">
+				<DependentOn>Triangle.h</DependentOn>
+				<BuildOrder>11</BuildOrder>
 			</CppCompile>
 			<CppCompile Include="Vertice.cpp">
 				<DependentOn>Vertice.h</DependentOn>
