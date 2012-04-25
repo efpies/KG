@@ -102,7 +102,11 @@ Vertice **SortDots(Vertice *a, Vertice *b, Vertice *c)
 // Lifecycle
 //---------------------------------------------------------------------------
 BezierSurface::BezierSurface(const BezierSurface& src)
-	: gridHidden(src.gridHidden), ptsPerUnit(src.ptsPerUnit), useFilling(src.useFilling)
+	: gridHidden(src.gridHidden),
+	  ptsPerUnit(src.ptsPerUnit),
+	  useFilling(src.useFilling),
+	  lastCanvasSize(TSize(0, 0)),
+	  zBuffer(NULL)
 {
 	grid = new GraphicObject(*src.grid);
 
@@ -129,7 +133,9 @@ BezierSurface::BezierSurface(const unsigned rows,
 							 const bool _useFilling = true)
 	: gridHidden(_gridHidden),
 	  useFilling(_useFilling),
-	  ptsPerUnit(detalization)
+	  ptsPerUnit(detalization),
+	  lastCanvasSize(TSize(0, 0)),
+	  zBuffer(NULL)
 {
 	frontColor = clRed;
 	backColor = clBlack;
@@ -480,8 +486,8 @@ void BezierSurface::drawTriangle(const Triangle *triangle, TCanvas *canvas, TCol
 						if(xb - xa) {
 							double z = za + (zb - za) * (x - xa) / (xb - xa);
 
-							if(z > zbuf[y-1][x-1]) {
-								zbuf[y-1][x-1] = z;
+							if(z > zBuffer[y-1][x-1]) {
+								zBuffer[y-1][x-1] = z;
 								canvas->Pixels[x][y] = isFront ? frontColor : backColor;
 							}
 						}
@@ -501,24 +507,33 @@ void BezierSurface::draw (TCanvas *canvas)
 		grid->draw(canvas);
 	}
 
-	zbuf = (float **)malloc(canvas->ClipRect.Height() * sizeof(float *));
-	for (int row = 0; row < canvas->ClipRect.Height(); ++row) {
-		zbuf[row] = (float *)malloc(canvas->ClipRect.Width() * sizeof(float));
-
-		for(int col = 0; col < canvas->ClipRect.Width(); ++col) {
-			zbuf[row][col] = -32767;
-		}
-	}
+	refreshZbuffer(canvas->ClipRect.Size);
 
 	for(triIt i = surfaceTriangles.begin(); i != surfaceTriangles.end(); ++i) {
 //		(*i)->draw(canvas);
 		drawTriangle(*i, canvas, clRed);
 	}
+}
+//---------------------------------------------------------------------------
+void BezierSurface::refreshZbuffer(TSize currentCanvasSize)
+{
+	if(currentCanvasSize != lastCanvasSize) {
+		for (int row = 0; row < lastCanvasSize.cy; ++row) {
+			free(zBuffer[row]);
+		}
+		free(zBuffer);
 
-	for (int row = 0; row < canvas->ClipRect.Height(); ++row) {
-		free(zbuf[row]);
+		zBuffer = (float **)malloc(currentCanvasSize.cy * sizeof(float *));
+		for (int row = 0; row < currentCanvasSize.cy; ++row) {
+			zBuffer[row] = (float *)malloc(currentCanvasSize.cx * sizeof(float));
+		}
+
+		lastCanvasSize = currentCanvasSize;
 	}
-	free(zbuf);
+
+	for (int row = 0; row < currentCanvasSize.cy; ++row) {
+		memset(zBuffer[row], 0xFE, currentCanvasSize.cx * sizeof(float));
+	}
 }
 //---------------------------------------------------------------------------
 // Transformations

@@ -35,6 +35,11 @@ class BezierSurface : virtual public Object3D
 		static inline UnicodeString tagWithName(const wchar_t *, int, int);
 		bool useFilling;
 
+		TSize lastCanvasSize;
+		float **zBuffer;
+
+		void refreshZbuffer(TSize);
+
 	public :
 		BezierSurface(const unsigned, const unsigned, const unsigned, const bool, const bool);
 		BezierSurface(const BezierSurface&);
@@ -49,8 +54,6 @@ class BezierSurface : virtual public Object3D
 
 		TColor frontColor;
 		TColor backColor;
-
-		float **zbuf;
 };
 //---------------------------------------------------------------------------
 // Helpers
