@@ -41,8 +41,6 @@
 			<Base>true</Base>
 		</PropertyGroup>
 		<PropertyGroup Condition="'$(Base)'!=''">
-			<IncludePath>libjson\Source\;libjson\mempool++\;libjson\;..\..\..\..\DevTools\C++\libjson\Source\;..\..\..\..\DevTools\C++\libjson\mempool++\;..\..\..\..\DevTools\C++\libjson\;$(IncludePath)</IncludePath>
-			<ILINK_LibraryPath>libjson\Source\;libjson\mempool++\;libjson\;..\..\..\..\DevTools\C++\libjson\Source\;..\..\..\..\DevTools\C++\libjson\mempool++\;..\..\..\..\DevTools\C++\libjson\;$(ILINK_LibraryPath)</ILINK_LibraryPath>
 			<PackageImports>IPIndyImpl;bindcompfmx;fmx;rtl;dbrtl;IndySystem;DbxClientDriver;bindcomp;inetdb;DBXInterBaseDriver;DataSnapCommon;DataSnapClient;DataSnapServer;DataSnapProviderClient;xmlrtl;DbxCommonDriver;IndyProtocols;DBXMySQLDriver;dbxcds;soaprtl;bindengine;DBXOracleDriver;dsnap;DBXInformixDriver;IndyCore;fmxase;DBXFirebirdDriver;inet;fmxobj;inetdbxpress;DBXSybaseASADriver;fmxdae;dbexpress;DataSnapIndy10ServerTransport;$(PackageImports)</PackageImports>
 			<ProjectType>CppVCLApplication</ProjectType>
 			<Multithreaded>true</Multithreaded>
