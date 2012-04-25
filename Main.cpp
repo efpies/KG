@@ -149,8 +149,8 @@ void __fastcall TMainForm::GraphMouseMove(TObject *Sender, TShiftState Shift, in
           int Y)
 {
 	if (isRotating) {
-		angleX = (double)(Y-yc)/180.0*M_PI;
-		angleY = (double)(X-xc)/180.0*M_PI;
+		angleX = (double)(Y - yc) / 180.0 * M_PI;
+		angleY = (double)(X - xc) / 180.0 * M_PI;
 
 		xc = X;
 		yc = Y;
@@ -260,6 +260,8 @@ void __fastcall TMainForm::drawObjects(TCanvas *destCanvas, bool erase)
 		destCanvas->Draw(0, 0, buffer);
 
 		delete buffer;
+
+		angleX = angleY = 0;
 	}
 }
 //---------------------------------------------------------------------------
