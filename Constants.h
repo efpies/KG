@@ -5,6 +5,9 @@
 #include <map>
 #include <vcl.h>
 
+#define STYLE_WIREFRAME 0
+#define STYLE_FILL 1
+
 extern double scale;
 
 class Vertice;

@@ -27,8 +27,8 @@ object MainForm: TMainForm
     OnMouseUp = GraphMouseUp
   end
   object Label1: TLabel
-    Left = 789
-    Top = 224
+    Left = 797
+    Top = 296
     Width = 45
     Height = 13
     Caption = #1052#1072#1089#1096#1090#1072#1073
@@ -54,8 +54,8 @@ object MainForm: TMainForm
     Spacing = 0
   end
   object DrawBtn: TButton
-    Left = 789
-    Top = 271
+    Left = 797
+    Top = 343
     Width = 131
     Height = 50
     Caption = #1054#1090#1088#1080#1089#1086#1074#1072#1090#1100
@@ -63,8 +63,8 @@ object MainForm: TMainForm
     OnClick = DrawBtnClick
   end
   object ScaleEdit: TCSpinEdit
-    Left = 789
-    Top = 243
+    Left = 797
+    Top = 315
     Width = 131
     Height = 22
     MaxValue = 100
@@ -76,7 +76,8 @@ object MainForm: TMainForm
     Top = 31
     Width = 283
     Height = 162
-    ActivePage = Lab1
+    ActivePage = Lab3
+    MultiLine = True
     TabOrder = 3
     OnChange = LabsTabsChange
     object Lab1: TTabSheet
@@ -218,6 +219,59 @@ object MainForm: TMainForm
         OnClick = BezierHidePolysClick
       end
     end
+    object Lab3: TTabSheet
+      Caption = '#3'
+      ImageIndex = 2
+      object DrawStyleRadioGroup: TRadioGroup
+        Left = 3
+        Top = 3
+        Width = 102
+        Height = 54
+        Caption = #1057#1090#1080#1083#1100' '#1086#1090#1088#1080#1089#1086#1074#1082#1080
+        Enabled = False
+        ItemIndex = 1
+        Items.Strings = (
+          #1057#1077#1090#1082#1072
+          #1047#1072#1083#1080#1074#1082#1072)
+        TabOrder = 0
+      end
+      object GroupBox2: TGroupBox
+        Left = 111
+        Top = 3
+        Width = 159
+        Height = 87
+        Caption = #1062#1074#1077#1090' '#1079#1072#1083#1080#1074#1082#1080
+        TabOrder = 1
+        object FrontColorPicker: TImage
+          Left = 23
+          Top = 34
+          Width = 43
+          Height = 43
+          OnClick = FrontColorPickerClick
+        end
+        object BackColorPicker: TImage
+          Left = 100
+          Top = 34
+          Width = 43
+          Height = 43
+          OnClick = BackColorPickerClick
+        end
+        object Label6: TLabel
+          Left = 10
+          Top = 15
+          Width = 68
+          Height = 13
+          Caption = #1060#1088#1086#1085#1090#1072#1083#1100#1085#1072#1103
+        end
+        object Label7: TLabel
+          Left = 96
+          Top = 15
+          Width = 50
+          Height = 13
+          Caption = #1054#1073#1088#1072#1090#1085#1072#1103
+        end
+      end
+    end
   end
   object ActionMgr: TActionManager
     ActionBars = <
@@ -238,5 +292,9 @@ object MainForm: TMainForm
   object OpenJSON: TOpenDialog
     Filter = '3D scene (*.json)|*.json'
     Left = 448
+  end
+  object PickColor: TColorDialog
+    Left = 800
+    Top = 208
   end
 end

@@ -59,6 +59,14 @@ __published:	// IDE-managed Components
 	TLabel *Label3;
 	TLabeledEdit *BezierDetalizationField;
 	TCheckBox *BezierHidePolys;
+	TTabSheet *Lab3;
+	TRadioGroup *DrawStyleRadioGroup;
+	TImage *FrontColorPicker;
+	TImage *BackColorPicker;
+	TLabel *Label6;
+	TLabel *Label7;
+	TGroupBox *GroupBox2;
+	TColorDialog *PickColor;
 	void __fastcall DrawBtnClick(TObject *Sender);
 	void __fastcall GraphMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
           int X, int Y);
@@ -71,6 +79,8 @@ __published:	// IDE-managed Components
 	void __fastcall BezierHidePolysClick(TObject *Sender);
 	void __fastcall LabsTabsChange(TObject *Sender);
 	void __fastcall FormShow(TObject *Sender);
+	void __fastcall FrontColorPickerClick(TObject *Sender);
+	void __fastcall BackColorPickerClick(TObject *Sender);
 
 private:	// User declarations
 	void __fastcall drawObjects(TCanvas *, bool);
@@ -84,6 +94,7 @@ private:	// User declarations
 	// Custom methods
 	void __fastcall refreshCaption();
 	void __fastcall FillCanvasWithColor(TCanvas *, TColor);
+	TColor __fastcall getPickerColor(TImage *);
 
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
@@ -102,6 +113,9 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 	FillCanvasWithColor(ColorX->Canvas, clRed);
 	FillCanvasWithColor(ColorY->Canvas, clGreen);
 	FillCanvasWithColor(ColorZ->Canvas, clBlue);
+
+	FillCanvasWithColor(FrontColorPicker->Canvas, clRed);
+	FillCanvasWithColor(BackColorPicker->Canvas, clBlack);
 
 	scale = 4;
 	ScaleEdit->Value = scale;
@@ -123,6 +137,11 @@ void __fastcall TMainForm::FillCanvasWithColor(TCanvas *destCanvas, TColor fillC
 {
 	destCanvas->Brush->Color = fillColor;
 	destCanvas->FillRect(destCanvas->ClipRect);
+}
+//---------------------------------------------------------------------------
+TColor __fastcall TMainForm::getPickerColor(TImage *picker)
+{
+  	return picker->Canvas->Pixels[0][0];
 }
 //---------------------------------------------------------------------------
 #endif

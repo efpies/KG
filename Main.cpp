@@ -203,9 +203,9 @@ void __fastcall TMainForm::GenerateBezierClick(TObject *Sender)
 								BezierColsField->Text.ToInt(),
 								BezierDetalizationField->Text.ToInt(),
 								BezierHidePolys->Checked,
-								LabsTabs->TabIndex == 1);
+								DrawStyleRadioGroup->ItemIndex == STYLE_FILL);
 
-	drawObjects (Graph->Canvas, true);
+	drawObjects(Graph->Canvas, true);
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::DrawBtnClick(TObject *Sender)
@@ -254,6 +254,9 @@ void __fastcall TMainForm::drawObjects(TCanvas *destCanvas, bool erase)
 		buffer->Width = destCanvas->ClipRect.Width();
 		buffer->Height = destCanvas->ClipRect.Height();
 
+		surface->frontColor = getPickerColor(FrontColorPicker);
+		surface->backColor = getPickerColor(BackColorPicker);
+
 		surface->applyRotation(angleX, angleY);
 		surface->draw(buffer->Canvas);
 
@@ -262,6 +265,22 @@ void __fastcall TMainForm::drawObjects(TCanvas *destCanvas, bool erase)
 		delete buffer;
 
 		angleX = angleY = 0;
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::FrontColorPickerClick(TObject *Sender)
+{
+	if(PickColor->Execute()) {
+		FillCanvasWithColor(FrontColorPicker->Canvas, PickColor->Color);
+		drawObjects(Graph->Canvas, true);
+	}
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::BackColorPickerClick(TObject *Sender)
+{
+	if(PickColor->Execute()) {
+		FillCanvasWithColor(BackColorPicker->Canvas, PickColor->Color);
+		drawObjects(Graph->Canvas, true);
 	}
 }
 //---------------------------------------------------------------------------
