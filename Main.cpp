@@ -286,4 +286,12 @@ void __fastcall TMainForm::BackColorPickerClick(TObject *Sender)
 	}
 }
 //---------------------------------------------------------------------------
+void __fastcall TMainForm::SourceLightColorPickerClick(TObject *Sender)
+{
+	if(PickColor->Execute()) {
+		FillCanvasWithColor(SourceLightColorPicker->Canvas, PickColor->Color);
+		drawObjects(Graph->Canvas, true);
+	}
+}
+//---------------------------------------------------------------------------
 

@@ -76,7 +76,7 @@ object MainForm: TMainForm
     Top = 31
     Width = 283
     Height = 162
-    ActivePage = Lab3
+    ActivePage = Lab2
     MultiLine = True
     TabOrder = 3
     OnChange = LabsTabsChange
@@ -158,14 +158,14 @@ object MainForm: TMainForm
       ImageIndex = 1
       object Label2: TLabel
         Left = 11
-        Top = 11
+        Top = 3
         Width = 31
         Height = 13
         Caption = #1057#1077#1090#1082#1072
       end
       object Label3: TLabel
         Left = 47
-        Top = 33
+        Top = 26
         Width = 6
         Height = 13
         Caption = 'X'
@@ -181,7 +181,7 @@ object MainForm: TMainForm
       end
       object BezierRowsField: TEdit
         Left = 11
-        Top = 30
+        Top = 22
         Width = 30
         Height = 21
         NumbersOnly = True
@@ -190,7 +190,7 @@ object MainForm: TMainForm
       end
       object BezierColsField: TEdit
         Left = 59
-        Top = 30
+        Top = 22
         Width = 30
         Height = 21
         NumbersOnly = True
@@ -214,6 +214,8 @@ object MainForm: TMainForm
         Width = 135
         Height = 32
         Caption = #1057#1082#1088#1099#1090#1100' '#1087#1086#1083#1080#1075#1086#1085#1072#1083#1100#1085#1091#1102' '#1089#1077#1090#1082#1091
+        Checked = True
+        State = cbChecked
         TabOrder = 4
         WordWrap = True
         OnClick = BezierHidePolysClick
@@ -272,6 +274,88 @@ object MainForm: TMainForm
         end
       end
     end
+    object Lab4: TTabSheet
+      Caption = '#4'
+      ImageIndex = 3
+      object GroupBox3: TGroupBox
+        Left = 3
+        Top = 3
+        Width = 159
+        Height = 87
+        Caption = #1054#1089#1074#1077#1097#1077#1085#1080#1077
+        TabOrder = 0
+        object SourceLightColorPicker: TImage
+          Left = 12
+          Top = 34
+          Width = 43
+          Height = 43
+          OnClick = SourceLightColorPickerClick
+        end
+        object Image2: TImage
+          Left = 100
+          Top = 34
+          Width = 43
+          Height = 43
+          OnClick = BackColorPickerClick
+        end
+        object Label8: TLabel
+          Left = 10
+          Top = 15
+          Width = 48
+          Height = 13
+          Caption = #1048#1089#1090#1086#1095#1085#1080#1082
+        end
+        object Label9: TLabel
+          Left = 96
+          Top = 15
+          Width = 50
+          Height = 13
+          Caption = #1054#1073#1088#1072#1090#1085#1072#1103
+        end
+      end
+    end
+  end
+  object Edit1: TEdit
+    Left = 870
+    Top = 216
+    Width = 121
+    Height = 21
+    Ctl3D = True
+    ParentCtl3D = False
+    TabOrder = 4
+    Text = '0'
+  end
+  object Edit2: TEdit
+    Left = 870
+    Top = 243
+    Width = 121
+    Height = 21
+    Ctl3D = True
+    ParentCtl3D = False
+    TabOrder = 5
+    Text = '0'
+  end
+  object Edit3: TEdit
+    Left = 870
+    Top = 270
+    Width = 121
+    Height = 21
+    Ctl3D = True
+    ParentCtl3D = False
+    TabOrder = 6
+    Text = '50'
+  end
+  object RadioGroup1: TRadioGroup
+    Left = 797
+    Top = 407
+    Width = 185
+    Height = 105
+    Caption = 'RadioGroup1'
+    ItemIndex = 0
+    Items.Strings = (
+      #1051#1072#1084#1073#1077#1088#1090
+      'Anything')
+    TabOrder = 7
   end
   object ActionMgr: TActionManager
     ActionBars = <

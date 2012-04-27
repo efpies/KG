@@ -7,82 +7,129 @@
 #include <cstdlib>
 
 #include "Constants.h"
+#include <float.h>
+#include "Main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 //---------------------------------------------------------------------------
 // Custom methods
 //---------------------------------------------------------------------------
-void Triangle::applyTransform(Matrix *transform)
-{
-	a->applyTransform(transform);
-	b->applyTransform(transform);
-	c->applyTransform(transform);
-}
-//---------------------------------------------------------------------------
-void Triangle::applyRotation(const double ax, const double ay)
-{
-	a->applyRotation(ax, ay);
-	b->applyRotation(ax, ay);
-	c->applyRotation(ax, ay);
-}
-//---------------------------------------------------------------------------
-void Triangle::draw(TCanvas *)
-{
 
-}
-//---------------------------------------------------------------------------
-void Triangle::draw(TCanvas *canvas, float **zBuffer, TColor frontColor, TColor backColor)
+double kd = 1;
+double coeff = 1;
+TColor srcColor = RGB(255, 0, 0);
+double maxI = 255.0;
+
+void Triangle::draw(Graphics::TBitmap *bmp, float **zBuffer, TColor frontColor, TColor backColor)
 {
-	TPoint canvasCenter = canvas->ClipRect.CenterPoint();
+	TRect clipRect = bmp->Canvas->ClipRect;
+	TPoint canvasCenter = clipRect.CenterPoint();
+
+	TColor sourceLightColor = MainForm->sourceLightColor;
+	TRGBTriple Isrc;
+	Isrc.rgbtRed = GetRValue(sourceLightColor);
+	Isrc.rgbtGreen = GetGValue(sourceLightColor);
+	Isrc.rgbtBlue = GetBValue(sourceLightColor);
+
+	vector3D src;
+	src.x = MainForm->Edit1->Text.ToInt();
+	src.y = MainForm->Edit2->Text.ToInt();
+	src.z = MainForm->Edit3->Text.ToInt();
+	normalized(canvasCenter, src.x, src.y);
+
+	vector3D dest;
+	dest.x = 0.0;
+	dest.y = 0.0;
+	dest.z = 0.0;
+	normalized(canvasCenter, dest.x, dest.y);
 
 	double tri[3][3];
 
-	tri[0][0] = a->getX();
-	tri[0][1] = a->getY();
-	tri[0][2] = a->getZ();
-	normalized(canvasCenter, tri[0][0], tri[0][1]);
+	tri[0][0] = av->getX();
+	tri[0][1] = av->getY();
+	tri[0][2] = av->getZ();
+	normalized(canvasCenter, tri[0][_X], tri[0][_Y]);
 
-	tri[1][0] = b->getX();
-	tri[1][1] = b->getY();
-	tri[1][2] = b->getZ();
-	normalized(canvasCenter, tri[1][X], tri[1][Y]);
+	tri[1][0] = bv->getX();
+	tri[1][1] = bv->getY();
+	tri[1][2] = bv->getZ();
+	normalized(canvasCenter, tri[1][_X], tri[1][_Y]);
 
-	tri[2][0] = c->getX();
-	tri[2][1] = c->getY();
-	tri[2][2] = c->getZ();
-	normalized(canvasCenter, tri[2][X], tri[2][Y]);
+	tri[2][0] = cv->getX();
+	tri[2][1] = cv->getY();
+	tri[2][2] = cv->getZ();
+	normalized(canvasCenter, tri[2][_X], tri[2][_Y]);
 
-	double head[3] = {a->getX(),
-					  a->getY(),
-					  a->getZ() };
+	vector3D head;
+	head.x = av->getX();
+	head.y = av->getY();
+	head.z = av->getZ();
+	normalized(canvasCenter, head.x, head.y);
 
-	normalized(canvasCenter, head[X], head[Y]);
+	vector3D second;
+	second.x = bv->getX();
+	second.y = bv->getY();
+	second.z = bv->getZ();
+	normalized(canvasCenter, second.x, second.y);
 
-	double second[3] = {b->getX(),
-						b->getY(),
-						b->getZ() };
+	vector3D third;
+	third.x = cv->getX();
+	third.y = cv->getY();
+	third.z = cv->getZ();
+	normalized(canvasCenter, third.x, third.y);
 
-	normalized(canvasCenter, second[X], second[Y]);
+	vector3D vecA;
+	makevector3D(head, second, vecA);
 
-	double third[3] = {c->getX(),
-					   c->getY(),
-					   c->getZ() };
+	vector3D vecB;
+	makevector3D(head, third, vecB);
 
-	normalized(canvasCenter, third[X], third[Y]);
+	vector3D cross;
+	crossProduct(vecA, vecB, cross);
 
-	double *vecA;
-	double *vecB;
+	bool isFront = cross.z >= head.z;
+	TColor drawColor = (isFront) ? frontColor : backColor;
 
-	vecA = makeVector(head, second);
-	vecB = makeVector(head, third);
+	if(!isFront) {
+		cross.x = -cross.x;
+		cross.y = -cross.y;
+		cross.z = -cross.z;
+    }
 
-	double *cross = crossProduct(vecA, vecB);
+	vector3D vecLight;
+	makevector3D(src, dest, vecLight);
 
-	bool isFront = cross[Z] >= head[Z];
+	vector3D vecInvBeam;
+	makevector3D(head, src, vecInvBeam);
 
-	delete [] vecA;
-	delete [] vecB;
-	delete [] cross;
+	double len = vectorLength(vecInvBeam) / 100.0;
+
+	normalizeVec(cross);
+	normalizeVec(vecInvBeam);
+
+    double Ired, Igreen, Iblue;
+
+	if(MainForm->RadioGroup1->ItemIndex == 0) {
+		Ired = Isrc.rgbtRed * max(0.0, dotProduct(cross, vecInvBeam)) / len;
+		Igreen = Isrc.rgbtGreen * max(0.0, dotProduct(cross, vecInvBeam)) / len;
+		Iblue = Isrc.rgbtBlue * max(0.0, dotProduct(cross, vecInvBeam)) / len;
+	}
+	else {
+		vector3D vecBeam;
+		makevector3D(src, head, vecBeam);
+		normalizeVec(vecBeam);
+
+		double beta = angle(vecLight, vecBeam);
+		double theta = angle(vecInvBeam, cross);
+
+		Ired = Isrc.rgbtRed * cos(theta) * kd * pow(cos(beta), coeff);
+		Igreen = Isrc.rgbtGreen * cos(theta) * kd * pow(cos(beta), coeff);
+		Iblue = Isrc.rgbtBlue * cos(theta) * kd * pow(cos(beta), coeff);
+	}
+
+	Ired = min(Ired, 255.0);
+	Igreen = min(Igreen, 255.0);
+	Iblue = min(Iblue, 255.0);
 
 	sort(tri, 1);
 
@@ -91,35 +138,56 @@ void Triangle::draw(TCanvas *canvas, float **zBuffer, TColor frontColor, TColor 
 	double *p3 = tri[2];
 	double *p4 = p1;
 
-	for(int y = tri[0][Y]; y <= tri[2][Y]; ++y) {
-		if(y >= 0 && y <= canvas->ClipRect.Height()) {
-			if(y > p2[Y]) {
+	double p3x_p1x = p3[_X] - p1[_X];
+	double p3y_p1y = p3[_Y] - p1[_Y];
+	double p3z_p1z = p3[_Z] - p1[_Z];
+
+	double p2x_p4x = p2[_X] - p4[_X];
+	double p2y_p4y = p2[_Y] - p4[_Y];
+	double p2z_p4z = p2[_Z] - p4[_Z];
+
+	for(int y = max(1.0, tri[0][_Y]); p3y_p1y && y <= tri[2][_Y]; ++y) {
+		if(y <= clipRect.Height()) {
+			if(y > p2[_Y]) {
 				p4 = p3;
+				p2x_p4x = p2[_X] - p4[_X];
+				p2y_p4y = p2[_Y] - p4[_Y];
+				p2z_p4z = p2[_Z] - p4[_Z];
 			}
 
-			if(p2[Y] - p4[Y] && p3[Y] - p1[Y]) {
+			if(p2y_p4y) {
 				double xa;
 				double xb;
 				double za;
 				double zb;
 
-				xa = p4[X] + (p2[X] - p4[X]) * (y - p4[Y]) / (p2[Y] - p4[Y]);
-				xb = p1[X] + (p3[X] - p1[X]) * (y - p1[Y]) / (p3[Y] - p1[Y]);
-				za = p4[Z] + (p2[Z] - p4[Z]) * (y - p4[Y]) / (p2[Y] - p4[Y]);
-				zb = p1[Z] + (p3[Z] - p1[Z]) * (y - p1[Y]) / (p3[Y] - p1[Y]);
+				xa = p4[_X] + (p2x_p4x) * (y - p4[_Y]) / (p2y_p4y);
+				xb = p1[_X] + (p3x_p1x) * (y - p1[_Y]) / (p3y_p1y);
+				za = p4[_Z] + (p2z_p4z) * (y - p4[_Y]) / (p2y_p4y);
+				zb = p1[_Z] + (p3z_p1z) * (y - p1[_Y]) / (p3y_p1y);
 
 				if(xa > xb) {
 					std::swap(xa, xb);
 				}
 
+				TRGBTriple *data = reinterpret_cast<TRGBTriple *>(bmp->ScanLine[y - 1]);
+
+				double xb_xa = xb - xa;
+				double zb_za = zb - za;
+
 				for(int x = xa; x <= xb; ++x) {
-					if(canvas->ClipRect.Contains(TPoint(x, y))) {
-						if(xb - xa) {
-							double z = za + (zb - za) * (x - xa) / (xb - xa);
+					if(clipRect.Contains(TPoint(x, y))) {
+						if(xb_xa) {
+							double z = za + (zb_za) * (x - xa) / (xb_xa);
 
 							if(z > zBuffer[y - 1][x - 1]) {
 								zBuffer[y - 1][x - 1] = z;
-								canvas->Pixels[x][y] = isFront ? frontColor : backColor;
+
+								TRGBTriple pixel;
+								pixel.rgbtRed = GetRValue(drawColor) * Ired / maxI;
+								pixel.rgbtBlue = GetBValue(drawColor) * Iblue / maxI;
+								pixel.rgbtGreen = GetGValue(drawColor) * Igreen / maxI;
+								data[x - 1] = pixel;
 							}
 						}
 					}
@@ -127,6 +195,17 @@ void Triangle::draw(TCanvas *canvas, float **zBuffer, TColor frontColor, TColor 
 			}
 		}
 	}
+
+//	TColor col = canvas->Pixels[src[_X]][src[_Y]];
+//	int R = GetRValue(col);
+//	int G = GetGValue(col);
+//	int B = GetBValue(col);
+//
+//	col = RGB(0xFF - R, 0xFF - G, 0xFF - B);
+
+//	canvas->Pen->Color = clLime;
+//	canvas->PenPos = TPoint(src.x, src.y);
+//	canvas->LineTo(dest.x, dest.y);
 }
 //---------------------------------------------------------------------------
 void Triangle::sort(double array[3][3], unsigned by)

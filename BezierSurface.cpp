@@ -206,9 +206,9 @@ BezierSurface::BezierSurface(const unsigned rows,
 				b = verts[1];
 				c = verts[2];
 
-				triangle1->a = new Vertice(*a);
-				triangle1->b = new Vertice(*b);
-				triangle1->c = new Vertice(*c);
+				triangle1->av = new Vertice(*a);
+				triangle1->bv = new Vertice(*b);
+				triangle1->cv = new Vertice(*c);
 
 				surfaceTriangles.push_back(triangle1);
 
@@ -220,9 +220,9 @@ BezierSurface::BezierSurface(const unsigned rows,
 				b = verts2[0];
 				c = verts2[2];
 
-				triangle2->a = new Vertice(*a);
-				triangle2->b = new Vertice(*b);
-				triangle2->c = new Vertice(*c);
+				triangle2->av = new Vertice(*a);
+				triangle2->bv = new Vertice(*b);
+				triangle2->cv = new Vertice(*c);
 
 				surfaceTriangles.push_back(triangle2);
 			}

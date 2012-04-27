@@ -5,72 +5,78 @@
 #include "Object3D.h"
 #include "Vertice.h"
 
-#define X 0
-#define Y 1
-#define Z 2
+#define _X 0
+#define _Y 1
+#define _Z 2
 //---------------------------------------------------------------------------
 class Matrix;
+
+struct vector3D {
+	double x;
+	double y;
+	double z;
+};
 
 class Triangle : virtual public Object3D
 {
 	private :
-		inline void   normalized(TPoint, double &, double &);
-		inline double *makeVector(double *, double *);
-		inline double *crossProduct(double *, double *);
-		inline void   swap(double *, double *);
+		inline void normalized(TPoint, double &, double &);
+		inline void makevector3D(const vector3D, const vector3D, vector3D &);
+		inline void crossProduct(const vector3D, const vector3D, vector3D &);
+		inline void swap(double *, double *);
 
 		void sort(double [3][3], unsigned);
+		inline double dotProduct(const vector3D, const vector3D);
+		inline double vectorLength(const vector3D);
+		inline double angle(const vector3D, const vector3D);
+		inline void   normalizeVec(vector3D &);
 
 	public :
 		Triangle() {}
 		Triangle(const Triangle&);
 		~Triangle();
 
-		void applyTransform(Matrix *);
-		void applyRotation(const double, const double);
-		void draw(TCanvas *);
+		inline void applyTransform(Matrix *);
+		inline void applyRotation(const double, const double);
+		void draw(Graphics::TBitmap *) {}
 
-		void draw(TCanvas *, float **, TColor, TColor);
+		void draw(Graphics::TBitmap *, float **, TColor, TColor);
 
-		Vertice *a;
-		Vertice *b;
-		Vertice *c;
+		Vertice *av;
+		Vertice *bv;
+		Vertice *cv;
 };
 //---------------------------------------------------------------------------
 // Lifecycle
 //---------------------------------------------------------------------------
 Triangle::Triangle(const Triangle &src)
 {
-	a = new Vertice(*src.a);
-	b = new Vertice(*src.b);
-	c = new Vertice(*src.c);
+	av = new Vertice(*src.av);
+	bv = new Vertice(*src.bv);
+	cv = new Vertice(*src.cv);
 }
 //---------------------------------------------------------------------------
 Triangle::~Triangle()
 {
-	delete a;
-	delete b;
-	delete c;
+	delete av;
+	delete bv;
+	delete cv;
 }
 //---------------------------------------------------------------------------
 // Custom methods
 //---------------------------------------------------------------------------
-inline double *Triangle::makeVector(double *a, double *b)
+inline void Triangle::makevector3D(const vector3D a, const vector3D b, vector3D &result)
 {
-	double *c = new double[3];
-	c[0] = b[0] - a[0];
-	c[1] = b[1] - a[1];
-	c[2] = b[2] - a[2];
-	return c;
+	result.x = b.x - a.x;
+	result.y = b.y - a.y;
+	result.z = b.z - a.z;
 }
 //---------------------------------------------------------------------------
-inline double *Triangle::crossProduct(double *a, double *b)
+inline void Triangle::crossProduct(const vector3D a, const vector3D b, vector3D &result)
 {
-	double *cross = new double[3];
-	cross[X] = a[Y] * b[Z] - a[Z] * b[Y];
-	cross[Y] = -a[X] * b[Z] + a[Z] * b[X];
-	cross[Z] = a[X] * b[Y] - a[Y] * b[X];
-	return cross;
+	result.x = a.y * b.z - a.z * b.y;
+	result.y = -a.x * b.z + a.z * b.x;
+	result.z = a.x * b.y - a.y * b.x;
 }
 //---------------------------------------------------------------------------
 inline void Triangle::normalized(TPoint center, double &x, double &y)
@@ -82,17 +88,55 @@ inline void Triangle::normalized(TPoint center, double &x, double &y)
 inline void Triangle::swap(double *a, double *b)
 {
 	double t[3];
-	t[X] = a[X];
-	t[Y] = a[Y];
-	t[Z] = a[Z];
+	t[_X] = a[_X];
+	t[_Y] = a[_Y];
+	t[_Z] = a[_Z];
 
-	a[X] = b[X];
-	a[Y] = b[Y];
-	a[Z] = b[Z];
+	a[_X] = b[_X];
+	a[_Y] = b[_Y];
+	a[_Z] = b[_Z];
 
-	b[X] = t[X];
-	b[Y] = t[Y];
-	b[Z] = t[Z];
+	b[_X] = t[_X];
+	b[_Y] = t[_Y];
+	b[_Z] = t[_Z];
+}
+//---------------------------------------------------------------------------
+inline double Triangle::dotProduct(const vector3D a, const vector3D b)
+{
+	return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+//---------------------------------------------------------------------------
+inline double Triangle::vectorLength(const vector3D v)
+{
+	return sqrt(v.x * v.x + v.y * v.y + v.z * v.z);
+}
+//---------------------------------------------------------------------------
+inline double Triangle::angle(const vector3D a, const vector3D b)
+{
+	return acos(dotProduct(a, b) / (vectorLength(a) * vectorLength(b)));
+}
+//---------------------------------------------------------------------------
+inline void Triangle::normalizeVec(vector3D &v)
+{
+	double length = vectorLength(v);
+	length = (length) ? length : 0.00001;
+	v.x /= length;
+	v.y /= length;
+	v.z /= length;
+}
+//---------------------------------------------------------------------------
+inline void Triangle::applyTransform(Matrix *transform)
+{
+	av->applyTransform(transform);
+	bv->applyTransform(transform);
+	cv->applyTransform(transform);
+}
+//---------------------------------------------------------------------------
+inline void Triangle::applyRotation(const double ax, const double ay)
+{
+	av->applyRotation(ax, ay);
+	bv->applyRotation(ax, ay);
+	cv->applyRotation(ax, ay);
 }
 //---------------------------------------------------------------------------
 #endif

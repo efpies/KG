@@ -67,6 +67,16 @@ __published:	// IDE-managed Components
 	TLabel *Label7;
 	TGroupBox *GroupBox2;
 	TColorDialog *PickColor;
+	TEdit *Edit1;
+	TEdit *Edit2;
+	TEdit *Edit3;
+	TRadioGroup *RadioGroup1;
+	TTabSheet *Lab4;
+	TGroupBox *GroupBox3;
+	TImage *SourceLightColorPicker;
+	TImage *Image2;
+	TLabel *Label8;
+	TLabel *Label9;
 	void __fastcall DrawBtnClick(TObject *Sender);
 	void __fastcall GraphMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
           int X, int Y);
@@ -81,6 +91,7 @@ __published:	// IDE-managed Components
 	void __fastcall FormShow(TObject *Sender);
 	void __fastcall FrontColorPickerClick(TObject *Sender);
 	void __fastcall BackColorPickerClick(TObject *Sender);
+	void __fastcall SourceLightColorPickerClick(TObject *Sender);
 
 private:	// User declarations
 	void __fastcall drawObjects(TCanvas *, bool);
@@ -95,12 +106,15 @@ private:	// User declarations
 	void __fastcall refreshCaption();
 	void __fastcall FillCanvasWithColor(TCanvas *, TColor);
 	TColor __fastcall getPickerColor(TImage *);
+	TColor __fastcall getSourceLightColor();
 
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
 	map<UnicodeString, Vertice *> points;
 	map<UnicodeString, Edge *> edges;
 	map<UnicodeString, GraphicObject *> objects;
+
+	__property TColor sourceLightColor = {read=getSourceLightColor};
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;
@@ -116,6 +130,7 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 
 	FillCanvasWithColor(FrontColorPicker->Canvas, clRed);
 	FillCanvasWithColor(BackColorPicker->Canvas, clBlack);
+	FillCanvasWithColor(SourceLightColorPicker->Canvas, clWhite);
 
 	scale = 4;
 	ScaleEdit->Value = scale;
@@ -145,4 +160,8 @@ TColor __fastcall TMainForm::getPickerColor(TImage *picker)
   	return picker->Canvas->Pixels[1][1];
 }
 //---------------------------------------------------------------------------
+TColor __fastcall TMainForm::getSourceLightColor()
+{
+    return getPickerColor(SourceLightColorPicker);
+}
 #endif
