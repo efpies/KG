@@ -137,11 +137,12 @@ void __fastcall TMainForm::FillCanvasWithColor(TCanvas *destCanvas, TColor fillC
 {
 	destCanvas->Brush->Color = fillColor;
 	destCanvas->FillRect(destCanvas->ClipRect);
+	destCanvas->Rectangle(destCanvas->ClipRect);
 }
 //---------------------------------------------------------------------------
 TColor __fastcall TMainForm::getPickerColor(TImage *picker)
 {
-  	return picker->Canvas->Pixels[0][0];
+  	return picker->Canvas->Pixels[1][1];
 }
 //---------------------------------------------------------------------------
 #endif
