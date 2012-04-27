@@ -44,10 +44,10 @@ void GraphicObject::applyRotation(const double ax, const double ay)
 //---------------------------------------------------------------------------
 // Custom methods
 //---------------------------------------------------------------------------
-void GraphicObject::draw(TCanvas* canvas)
+void GraphicObject::draw(Graphics::TBitmap *bmp)
 {
 	for (EdgeIt i = edges.begin(); i != edges.end(); ++i) {
-		(*i)->draw (canvas, allVertices[(*i)->tagA], allVertices[(*i)->tagB]);
+		(*i)->draw (bmp->Canvas, allVertices[(*i)->tagA], allVertices[(*i)->tagB]);
 	}
 }
 //---------------------------------------------------------------------------

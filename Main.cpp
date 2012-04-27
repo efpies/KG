@@ -251,6 +251,8 @@ void __fastcall TMainForm::drawObjects(TCanvas *destCanvas, bool erase)
 		scale = ScaleEdit->Value;
 
 		Graphics::TBitmap *buffer = new Graphics::TBitmap;
+		buffer->PixelFormat = pf24bit;
+
 		buffer->Width = destCanvas->ClipRect.Width();
 		buffer->Height = destCanvas->ClipRect.Height();
 
@@ -258,7 +260,7 @@ void __fastcall TMainForm::drawObjects(TCanvas *destCanvas, bool erase)
 		surface->backColor = getPickerColor(BackColorPicker);
 
 		surface->applyRotation(angleX, angleY);
-		surface->draw(buffer->Canvas);
+		surface->draw(buffer);
 
 		destCanvas->Draw(0, 0, buffer);
 

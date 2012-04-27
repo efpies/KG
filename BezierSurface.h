@@ -47,7 +47,7 @@ class BezierSurface : virtual public Object3D
 
 		void applyTransform(Matrix *);
 		void applyRotation(const double, const double);
-		void draw(TCanvas *);
+		void draw(Graphics::TBitmap *);
 		void drawTriangle(const Triangle *, TCanvas *, TColor);
 
 		bool gridHidden;

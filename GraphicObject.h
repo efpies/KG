@@ -29,7 +29,7 @@ class GraphicObject : virtual public Object3D
 
 		void applyTransform(Matrix *);
 		void applyRotation(const double, const double);
-		void draw(TCanvas *);
+		void draw(Graphics::TBitmap *);
 
 		Vertice *a;
 		Vertice *b;

@@ -237,16 +237,16 @@ BezierSurface::~BezierSurface()
 //---------------------------------------------------------------------------
 // Custom methods
 //---------------------------------------------------------------------------
-void BezierSurface::draw (TCanvas *canvas)
+void BezierSurface::draw (Graphics::TBitmap *bmp)
 {
 	if(!gridHidden) {
-		grid->draw(canvas);
+		grid->draw(bmp);
 	}
 
-	refreshZbuffer(canvas->ClipRect.Size);
+	refreshZbuffer(bmp->Canvas->ClipRect.Size);
 
 	for(triIt i = surfaceTriangles.begin(); i != surfaceTriangles.end(); ++i) {
-		(*i)->draw(canvas, zBuffer, frontColor, backColor);
+		(*i)->draw(bmp, zBuffer, frontColor, backColor);
 	}
 }
 //---------------------------------------------------------------------------

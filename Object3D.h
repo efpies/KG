@@ -9,7 +9,7 @@ class Matrix;
 class Object3D
 {
 	public :
-		virtual void draw(TCanvas *) = 0;
+		virtual void draw(Graphics::TBitmap *) = 0;
 		virtual void applyTransform(Matrix *) = 0;
 		virtual void applyRotation(const double, const double) = 0;
 
