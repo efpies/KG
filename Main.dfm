@@ -76,7 +76,7 @@ object MainForm: TMainForm
     Top = 31
     Width = 283
     Height = 162
-    ActivePage = Lab2
+    ActivePage = Lab4
     MultiLine = True
     TabOrder = 3
     OnChange = LabsTabsChange
@@ -280,8 +280,8 @@ object MainForm: TMainForm
       object GroupBox3: TGroupBox
         Left = 3
         Top = 3
-        Width = 159
-        Height = 87
+        Width = 262
+        Height = 128
         Caption = #1054#1089#1074#1077#1097#1077#1085#1080#1077
         TabOrder = 0
         object SourceLightColorPicker: TImage
@@ -291,13 +291,6 @@ object MainForm: TMainForm
           Height = 43
           OnClick = SourceLightColorPickerClick
         end
-        object Image2: TImage
-          Left = 100
-          Top = 34
-          Width = 43
-          Height = 43
-          OnClick = BackColorPickerClick
-        end
         object Label8: TLabel
           Left = 10
           Top = 15
@@ -305,45 +298,121 @@ object MainForm: TMainForm
           Height = 13
           Caption = #1048#1089#1090#1086#1095#1085#1080#1082
         end
-        object Label9: TLabel
-          Left = 96
-          Top = 15
-          Width = 50
+      end
+      object GroupBox4: TGroupBox
+        Left = 120
+        Top = 18
+        Width = 137
+        Height = 95
+        Caption = #1055#1086#1083#1086#1078#1077#1085#1080#1077' '#1080#1089#1090#1086#1095#1085#1080#1082#1072
+        TabOrder = 1
+        object Label11: TLabel
+          Left = 16
+          Top = 45
+          Width = 6
           Height = 13
-          Caption = #1054#1073#1088#1072#1090#1085#1072#1103
+          Caption = 'Y'
+        end
+        object Label12: TLabel
+          Left = 16
+          Top = 67
+          Width = 6
+          Height = 13
+          Caption = 'Z'
+        end
+        object Label9: TLabel
+          Left = 16
+          Top = 22
+          Width = 6
+          Height = 13
+          Caption = 'X'
+        end
+        object SourcePosXTextField: TEdit
+          Left = 28
+          Top = 18
+          Width = 43
+          Height = 21
+          Ctl3D = True
+          ParentCtl3D = False
+          TabOrder = 0
+          Text = '0'
+        end
+        object SourcePosYTextField: TEdit
+          Left = 28
+          Top = 42
+          Width = 43
+          Height = 21
+          Ctl3D = True
+          ParentCtl3D = False
+          TabOrder = 1
+          Text = '0'
+        end
+        object SourcePosZTextField: TEdit
+          Left = 28
+          Top = 65
+          Width = 43
+          Height = 21
+          Ctl3D = True
+          ParentCtl3D = False
+          TabOrder = 2
+          Text = '50'
+        end
+        object SourcePosXIncrementButton: TButton
+          Left = 77
+          Top = 18
+          Width = 21
+          Height = 21
+          Caption = '+'
+          TabOrder = 3
+          OnClick = SourcePosXIncrementButtonClick
+        end
+        object SourcePosXDecrementButton: TButton
+          Left = 102
+          Top = 18
+          Width = 21
+          Height = 21
+          Caption = #8212
+          TabOrder = 4
+          OnClick = SourcePosXDecrementButtonClick
+        end
+        object SourcePosYDecrementButton: TButton
+          Left = 102
+          Top = 42
+          Width = 21
+          Height = 21
+          Caption = #8212
+          TabOrder = 5
+          OnClick = SourcePosYDecrementButtonClick
+        end
+        object SourcePosYIncrementButton: TButton
+          Left = 77
+          Top = 42
+          Width = 21
+          Height = 21
+          Caption = '+'
+          TabOrder = 6
+          OnClick = SourcePosYIncrementButtonClick
+        end
+        object SourcePosZIncrementButton: TButton
+          Left = 77
+          Top = 65
+          Width = 21
+          Height = 21
+          Caption = '+'
+          TabOrder = 7
+          OnClick = SourcePosZIncrementButtonClick
+        end
+        object SourcePosZDecrementButton: TButton
+          Left = 102
+          Top = 65
+          Width = 21
+          Height = 21
+          Caption = #8212
+          TabOrder = 8
+          OnClick = SourcePosZDecrementButtonClick
         end
       end
     end
-  end
-  object Edit1: TEdit
-    Left = 870
-    Top = 216
-    Width = 121
-    Height = 21
-    Ctl3D = True
-    ParentCtl3D = False
-    TabOrder = 4
-    Text = '0'
-  end
-  object Edit2: TEdit
-    Left = 870
-    Top = 243
-    Width = 121
-    Height = 21
-    Ctl3D = True
-    ParentCtl3D = False
-    TabOrder = 5
-    Text = '0'
-  end
-  object Edit3: TEdit
-    Left = 870
-    Top = 270
-    Width = 121
-    Height = 21
-    Ctl3D = True
-    ParentCtl3D = False
-    TabOrder = 6
-    Text = '50'
   end
   object RadioGroup1: TRadioGroup
     Left = 797
@@ -355,7 +424,7 @@ object MainForm: TMainForm
     Items.Strings = (
       #1051#1072#1084#1073#1077#1088#1090
       'Anything')
-    TabOrder = 7
+    TabOrder = 4
   end
   object ActionMgr: TActionManager
     ActionBars = <

@@ -32,9 +32,9 @@ void Triangle::draw(Graphics::TBitmap *bmp, float **zBuffer, TColor frontColor, 
 	Isrc.rgbtBlue = GetBValue(sourceLightColor);
 
 	vector3D src;
-	src.x = MainForm->Edit1->Text.ToInt();
-	src.y = MainForm->Edit2->Text.ToInt();
-	src.z = MainForm->Edit3->Text.ToInt();
+	src.x = MainForm->sourcePositionAtAxis[AxisX];
+	src.y = MainForm->sourcePositionAtAxis[AxisY];
+	src.z = MainForm->sourcePositionAtAxis[AxisZ];
 	normalized(canvasCenter, src.x, src.y);
 
 	vector3D dest;

@@ -294,4 +294,40 @@ void __fastcall TMainForm::SourceLightColorPickerClick(TObject *Sender)
 	}
 }
 //---------------------------------------------------------------------------
+void __fastcall TMainForm::SourcePosXIncrementButtonClick(TObject *Sender)
+{
+	incrementTextField(SourcePosXTextField, 1);
+	drawObjects(Graph->Canvas, true);
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::SourcePosXDecrementButtonClick(TObject *Sender)
+{
+	incrementTextField(SourcePosXTextField, -1);
+	drawObjects(Graph->Canvas, true);
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::SourcePosYIncrementButtonClick(TObject *Sender)
+{
+	incrementTextField(SourcePosYTextField, 1);
+	drawObjects(Graph->Canvas, true);
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::SourcePosYDecrementButtonClick(TObject *Sender)
+{
+	incrementTextField(SourcePosYTextField, -1);
+	drawObjects(Graph->Canvas, true);
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::SourcePosZIncrementButtonClick(TObject *Sender)
+{
+	incrementTextField(SourcePosZTextField, 1);
+	drawObjects(Graph->Canvas, true);
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::SourcePosZDecrementButtonClick(TObject *Sender)
+{
+	incrementTextField(SourcePosZTextField, -1);
+	drawObjects(Graph->Canvas, true);
+}
+//---------------------------------------------------------------------------
 

@@ -67,16 +67,24 @@ __published:	// IDE-managed Components
 	TLabel *Label7;
 	TGroupBox *GroupBox2;
 	TColorDialog *PickColor;
-	TEdit *Edit1;
-	TEdit *Edit2;
-	TEdit *Edit3;
+	TEdit *SourcePosXTextField;
+	TEdit *SourcePosYTextField;
+	TEdit *SourcePosZTextField;
 	TRadioGroup *RadioGroup1;
 	TTabSheet *Lab4;
 	TGroupBox *GroupBox3;
 	TImage *SourceLightColorPicker;
-	TImage *Image2;
 	TLabel *Label8;
+	TGroupBox *GroupBox4;
 	TLabel *Label9;
+	TLabel *Label11;
+	TLabel *Label12;
+	TButton *SourcePosXIncrementButton;
+	TButton *SourcePosXDecrementButton;
+	TButton *SourcePosYDecrementButton;
+	TButton *SourcePosYIncrementButton;
+	TButton *SourcePosZIncrementButton;
+	TButton *SourcePosZDecrementButton;
 	void __fastcall DrawBtnClick(TObject *Sender);
 	void __fastcall GraphMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
           int X, int Y);
@@ -92,6 +100,12 @@ __published:	// IDE-managed Components
 	void __fastcall FrontColorPickerClick(TObject *Sender);
 	void __fastcall BackColorPickerClick(TObject *Sender);
 	void __fastcall SourceLightColorPickerClick(TObject *Sender);
+	void __fastcall SourcePosXIncrementButtonClick(TObject *Sender);
+	void __fastcall SourcePosXDecrementButtonClick(TObject *Sender);
+	void __fastcall SourcePosYIncrementButtonClick(TObject *Sender);
+	void __fastcall SourcePosYDecrementButtonClick(TObject *Sender);
+	void __fastcall SourcePosZIncrementButtonClick(TObject *Sender);
+	void __fastcall SourcePosZDecrementButtonClick(TObject *Sender);
 
 private:	// User declarations
 	void __fastcall drawObjects(TCanvas *, bool);
@@ -107,6 +121,8 @@ private:	// User declarations
 	void __fastcall FillCanvasWithColor(TCanvas *, TColor);
 	TColor __fastcall getPickerColor(TImage *);
 	TColor __fastcall getSourceLightColor();
+	double __fastcall getSourceLightPositionAtAxis(const Axis);
+	void __fastcall incrementTextField(TEdit *, const int);
 
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
@@ -115,6 +131,7 @@ public:		// User declarations
 	map<UnicodeString, GraphicObject *> objects;
 
 	__property TColor sourceLightColor = {read=getSourceLightColor};
+	__property double sourcePositionAtAxis[const Axis axis] = {read=getSourceLightPositionAtAxis};
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;
@@ -163,5 +180,31 @@ TColor __fastcall TMainForm::getPickerColor(TImage *picker)
 TColor __fastcall TMainForm::getSourceLightColor()
 {
     return getPickerColor(SourceLightColorPicker);
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::incrementTextField(TEdit *field, const int value)
+{
+	field->Text = field->Text.ToInt() + value;
+}
+//---------------------------------------------------------------------------
+double __fastcall TMainForm::getSourceLightPositionAtAxis(const Axis axis)
+{
+	TEdit *axisTextField;
+
+	switch(axis) {
+		case AxisX :
+			axisTextField = SourcePosXTextField;
+			break;
+
+		case AxisY :
+			axisTextField = SourcePosYTextField;
+			break;
+
+		case AxisZ :
+			axisTextField = SourcePosZTextField;
+			break;
+    }
+
+	return axisTextField->Text.ToDouble();
 }
 #endif
