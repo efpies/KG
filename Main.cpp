@@ -256,6 +256,14 @@ void __fastcall TMainForm::drawObjects(TCanvas *destCanvas, bool erase)
 		buffer->Width = destCanvas->ClipRect.Width();
 		buffer->Height = destCanvas->ClipRect.Height();
 
+		TBrush *fillBrush = buffer->Canvas->Brush;
+		TColor fillColor = fillBrush->Color;
+		fillBrush->Color = RGB(ambientIntensityCoeff * GetRValue(ambientLightColor),
+							   ambientIntensityCoeff * GetGValue(ambientLightColor),
+							   ambientIntensityCoeff * GetBValue(ambientLightColor));
+
+		buffer->Canvas->FillRect(buffer->Canvas->ClipRect);
+
 		surface->frontColor = getPickerColor(FrontColorPicker);
 		surface->backColor = getPickerColor(BackColorPicker);
 
@@ -294,6 +302,14 @@ void __fastcall TMainForm::SourceLightColorPickerClick(TObject *Sender)
 	}
 }
 //---------------------------------------------------------------------------
+void __fastcall TMainForm::AmbientLightColorPickerClick(TObject *Sender)
+{
+	if(PickColor->Execute()) {
+		FillCanvasWithColor(AmbientLightColorPicker->Canvas, PickColor->Color);
+		drawObjects(Graph->Canvas, true);
+	}
+}
+//---------------------------------------------------------------------------
 void __fastcall TMainForm::SourcePosXIncrementButtonClick(TObject *Sender)
 {
 	incrementTextField(SourcePosXTextField, 1);
@@ -327,6 +343,11 @@ void __fastcall TMainForm::SourcePosZIncrementButtonClick(TObject *Sender)
 void __fastcall TMainForm::SourcePosZDecrementButtonClick(TObject *Sender)
 {
 	incrementTextField(SourcePosZTextField, -1);
+	drawObjects(Graph->Canvas, true);
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::AmbientLightIntensityTrackBarChange(TObject *Sender)
+{
 	drawObjects(Graph->Canvas, true);
 }
 //---------------------------------------------------------------------------

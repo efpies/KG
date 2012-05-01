@@ -70,7 +70,6 @@ __published:	// IDE-managed Components
 	TEdit *SourcePosXTextField;
 	TEdit *SourcePosYTextField;
 	TEdit *SourcePosZTextField;
-	TRadioGroup *RadioGroup1;
 	TTabSheet *Lab4;
 	TGroupBox *GroupBox3;
 	TImage *SourceLightColorPicker;
@@ -85,6 +84,14 @@ __published:	// IDE-managed Components
 	TButton *SourcePosYIncrementButton;
 	TButton *SourcePosZIncrementButton;
 	TButton *SourcePosZDecrementButton;
+	TImage *AmbientLightColorPicker;
+	TLabel *Label13;
+	TGroupBox *GroupBoxSourceLight;
+	TGroupBox *GroupBoxAmbientLight;
+	TTrackBar *AmbientLightIntensityTrackBar;
+	TLabel *Label14;
+	TTrackBar *DiffusionCoeffTrackBar;
+	TLabel *Label15;
 	void __fastcall DrawBtnClick(TObject *Sender);
 	void __fastcall GraphMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
           int X, int Y);
@@ -106,6 +113,8 @@ __published:	// IDE-managed Components
 	void __fastcall SourcePosYDecrementButtonClick(TObject *Sender);
 	void __fastcall SourcePosZIncrementButtonClick(TObject *Sender);
 	void __fastcall SourcePosZDecrementButtonClick(TObject *Sender);
+	void __fastcall AmbientLightColorPickerClick(TObject *Sender);
+	void __fastcall AmbientLightIntensityTrackBarChange(TObject *Sender);
 
 private:	// User declarations
 	void __fastcall drawObjects(TCanvas *, bool);
@@ -122,6 +131,9 @@ private:	// User declarations
 	TColor __fastcall getPickerColor(TImage *);
 	TColor __fastcall getSourceLightColor();
 	double __fastcall getSourceLightPositionAtAxis(const Axis);
+	TColor __fastcall getAmbientLightColor();
+	double __fastcall getAmbientIntensityCoeff();
+	double __fastcall getMaterialDiffusionCoeff();
 	void __fastcall incrementTextField(TEdit *, const int);
 
 public:		// User declarations
@@ -131,7 +143,10 @@ public:		// User declarations
 	map<UnicodeString, GraphicObject *> objects;
 
 	__property TColor sourceLightColor = {read=getSourceLightColor};
+	__property TColor ambientLightColor = {read=getAmbientLightColor};
 	__property double sourcePositionAtAxis[const Axis axis] = {read=getSourceLightPositionAtAxis};
+	__property double ambientIntensityCoeff = {read=getAmbientIntensityCoeff};
+	__property double materialDiffusionCoeff = {read=getMaterialDiffusionCoeff};
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;
@@ -148,6 +163,7 @@ __fastcall TMainForm::TMainForm(TComponent* Owner)
 	FillCanvasWithColor(FrontColorPicker->Canvas, clRed);
 	FillCanvasWithColor(BackColorPicker->Canvas, clBlack);
 	FillCanvasWithColor(SourceLightColorPicker->Canvas, clWhite);
+	FillCanvasWithColor(AmbientLightColorPicker->Canvas, clWhite);
 
 	scale = 4;
 	ScaleEdit->Value = scale;
@@ -179,7 +195,12 @@ TColor __fastcall TMainForm::getPickerColor(TImage *picker)
 //---------------------------------------------------------------------------
 TColor __fastcall TMainForm::getSourceLightColor()
 {
-    return getPickerColor(SourceLightColorPicker);
+	return getPickerColor(SourceLightColorPicker);
+}
+//---------------------------------------------------------------------------
+TColor __fastcall TMainForm::getAmbientLightColor()
+{
+	return getPickerColor(AmbientLightColorPicker);
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::incrementTextField(TEdit *field, const int value)
@@ -207,4 +228,15 @@ double __fastcall TMainForm::getSourceLightPositionAtAxis(const Axis axis)
 
 	return axisTextField->Text.ToDouble();
 }
+//---------------------------------------------------------------------------
+double __fastcall TMainForm::getAmbientIntensityCoeff()
+{
+	return (double)AmbientLightIntensityTrackBar->Position / (double)AmbientLightIntensityTrackBar->Max;
+}
+//---------------------------------------------------------------------------
+double __fastcall TMainForm::getMaterialDiffusionCoeff()
+{
+	return (double)DiffusionCoeffTrackBar->Position / (double)DiffusionCoeffTrackBar->Max;
+}
+//---------------------------------------------------------------------------
 #endif

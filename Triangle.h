@@ -31,6 +31,8 @@ class Triangle : virtual public Object3D
 		inline double angle(const vector3D, const vector3D);
 		inline void   normalizeVec(vector3D &);
 
+		inline TRGBTriple RGBTripleFromColor(TColor);
+
 	public :
 		Triangle() {}
 		Triangle(const Triangle&);
@@ -139,4 +141,12 @@ inline void Triangle::applyRotation(const double ax, const double ay)
 	cv->applyRotation(ax, ay);
 }
 //---------------------------------------------------------------------------
+inline TRGBTriple Triangle::RGBTripleFromColor(TColor color)
+{
+	TRGBTriple rgbTriple;
+	rgbTriple.rgbtRed = GetRValue(color);
+	rgbTriple.rgbtGreen = GetGValue(color);
+	rgbTriple.rgbtBlue = GetBValue(color);
+	return rgbTriple;
+}
 #endif

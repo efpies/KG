@@ -14,34 +14,10 @@
 //---------------------------------------------------------------------------
 // Custom methods
 //---------------------------------------------------------------------------
-
-double kd = 1;
-double coeff = 1;
-TColor srcColor = RGB(255, 0, 0);
-double maxI = 255.0;
-
 void Triangle::draw(Graphics::TBitmap *bmp, float **zBuffer, TColor frontColor, TColor backColor)
 {
 	TRect clipRect = bmp->Canvas->ClipRect;
 	TPoint canvasCenter = clipRect.CenterPoint();
-
-	TColor sourceLightColor = MainForm->sourceLightColor;
-	TRGBTriple Isrc;
-	Isrc.rgbtRed = GetRValue(sourceLightColor);
-	Isrc.rgbtGreen = GetGValue(sourceLightColor);
-	Isrc.rgbtBlue = GetBValue(sourceLightColor);
-
-	vector3D src;
-	src.x = MainForm->sourcePositionAtAxis[AxisX];
-	src.y = MainForm->sourcePositionAtAxis[AxisY];
-	src.z = MainForm->sourcePositionAtAxis[AxisZ];
-	normalized(canvasCenter, src.x, src.y);
-
-	vector3D dest;
-	dest.x = 0.0;
-	dest.y = 0.0;
-	dest.z = 0.0;
-	normalized(canvasCenter, dest.x, dest.y);
 
 	double tri[3][3];
 
@@ -59,6 +35,18 @@ void Triangle::draw(Graphics::TBitmap *bmp, float **zBuffer, TColor frontColor, 
 	tri[2][1] = cv->getY();
 	tri[2][2] = cv->getZ();
 	normalized(canvasCenter, tri[2][_X], tri[2][_Y]);
+
+	vector3D src;
+	src.x = MainForm->sourcePositionAtAxis[AxisX];
+	src.y = MainForm->sourcePositionAtAxis[AxisY];
+	src.z = MainForm->sourcePositionAtAxis[AxisZ];
+	normalized(canvasCenter, src.x, src.y);
+
+	vector3D dest;
+	dest.x = 0.0;
+	dest.y = 0.0;
+	dest.z = 0.0;
+	normalized(canvasCenter, dest.x, dest.y);
 
 	vector3D head;
 	head.x = av->getX();
@@ -102,34 +90,25 @@ void Triangle::draw(Graphics::TBitmap *bmp, float **zBuffer, TColor frontColor, 
 	vector3D vecInvBeam;
 	makevector3D(head, src, vecInvBeam);
 
-	double len = vectorLength(vecInvBeam) / 100.0;
+	double distance = vectorLength(vecInvBeam) / 100.0;
 
 	normalizeVec(cross);
 	normalizeVec(vecInvBeam);
 
-    double Ired, Igreen, Iblue;
+	TRGBTriple Isrc = RGBTripleFromColor(MainForm->sourceLightColor);
+	TRGBTriple Iamb = RGBTripleFromColor(MainForm->ambientLightColor);
 
-	if(MainForm->RadioGroup1->ItemIndex == 0) {
-		Ired = Isrc.rgbtRed * max(0.0, dotProduct(cross, vecInvBeam)) / len;
-		Igreen = Isrc.rgbtGreen * max(0.0, dotProduct(cross, vecInvBeam)) / len;
-		Iblue = Isrc.rgbtBlue * max(0.0, dotProduct(cross, vecInvBeam)) / len;
-	}
-	else {
-		vector3D vecBeam;
-		makevector3D(src, head, vecBeam);
-		normalizeVec(vecBeam);
+	double kAmb = MainForm->ambientIntensityCoeff;
+	double kD   = MainForm->materialDiffusionCoeff;
+	double k = kD * max(0.0, dotProduct(cross, vecInvBeam)) / distance;
+	double Ired   = min(Iamb.rgbtRed   * kAmb + Isrc.rgbtRed   * k, 255.0);
+	double Igreen = min(Iamb.rgbtGreen * kAmb + Isrc.rgbtGreen * k, 255.0);
+	double Iblue  = min(Iamb.rgbtBlue  * kAmb + Isrc.rgbtBlue  * k, 255.0);
 
-		double beta = angle(vecLight, vecBeam);
-		double theta = angle(vecInvBeam, cross);
-
-		Ired = Isrc.rgbtRed * cos(theta) * kd * pow(cos(beta), coeff);
-		Igreen = Isrc.rgbtGreen * cos(theta) * kd * pow(cos(beta), coeff);
-		Iblue = Isrc.rgbtBlue * cos(theta) * kd * pow(cos(beta), coeff);
-	}
-
-	Ired = min(Ired, 255.0);
-	Igreen = min(Igreen, 255.0);
-	Iblue = min(Iblue, 255.0);
+	TRGBTriple pixel;
+	pixel.rgbtRed   = GetRValue(drawColor) * Ired   / 255.0;
+	pixel.rgbtBlue  = GetBValue(drawColor) * Iblue  / 255.0;
+	pixel.rgbtGreen = GetGValue(drawColor) * Igreen / 255.0;
 
 	sort(tri, 1);
 
@@ -182,11 +161,6 @@ void Triangle::draw(Graphics::TBitmap *bmp, float **zBuffer, TColor frontColor, 
 
 							if(z > zBuffer[y - 1][x - 1]) {
 								zBuffer[y - 1][x - 1] = z;
-
-								TRGBTriple pixel;
-								pixel.rgbtRed = GetRValue(drawColor) * Ired / maxI;
-								pixel.rgbtBlue = GetBValue(drawColor) * Iblue / maxI;
-								pixel.rgbtGreen = GetGValue(drawColor) * Igreen / maxI;
 								data[x - 1] = pixel;
 							}
 						}

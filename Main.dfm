@@ -27,8 +27,8 @@ object MainForm: TMainForm
     OnMouseUp = GraphMouseUp
   end
   object Label1: TLabel
-    Left = 797
-    Top = 296
+    Left = 802
+    Top = 424
     Width = 45
     Height = 13
     Caption = #1052#1072#1089#1096#1090#1072#1073
@@ -54,8 +54,8 @@ object MainForm: TMainForm
     Spacing = 0
   end
   object DrawBtn: TButton
-    Left = 797
-    Top = 343
+    Left = 802
+    Top = 471
     Width = 131
     Height = 50
     Caption = #1054#1090#1088#1080#1089#1086#1074#1072#1090#1100
@@ -63,8 +63,8 @@ object MainForm: TMainForm
     OnClick = DrawBtnClick
   end
   object ScaleEdit: TCSpinEdit
-    Left = 797
-    Top = 315
+    Left = 802
+    Top = 443
     Width = 131
     Height = 22
     MaxValue = 100
@@ -75,13 +75,14 @@ object MainForm: TMainForm
     Left = 717
     Top = 31
     Width = 283
-    Height = 162
+    Height = 346
     ActivePage = Lab4
     MultiLine = True
     TabOrder = 3
     OnChange = LabsTabsChange
     object Lab1: TTabSheet
       Caption = '#1'
+      ExplicitHeight = 134
       object GroupBox1: TGroupBox
         Left = 140
         Top = 3
@@ -156,6 +157,7 @@ object MainForm: TMainForm
     object Lab2: TTabSheet
       Caption = '#2'
       ImageIndex = 1
+      ExplicitHeight = 134
       object Label2: TLabel
         Left = 11
         Top = 3
@@ -224,6 +226,7 @@ object MainForm: TMainForm
     object Lab3: TTabSheet
       Caption = '#3'
       ImageIndex = 2
+      ExplicitHeight = 134
       object DrawStyleRadioGroup: TRadioGroup
         Left = 3
         Top = 3
@@ -277,154 +280,222 @@ object MainForm: TMainForm
     object Lab4: TTabSheet
       Caption = '#4'
       ImageIndex = 3
+      ExplicitHeight = 273
       object GroupBox3: TGroupBox
-        Left = 3
+        Left = 5
         Top = 3
-        Width = 262
-        Height = 128
+        Width = 267
+        Height = 310
         Caption = #1054#1089#1074#1077#1097#1077#1085#1080#1077
         TabOrder = 0
-        object SourceLightColorPicker: TImage
-          Left = 12
-          Top = 34
-          Width = 43
-          Height = 43
-          OnClick = SourceLightColorPickerClick
+        object Label15: TLabel
+          Left = 22
+          Top = 244
+          Width = 182
+          Height = 13
+          Caption = #1050#1086#1101#1092#1092#1080#1094#1080#1077#1085#1090' '#1076#1080#1092#1092#1091#1079#1080#1080' '#1084#1072#1090#1077#1088#1080#1072#1083#1072
         end
-        object Label8: TLabel
+        object GroupBoxSourceLight: TGroupBox
           Left = 10
           Top = 15
-          Width = 48
-          Height = 13
-          Caption = #1048#1089#1090#1086#1095#1085#1080#1082
-        end
-      end
-      object GroupBox4: TGroupBox
-        Left = 120
-        Top = 18
-        Width = 137
-        Height = 95
-        Caption = #1055#1086#1083#1086#1078#1077#1085#1080#1077' '#1080#1089#1090#1086#1095#1085#1080#1082#1072
-        TabOrder = 1
-        object Label11: TLabel
-          Left = 16
-          Top = 45
-          Width = 6
-          Height = 13
-          Caption = 'Y'
-        end
-        object Label12: TLabel
-          Left = 16
-          Top = 67
-          Width = 6
-          Height = 13
-          Caption = 'Z'
-        end
-        object Label9: TLabel
-          Left = 16
-          Top = 22
-          Width = 6
-          Height = 13
-          Caption = 'X'
-        end
-        object SourcePosXTextField: TEdit
-          Left = 28
-          Top = 18
-          Width = 43
-          Height = 21
-          Ctl3D = True
-          ParentCtl3D = False
+          Width = 247
+          Height = 115
+          Caption = #1048#1089#1090#1086#1095#1085#1080#1082' '#1089#1074#1077#1090#1072
           TabOrder = 0
-          Text = '0'
+          object Label8: TLabel
+            Left = 37
+            Top = 23
+            Width = 25
+            Height = 13
+            Caption = #1057#1074#1077#1090
+          end
+          object SourceLightColorPicker: TImage
+            Left = 28
+            Top = 42
+            Width = 43
+            Height = 43
+            OnClick = SourceLightColorPickerClick
+          end
+          object GroupBox4: TGroupBox
+            Left = 99
+            Top = 10
+            Width = 137
+            Height = 95
+            Caption = #1055#1086#1083#1086#1078#1077#1085#1080#1077' '#1080#1089#1090#1086#1095#1085#1080#1082#1072
+            TabOrder = 0
+            object Label11: TLabel
+              Left = 16
+              Top = 45
+              Width = 6
+              Height = 13
+              Caption = 'Y'
+            end
+            object Label12: TLabel
+              Left = 16
+              Top = 67
+              Width = 6
+              Height = 13
+              Caption = 'Z'
+            end
+            object Label9: TLabel
+              Left = 16
+              Top = 22
+              Width = 6
+              Height = 13
+              Caption = 'X'
+            end
+            object SourcePosXTextField: TEdit
+              Left = 28
+              Top = 18
+              Width = 43
+              Height = 21
+              Ctl3D = True
+              ParentCtl3D = False
+              TabOrder = 0
+              Text = '0'
+            end
+            object SourcePosYTextField: TEdit
+              Left = 28
+              Top = 42
+              Width = 43
+              Height = 21
+              Ctl3D = True
+              ParentCtl3D = False
+              TabOrder = 1
+              Text = '0'
+            end
+            object SourcePosZTextField: TEdit
+              Left = 28
+              Top = 65
+              Width = 43
+              Height = 21
+              Ctl3D = True
+              ParentCtl3D = False
+              TabOrder = 2
+              Text = '50'
+            end
+            object SourcePosXIncrementButton: TButton
+              Left = 77
+              Top = 18
+              Width = 21
+              Height = 21
+              Caption = '+'
+              TabOrder = 3
+              OnClick = SourcePosXIncrementButtonClick
+            end
+            object SourcePosXDecrementButton: TButton
+              Left = 102
+              Top = 18
+              Width = 21
+              Height = 21
+              Caption = #8212
+              TabOrder = 4
+              OnClick = SourcePosXDecrementButtonClick
+            end
+            object SourcePosYDecrementButton: TButton
+              Left = 102
+              Top = 42
+              Width = 21
+              Height = 21
+              Caption = #8212
+              TabOrder = 5
+              OnClick = SourcePosYDecrementButtonClick
+            end
+            object SourcePosYIncrementButton: TButton
+              Left = 77
+              Top = 42
+              Width = 21
+              Height = 21
+              Caption = '+'
+              TabOrder = 6
+              OnClick = SourcePosYIncrementButtonClick
+            end
+            object SourcePosZIncrementButton: TButton
+              Left = 77
+              Top = 65
+              Width = 21
+              Height = 21
+              Caption = '+'
+              TabOrder = 7
+              OnClick = SourcePosZIncrementButtonClick
+            end
+            object SourcePosZDecrementButton: TButton
+              Left = 102
+              Top = 65
+              Width = 21
+              Height = 21
+              Caption = #8212
+              TabOrder = 8
+              OnClick = SourcePosZDecrementButtonClick
+            end
+          end
         end
-        object SourcePosYTextField: TEdit
-          Left = 28
-          Top = 42
-          Width = 43
-          Height = 21
-          Ctl3D = True
-          ParentCtl3D = False
+        object GroupBoxAmbientLight: TGroupBox
+          Left = 10
+          Top = 136
+          Width = 247
+          Height = 105
+          Caption = #1060#1086#1085#1086#1074#1086#1077' '#1086#1089#1074#1077#1097#1077#1085#1080#1077
           TabOrder = 1
-          Text = '0'
+          object AmbientLightColorPicker: TImage
+            Left = 28
+            Top = 42
+            Width = 43
+            Height = 43
+            OnClick = AmbientLightColorPickerClick
+          end
+          object Label13: TLabel
+            Left = 37
+            Top = 23
+            Width = 25
+            Height = 13
+            Caption = #1057#1074#1077#1090
+          end
+          object Label14: TLabel
+            Left = 110
+            Top = 23
+            Width = 77
+            Height = 13
+            Caption = #1048#1085#1090#1077#1085#1089#1080#1074#1085#1086#1089#1090#1100
+          end
+          object AmbientLightIntensityTrackBar: TTrackBar
+            Left = 99
+            Top = 41
+            Width = 137
+            Height = 45
+            Ctl3D = True
+            LineSize = 10
+            Max = 100
+            ParentCtl3D = False
+            PageSize = 25
+            ShowSelRange = False
+            TabOrder = 0
+            ThumbLength = 40
+            TickMarks = tmBoth
+            TickStyle = tsNone
+            OnChange = AmbientLightIntensityTrackBarChange
+          end
         end
-        object SourcePosZTextField: TEdit
-          Left = 28
-          Top = 65
-          Width = 43
-          Height = 21
+        object DiffusionCoeffTrackBar: TTrackBar
+          Left = 11
+          Top = 262
+          Width = 246
+          Height = 45
           Ctl3D = True
+          LineSize = 10
+          Max = 100
           ParentCtl3D = False
+          PageSize = 25
+          Position = 75
+          ShowSelRange = False
           TabOrder = 2
-          Text = '50'
-        end
-        object SourcePosXIncrementButton: TButton
-          Left = 77
-          Top = 18
-          Width = 21
-          Height = 21
-          Caption = '+'
-          TabOrder = 3
-          OnClick = SourcePosXIncrementButtonClick
-        end
-        object SourcePosXDecrementButton: TButton
-          Left = 102
-          Top = 18
-          Width = 21
-          Height = 21
-          Caption = #8212
-          TabOrder = 4
-          OnClick = SourcePosXDecrementButtonClick
-        end
-        object SourcePosYDecrementButton: TButton
-          Left = 102
-          Top = 42
-          Width = 21
-          Height = 21
-          Caption = #8212
-          TabOrder = 5
-          OnClick = SourcePosYDecrementButtonClick
-        end
-        object SourcePosYIncrementButton: TButton
-          Left = 77
-          Top = 42
-          Width = 21
-          Height = 21
-          Caption = '+'
-          TabOrder = 6
-          OnClick = SourcePosYIncrementButtonClick
-        end
-        object SourcePosZIncrementButton: TButton
-          Left = 77
-          Top = 65
-          Width = 21
-          Height = 21
-          Caption = '+'
-          TabOrder = 7
-          OnClick = SourcePosZIncrementButtonClick
-        end
-        object SourcePosZDecrementButton: TButton
-          Left = 102
-          Top = 65
-          Width = 21
-          Height = 21
-          Caption = #8212
-          TabOrder = 8
-          OnClick = SourcePosZDecrementButtonClick
+          ThumbLength = 40
+          TickMarks = tmBoth
+          TickStyle = tsNone
+          OnChange = AmbientLightIntensityTrackBarChange
         end
       end
     end
-  end
-  object RadioGroup1: TRadioGroup
-    Left = 797
-    Top = 407
-    Width = 185
-    Height = 105
-    Caption = 'RadioGroup1'
-    ItemIndex = 0
-    Items.Strings = (
-      #1051#1072#1084#1073#1077#1088#1090
-      'Anything')
-    TabOrder = 4
   end
   object ActionMgr: TActionManager
     ActionBars = <
@@ -447,7 +518,6 @@ object MainForm: TMainForm
     Left = 448
   end
   object PickColor: TColorDialog
-    Left = 800
-    Top = 208
+    Left = 504
   end
 end
