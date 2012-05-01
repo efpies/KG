@@ -92,6 +92,13 @@ __published:	// IDE-managed Components
 	TLabel *Label14;
 	TTrackBar *DiffusionCoeffTrackBar;
 	TLabel *Label15;
+	TGroupBox *GroupBoxDiffusionLigth;
+	TCheckBox *UseDiffusionLightModelCheckBox;
+	TCheckBox *UseAmbientLightModelCheckBox;
+	TGroupBox *GroupBoxReflectionLight;
+	TLabel *Label16;
+	TTrackBar *TrackBar1;
+	TCheckBox *UseReflectionLightModelCheckBox;
 	void __fastcall DrawBtnClick(TObject *Sender);
 	void __fastcall GraphMouseDown(TObject *Sender, TMouseButton Button, TShiftState Shift,
           int X, int Y);
@@ -116,6 +123,9 @@ __published:	// IDE-managed Components
 	void __fastcall AmbientLightColorPickerClick(TObject *Sender);
 	void __fastcall AmbientLightIntensityTrackBarChange(TObject *Sender);
 	void __fastcall DrawStyleRadioGroupClick(TObject *Sender);
+	void __fastcall UseDiffusionLightModelCheckBoxClick(TObject *Sender);
+	void __fastcall UseAmbientLightModelCheckBoxClick(TObject *Sender);
+	void __fastcall UseReflectionLightModelCheckBoxClick(TObject *Sender);
 
 private:	// User declarations
 	void __fastcall drawObjects(TCanvas *, bool);
@@ -137,6 +147,9 @@ private:	// User declarations
 	double __fastcall getMaterialDiffusionCoeff();
 	void __fastcall incrementTextField(TEdit *, const int);
 	DrawStyle __fastcall getCurrentDrawStyle();
+	bool __fastcall getShouldUseDiffusionLightModel();
+	bool __fastcall getShouldUseReflectionLightModel();
+	bool __fastcall getShouldUseAmbientLightModel();
 
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
@@ -150,6 +163,9 @@ public:		// User declarations
 	__property double ambientIntensityCoeff = {read=getAmbientIntensityCoeff};
 	__property double materialDiffusionCoeff = {read=getMaterialDiffusionCoeff};
 	__property DrawStyle drawStyle = {read=getCurrentDrawStyle};
+	__property bool shouldUseDiffusionLightModel = {read=getShouldUseDiffusionLightModel};
+	__property bool shouldUseReflectionLightModel = {read=getShouldUseReflectionLightModel};
+	__property bool shouldUseAmbientLightModel = {read=getShouldUseAmbientLightModel};
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;
@@ -247,4 +263,18 @@ DrawStyle __fastcall TMainForm::getCurrentDrawStyle()
 	return (DrawStyle)DrawStyleRadioGroup->ItemIndex;
 }
 //---------------------------------------------------------------------------
+bool __fastcall TMainForm::getShouldUseDiffusionLightModel()
+{
+	return UseDiffusionLightModelCheckBox->Checked;
+}
+//---------------------------------------------------------------------------
+bool __fastcall TMainForm::getShouldUseAmbientLightModel()
+{
+	return UseAmbientLightModelCheckBox->Checked;
+}
+//---------------------------------------------------------------------------
+bool __fastcall TMainForm::getShouldUseReflectionLightModel()
+{
+	return UseReflectionLightModelCheckBox->Checked;
+}
 #endif

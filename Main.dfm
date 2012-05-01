@@ -3,8 +3,8 @@ object MainForm: TMainForm
   Top = 0
   BorderIcons = [biSystemMenu, biMinimize]
   Caption = #1051#1072#1073#1086#1088#1072#1090#1086#1088#1085#1072#1103' '#1088#1072#1073#1086#1090#1072' '#8470'1 | '#1071#1089#1085#1086#1074' '#1053#1080#1082#1086#1083#1072#1081' '#1075#1088'. 8306'
-  ClientHeight = 562
-  ClientWidth = 1008
+  ClientHeight = 582
+  ClientWidth = 1028
   Color = clBtnFace
   DoubleBuffered = True
   Font.Charset = DEFAULT_CHARSET
@@ -14,21 +14,22 @@ object MainForm: TMainForm
   Font.Style = []
   OldCreateOrder = False
   Position = poScreenCenter
+  Scaled = False
   OnShow = FormShow
   PixelsPerInch = 96
   TextHeight = 13
   object Graph: TImage
     Left = 8
     Top = 31
-    Width = 703
-    Height = 523
+    Width = 723
+    Height = 543
     OnMouseDown = GraphMouseDown
     OnMouseMove = GraphMouseMove
     OnMouseUp = GraphMouseUp
   end
   object Label1: TLabel
-    Left = 802
-    Top = 424
+    Left = 567
+    Top = 445
     Width = 45
     Height = 13
     Caption = #1052#1072#1089#1096#1090#1072#1073
@@ -36,7 +37,7 @@ object MainForm: TMainForm
   object ActionMainMenuBar1: TActionMainMenuBar
     Left = 0
     Top = 0
-    Width = 1008
+    Width = 1028
     Height = 25
     UseSystemFont = False
     ActionManager = ActionMgr
@@ -52,36 +53,38 @@ object MainForm: TMainForm
     Font.Name = 'Segoe UI'
     Font.Style = []
     Spacing = 0
+    ExplicitWidth = 1008
   end
   object DrawBtn: TButton
-    Left = 802
-    Top = 471
+    Left = 567
+    Top = 492
     Width = 131
     Height = 50
     Caption = #1054#1090#1088#1080#1089#1086#1074#1072#1090#1100
-    TabOrder = 1
+    TabOrder = 0
     OnClick = DrawBtnClick
   end
   object ScaleEdit: TCSpinEdit
-    Left = 802
-    Top = 443
+    Left = 567
+    Top = 464
     Width = 131
     Height = 22
     MaxValue = 100
     MinValue = 1
-    TabOrder = 2
+    TabOrder = 1
   end
   object LabsTabs: TPageControl
-    Left = 717
+    Left = 737
     Top = 31
     Width = 283
-    Height = 346
-    ActivePage = Lab3
+    Height = 543
+    ActivePage = Lab4
     MultiLine = True
-    TabOrder = 3
+    TabOrder = 2
     OnChange = LabsTabsChange
     object Lab1: TTabSheet
       Caption = '#1'
+      ExplicitHeight = 412
       object GroupBox1: TGroupBox
         Left = 140
         Top = 3
@@ -156,6 +159,7 @@ object MainForm: TMainForm
     object Lab2: TTabSheet
       Caption = '#2'
       ImageIndex = 1
+      ExplicitHeight = 412
       object Label2: TLabel
         Left = 11
         Top = 3
@@ -224,6 +228,7 @@ object MainForm: TMainForm
     object Lab3: TTabSheet
       Caption = '#3'
       ImageIndex = 2
+      ExplicitHeight = 412
       object DrawStyleRadioGroup: TRadioGroup
         Left = 3
         Top = 3
@@ -277,20 +282,14 @@ object MainForm: TMainForm
     object Lab4: TTabSheet
       Caption = '#4'
       ImageIndex = 3
+      ExplicitHeight = 412
       object GroupBox3: TGroupBox
         Left = 5
         Top = 3
         Width = 267
-        Height = 310
+        Height = 509
         Caption = #1054#1089#1074#1077#1097#1077#1085#1080#1077
         TabOrder = 0
-        object Label15: TLabel
-          Left = 22
-          Top = 244
-          Width = 182
-          Height = 13
-          Caption = #1050#1086#1101#1092#1092#1080#1094#1080#1077#1085#1090' '#1076#1080#1092#1092#1091#1079#1080#1080' '#1084#1072#1090#1077#1088#1080#1072#1083#1072
-        end
         object GroupBoxSourceLight: TGroupBox
           Left = 10
           Top = 15
@@ -430,33 +429,33 @@ object MainForm: TMainForm
           Left = 10
           Top = 136
           Width = 247
-          Height = 105
+          Height = 113
           Caption = #1060#1086#1085#1086#1074#1086#1077' '#1086#1089#1074#1077#1097#1077#1085#1080#1077
           TabOrder = 1
           object AmbientLightColorPicker: TImage
             Left = 28
-            Top = 42
+            Top = 58
             Width = 43
             Height = 43
             OnClick = AmbientLightColorPickerClick
           end
           object Label13: TLabel
             Left = 37
-            Top = 23
+            Top = 39
             Width = 25
             Height = 13
             Caption = #1057#1074#1077#1090
           end
           object Label14: TLabel
             Left = 110
-            Top = 23
+            Top = 39
             Width = 77
             Height = 13
             Caption = #1048#1085#1090#1077#1085#1089#1080#1074#1085#1086#1089#1090#1100
           end
           object AmbientLightIntensityTrackBar: TTrackBar
             Left = 99
-            Top = 41
+            Top = 57
             Width = 137
             Height = 45
             Ctl3D = True
@@ -471,24 +470,105 @@ object MainForm: TMainForm
             TickStyle = tsNone
             OnChange = AmbientLightIntensityTrackBarChange
           end
+          object UseAmbientLightModelCheckBox: TCheckBox
+            Left = 14
+            Top = 15
+            Width = 97
+            Height = 17
+            Caption = #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1090#1100
+            Checked = True
+            State = cbChecked
+            TabOrder = 1
+            OnClick = UseAmbientLightModelCheckBoxClick
+          end
         end
-        object DiffusionCoeffTrackBar: TTrackBar
-          Left = 11
-          Top = 262
-          Width = 246
-          Height = 45
-          Ctl3D = True
-          LineSize = 10
-          Max = 100
-          ParentCtl3D = False
-          PageSize = 25
-          Position = 75
-          ShowSelRange = False
+        object GroupBoxDiffusionLigth: TGroupBox
+          Left = 10
+          Top = 255
+          Width = 247
+          Height = 82
+          Caption = #1044#1080#1092#1092#1091#1079#1085#1086#1077' '#1086#1089#1074#1077#1097#1077#1085#1080#1077
           TabOrder = 2
-          ThumbLength = 40
-          TickMarks = tmBoth
-          TickStyle = tsNone
-          OnChange = AmbientLightIntensityTrackBarChange
+          object Label15: TLabel
+            Left = 11
+            Top = 38
+            Width = 182
+            Height = 13
+            Caption = #1050#1086#1101#1092#1092#1080#1094#1080#1077#1085#1090' '#1076#1080#1092#1092#1091#1079#1080#1080' '#1084#1072#1090#1077#1088#1080#1072#1083#1072
+          end
+          object DiffusionCoeffTrackBar: TTrackBar
+            Left = 3
+            Top = 57
+            Width = 241
+            Height = 20
+            Ctl3D = True
+            LineSize = 10
+            Max = 100
+            ParentCtl3D = False
+            PageSize = 25
+            Position = 75
+            ShowSelRange = False
+            TabOrder = 0
+            ThumbLength = 15
+            TickMarks = tmBoth
+            TickStyle = tsNone
+            OnChange = AmbientLightIntensityTrackBarChange
+          end
+          object UseDiffusionLightModelCheckBox: TCheckBox
+            Left = 14
+            Top = 15
+            Width = 97
+            Height = 17
+            Caption = #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1090#1100
+            Checked = True
+            State = cbChecked
+            TabOrder = 1
+            OnClick = UseDiffusionLightModelCheckBoxClick
+          end
+        end
+        object GroupBoxReflectionLight: TGroupBox
+          Left = 10
+          Top = 343
+          Width = 247
+          Height = 82
+          Caption = #1047#1077#1088#1082#1072#1083#1100#1085#1086#1077' '#1086#1089#1074#1077#1097#1077#1085#1080#1077
+          TabOrder = 3
+          object Label16: TLabel
+            Left = 11
+            Top = 38
+            Width = 182
+            Height = 13
+            Caption = #1050#1086#1101#1092#1092#1080#1094#1080#1077#1085#1090' '#1076#1080#1092#1092#1091#1079#1080#1080' '#1084#1072#1090#1077#1088#1080#1072#1083#1072
+          end
+          object TrackBar1: TTrackBar
+            Left = 3
+            Top = 57
+            Width = 241
+            Height = 20
+            Ctl3D = True
+            LineSize = 10
+            Max = 100
+            ParentCtl3D = False
+            PageSize = 25
+            Position = 75
+            ShowSelRange = False
+            TabOrder = 0
+            ThumbLength = 15
+            TickMarks = tmBoth
+            TickStyle = tsNone
+            OnChange = AmbientLightIntensityTrackBarChange
+          end
+          object UseReflectionLightModelCheckBox: TCheckBox
+            Left = 14
+            Top = 15
+            Width = 97
+            Height = 17
+            Caption = #1048#1089#1087#1086#1083#1100#1079#1086#1074#1072#1090#1100
+            Checked = True
+            State = cbChecked
+            TabOrder = 1
+            OnClick = UseReflectionLightModelCheckBoxClick
+          end
         end
       end
     end

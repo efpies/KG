@@ -97,15 +97,30 @@ void Triangle::draw(Graphics::TBitmap *bmp, float **zBuffer, TColor frontColor, 
 		normalizeVec(cross);
 		normalizeVec(vecInvBeam);
 
+		vector3D mirrored;
+		double dotProductCrossVecInvBeam = dotProduct(cross, vecInvBeam);
+		mirrored.x = cross.x * 2.0 * dotProductCrossVecInvBeam - vecInvBeam.x;
+		mirrored.y = cross.y * 2.0 * dotProductCrossVecInvBeam - vecInvBeam.y;
+		mirrored.z = cross.z * 2.0 * dotProductCrossVecInvBeam - vecInvBeam.z;
+		normalizeVec(mirrored);
+
+		vector3D spectator;
+		spectator.x = 0.0;
+		spectator.y = 0.0;
+		spectator.z = 1.0;
+
 		TRGBTriple Isrc = RGBTripleFromColor(MainForm->sourceLightColor);
 		TRGBTriple Iamb = RGBTripleFromColor(MainForm->ambientLightColor);
+		TRGBTriple Im   = RGBTripleFromColor(clWhite);
 
-		double kAmb = MainForm->ambientIntensityCoeff;
+		double kAmb = MainForm->shouldUseAmbientLightModel * MainForm->ambientIntensityCoeff;
 		double kD   = MainForm->materialDiffusionCoeff;
-		double k = kD * max(0.0, dotProduct(cross, vecInvBeam)) / distance;
-		double Ired   = min(Iamb.rgbtRed   * kAmb + Isrc.rgbtRed   * k, 255.0);
-		double Igreen = min(Iamb.rgbtGreen * kAmb + Isrc.rgbtGreen * k, 255.0);
-		double Iblue  = min(Iamb.rgbtBlue  * kAmb + Isrc.rgbtBlue  * k, 255.0);
+		double k =  (MainForm->shouldUseDiffusionLightModel) ? kD * max(0.0, dotProduct(cross, vecInvBeam)) / distance : 1;
+		double kM = MainForm->shouldUseReflectionLightModel * max(0.0, pow(dotProduct(mirrored, spectator), 5));
+
+		double Ired   = min(Iamb.rgbtRed   * kAmb + Isrc.rgbtRed   * k + Im.rgbtRed   * kM, 255.0);
+		double Igreen = min(Iamb.rgbtGreen * kAmb + Isrc.rgbtGreen * k + Im.rgbtGreen * kM, 255.0);
+		double Iblue  = min(Iamb.rgbtBlue  * kAmb + Isrc.rgbtBlue  * k + Im.rgbtBlue  * kM, 255.0);
 
 		TRGBTriple pixel;
 		pixel.rgbtRed   = GetRValue(drawColor) * Ired   / 255.0;

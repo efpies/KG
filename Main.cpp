@@ -257,9 +257,14 @@ void __fastcall TMainForm::drawObjects(TCanvas *destCanvas, bool erase)
 		buffer->Height = destCanvas->ClipRect.Height();
 
 		TBrush *fillBrush = buffer->Canvas->Brush;
-		fillBrush->Color = static_cast<TColor>(RGB(ambientIntensityCoeff * GetRValue(ambientLightColor),
-												   ambientIntensityCoeff * GetGValue(ambientLightColor),
-												   ambientIntensityCoeff * GetBValue(ambientLightColor)));
+		if(shouldUseAmbientLightModel) {
+			fillBrush->Color = static_cast<TColor>(RGB(ambientIntensityCoeff * GetRValue(ambientLightColor),
+													   ambientIntensityCoeff * GetGValue(ambientLightColor),
+													   ambientIntensityCoeff * GetBValue(ambientLightColor)));
+		}
+		else {
+            fillBrush->Color = clWhite;
+        }
 
 		buffer->Canvas->FillRect(buffer->Canvas->ClipRect);
 
@@ -303,7 +308,7 @@ void __fastcall TMainForm::SourceLightColorPickerClick(TObject *Sender)
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::AmbientLightColorPickerClick(TObject *Sender)
 {
-	if(PickColor->Execute()) {
+	if(shouldUseAmbientLightModel && PickColor->Execute()) {
 		FillCanvasWithColor(AmbientLightColorPicker->Canvas, PickColor->Color);
 		drawObjects(Graph->Canvas, true);
 	}
@@ -351,6 +356,24 @@ void __fastcall TMainForm::AmbientLightIntensityTrackBarChange(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::DrawStyleRadioGroupClick(TObject *Sender)
+{
+	drawObjects(Graph->Canvas, true);
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::UseDiffusionLightModelCheckBoxClick(TObject *Sender)
+{
+	DiffusionCoeffTrackBar->Enabled = UseDiffusionLightModelCheckBox->Checked;
+	drawObjects(Graph->Canvas, true);
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::UseAmbientLightModelCheckBoxClick(TObject *Sender)
+{
+	AmbientLightIntensityTrackBar->Enabled = UseAmbientLightModelCheckBox->Checked;
+	AmbientLightColorPicker->Enabled = UseDiffusionLightModelCheckBox->Checked;
+	drawObjects(Graph->Canvas, true);
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::UseReflectionLightModelCheckBoxClick(TObject *Sender)
 {
 	drawObjects(Graph->Canvas, true);
 }
