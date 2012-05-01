@@ -9,13 +9,13 @@
 #include <float.h>
 #include <cstdlib>
 #include "Triangle.h"
+#include "Main.h"
 //---------------------------------------------------------------------------
 #pragma package(smart_init)
 
 #define irand(n) random(n / 2.0) - random(n / 2.0)
 #define knotTag(i, j) tagWithName(L"knot", i, j)
 #define pointTag(i, j) tagWithName(L"point", i, j)
-
 //---------------------------------------------------------------------------
 // Lifecycle
 //---------------------------------------------------------------------------
@@ -243,7 +243,9 @@ void BezierSurface::draw (Graphics::TBitmap *bmp)
 		grid->draw(bmp);
 	}
 
-	refreshZbuffer(bmp->Canvas->ClipRect.Size);
+	if(MainForm->drawStyle != DrawStyleWire) {
+		refreshZbuffer(bmp->Canvas->ClipRect.Size);
+	}
 
 	for(triIt i = surfaceTriangles.begin(); i != surfaceTriangles.end(); ++i) {
 		(*i)->draw(bmp, zBuffer, frontColor, backColor);

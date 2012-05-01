@@ -22,6 +22,11 @@ typedef enum {
 	AxisZ
 } Axis;
 
+typedef enum {
+	DrawStyleWire = 0,
+	DrawStyleFill
+} DrawStyle;
+
 typedef std::vector< std::vector<double> > matrix_values;
 typedef std::vector< std::vector<double> >::iterator mvIt;
 typedef std::vector<double>::iterator dIt;

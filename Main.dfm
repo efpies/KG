@@ -76,13 +76,12 @@ object MainForm: TMainForm
     Top = 31
     Width = 283
     Height = 346
-    ActivePage = Lab4
+    ActivePage = Lab3
     MultiLine = True
     TabOrder = 3
     OnChange = LabsTabsChange
     object Lab1: TTabSheet
       Caption = '#1'
-      ExplicitHeight = 134
       object GroupBox1: TGroupBox
         Left = 140
         Top = 3
@@ -157,7 +156,6 @@ object MainForm: TMainForm
     object Lab2: TTabSheet
       Caption = '#2'
       ImageIndex = 1
-      ExplicitHeight = 134
       object Label2: TLabel
         Left = 11
         Top = 3
@@ -226,19 +224,18 @@ object MainForm: TMainForm
     object Lab3: TTabSheet
       Caption = '#3'
       ImageIndex = 2
-      ExplicitHeight = 134
       object DrawStyleRadioGroup: TRadioGroup
         Left = 3
         Top = 3
         Width = 102
         Height = 54
         Caption = #1057#1090#1080#1083#1100' '#1086#1090#1088#1080#1089#1086#1074#1082#1080
-        Enabled = False
         ItemIndex = 1
         Items.Strings = (
           #1057#1077#1090#1082#1072
           #1047#1072#1083#1080#1074#1082#1072)
         TabOrder = 0
+        OnClick = DrawStyleRadioGroupClick
       end
       object GroupBox2: TGroupBox
         Left = 111
@@ -280,7 +277,6 @@ object MainForm: TMainForm
     object Lab4: TTabSheet
       Caption = '#4'
       ImageIndex = 3
-      ExplicitHeight = 273
       object GroupBox3: TGroupBox
         Left = 5
         Top = 3

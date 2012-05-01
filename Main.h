@@ -115,6 +115,7 @@ __published:	// IDE-managed Components
 	void __fastcall SourcePosZDecrementButtonClick(TObject *Sender);
 	void __fastcall AmbientLightColorPickerClick(TObject *Sender);
 	void __fastcall AmbientLightIntensityTrackBarChange(TObject *Sender);
+	void __fastcall DrawStyleRadioGroupClick(TObject *Sender);
 
 private:	// User declarations
 	void __fastcall drawObjects(TCanvas *, bool);
@@ -135,6 +136,7 @@ private:	// User declarations
 	double __fastcall getAmbientIntensityCoeff();
 	double __fastcall getMaterialDiffusionCoeff();
 	void __fastcall incrementTextField(TEdit *, const int);
+	DrawStyle __fastcall getCurrentDrawStyle();
 
 public:		// User declarations
 	__fastcall TMainForm(TComponent* Owner);
@@ -147,6 +149,7 @@ public:		// User declarations
 	__property double sourcePositionAtAxis[const Axis axis] = {read=getSourceLightPositionAtAxis};
 	__property double ambientIntensityCoeff = {read=getAmbientIntensityCoeff};
 	__property double materialDiffusionCoeff = {read=getMaterialDiffusionCoeff};
+	__property DrawStyle drawStyle = {read=getCurrentDrawStyle};
 };
 //---------------------------------------------------------------------------
 extern PACKAGE TMainForm *MainForm;
@@ -237,6 +240,11 @@ double __fastcall TMainForm::getAmbientIntensityCoeff()
 double __fastcall TMainForm::getMaterialDiffusionCoeff()
 {
 	return (double)DiffusionCoeffTrackBar->Position / (double)DiffusionCoeffTrackBar->Max;
+}
+//---------------------------------------------------------------------------
+DrawStyle __fastcall TMainForm::getCurrentDrawStyle()
+{
+	return (DrawStyle)DrawStyleRadioGroup->ItemIndex;
 }
 //---------------------------------------------------------------------------
 #endif

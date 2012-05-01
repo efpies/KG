@@ -257,10 +257,9 @@ void __fastcall TMainForm::drawObjects(TCanvas *destCanvas, bool erase)
 		buffer->Height = destCanvas->ClipRect.Height();
 
 		TBrush *fillBrush = buffer->Canvas->Brush;
-		TColor fillColor = fillBrush->Color;
-		fillBrush->Color = RGB(ambientIntensityCoeff * GetRValue(ambientLightColor),
-							   ambientIntensityCoeff * GetGValue(ambientLightColor),
-							   ambientIntensityCoeff * GetBValue(ambientLightColor));
+		fillBrush->Color = static_cast<TColor>(RGB(ambientIntensityCoeff * GetRValue(ambientLightColor),
+												   ambientIntensityCoeff * GetGValue(ambientLightColor),
+												   ambientIntensityCoeff * GetBValue(ambientLightColor)));
 
 		buffer->Canvas->FillRect(buffer->Canvas->ClipRect);
 
@@ -347,6 +346,11 @@ void __fastcall TMainForm::SourcePosZDecrementButtonClick(TObject *Sender)
 }
 //---------------------------------------------------------------------------
 void __fastcall TMainForm::AmbientLightIntensityTrackBarChange(TObject *Sender)
+{
+	drawObjects(Graph->Canvas, true);
+}
+//---------------------------------------------------------------------------
+void __fastcall TMainForm::DrawStyleRadioGroupClick(TObject *Sender)
 {
 	drawObjects(Graph->Canvas, true);
 }
