@@ -243,9 +243,19 @@ void BezierSurface::draw (Graphics::TBitmap *bmp)
 		grid->draw(bmp);
 	}
 
-	if(MainForm->drawStyle != DrawStyleWire) {
-		refreshZbuffer(bmp->Canvas->ClipRect.Size);
-	}
+	refreshZbuffer(bmp->Canvas->ClipRect.Size);
+
+	if(MainForm->drawStyle == DrawStyleWire) {
+		for(unsigned i = 0; i < surfaceTriangles.size() - 1; ++i) {
+			for(unsigned j = 0; j < surfaceTriangles.size() - 1; ++j) {
+				if(surfaceTriangles[j]->minZ() > surfaceTriangles[j + 1]->minZ()) {
+					Triangle *t = surfaceTriangles[j];
+					surfaceTriangles[j] = surfaceTriangles[j + 1];
+					surfaceTriangles[j + 1] = t;
+                }
+			}
+		}
+    }
 
 	for(triIt i = surfaceTriangles.begin(); i != surfaceTriangles.end(); ++i) {
 		(*i)->draw(bmp, zBuffer, frontColor, backColor);

@@ -257,7 +257,8 @@ void __fastcall TMainForm::drawObjects(TCanvas *destCanvas, bool erase)
 		buffer->Height = destCanvas->ClipRect.Height();
 
 		TBrush *fillBrush = buffer->Canvas->Brush;
-		if(shouldUseAmbientLightModel) {
+
+		if(shouldUseAmbientLightModel && drawStyle != DrawStyleWire) {
 			fillBrush->Color = static_cast<TColor>(RGB(ambientIntensityCoeff * GetRValue(ambientLightColor),
 													   ambientIntensityCoeff * GetGValue(ambientLightColor),
 													   ambientIntensityCoeff * GetBValue(ambientLightColor)));

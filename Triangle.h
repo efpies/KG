@@ -33,8 +33,10 @@ class Triangle : virtual public Object3D
 
 		inline TRGBTriple RGBTripleFromColor(TColor);
 
+		void drawWithColor(Graphics::TBitmap *, float **, double[3][3], TRGBTriple);
+
 	public :
-		Triangle() {}
+		Triangle() { }
 		Triangle(const Triangle&);
 		~Triangle();
 
@@ -47,6 +49,8 @@ class Triangle : virtual public Object3D
 		Vertice *av;
 		Vertice *bv;
 		Vertice *cv;
+
+		inline double minZ();
 };
 //---------------------------------------------------------------------------
 // Lifecycle
@@ -67,6 +71,20 @@ Triangle::~Triangle()
 //---------------------------------------------------------------------------
 // Custom methods
 //---------------------------------------------------------------------------
+inline double Triangle::minZ()
+{
+	double z = av->getZ();
+	z = (bv->getZ() < z) ? bv->getZ() : z;
+	z = (cv->getZ() < z) ? cv->getZ() : z;
+	return z;
+}
+//---------------------------------------------------------------------------
+inline void Triangle::normalized(TPoint center, double &x, double &y)
+{
+	x = center.x + x * scale;
+	y = center.y - y * scale;
+}
+//---------------------------------------------------------------------------
 inline void Triangle::makevector3D(const vector3D a, const vector3D b, vector3D &result)
 {
 	result.x = b.x - a.x;
@@ -79,12 +97,6 @@ inline void Triangle::crossProduct(const vector3D a, const vector3D b, vector3D 
 	result.x = a.y * b.z - a.z * b.y;
 	result.y = -a.x * b.z + a.z * b.x;
 	result.z = a.x * b.y - a.y * b.x;
-}
-//---------------------------------------------------------------------------
-inline void Triangle::normalized(TPoint center, double &x, double &y)
-{
-	x = center.x + x * scale;
-	y = center.y - y * scale;
 }
 //---------------------------------------------------------------------------
 inline void Triangle::swap(double *a, double *b)
